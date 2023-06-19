@@ -9,7 +9,6 @@ import java.util.List;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_id")
     private int id;
     private String name;
     private String description;
@@ -19,8 +18,14 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "shop_id")
     private Shop shop;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "client")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
     private List<Feedback> feedbacks;
+
+    @ManyToMany()
+    @JoinTable(name = "clients_products",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "client_id"))
+    private List<Client> clients;
 
     public Product() {
     }
@@ -30,6 +35,14 @@ public class Product {
         this.description = description;
         this.price = price;
         this.count = count;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -78,6 +91,14 @@ public class Product {
 
     public void setFeedbacks(List<Feedback> feedbacks) {
         this.feedbacks = feedbacks;
+    }
+
+    public List<Client> getClients() {
+        return clients;
+    }
+
+    public void setClients(List<Client> clients) {
+        this.clients = clients;
     }
 
     @Override

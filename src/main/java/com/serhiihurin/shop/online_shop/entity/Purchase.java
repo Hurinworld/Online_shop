@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 public class Purchase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private int id;
     private LocalDateTime time;
     @OneToOne

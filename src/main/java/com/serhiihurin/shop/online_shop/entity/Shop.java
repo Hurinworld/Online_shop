@@ -9,12 +9,10 @@ import java.util.List;
 public class Shop {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private int id;
     private String name;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "shop")
     private List<Product> products;
-    @Column(name = "income")
     private int income;
 
     public Shop() {

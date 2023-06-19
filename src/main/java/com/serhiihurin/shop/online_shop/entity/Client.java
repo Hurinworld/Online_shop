@@ -14,7 +14,7 @@ public class Client {
     private int cash;
 
     @ManyToMany
-    @JoinTable(name = "client_products",
+    @JoinTable(name = "clients_products",
             joinColumns = @JoinColumn(name = "client_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> shoppingCart;
