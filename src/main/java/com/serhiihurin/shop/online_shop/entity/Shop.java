@@ -1,66 +1,30 @@
 package com.serhiihurin.shop.online_shop.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
 
 @Entity
 @Table(name = "shop")
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString(exclude = {"productData"})
 public class Shop {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private String name;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "shop")
-    private List<Product> products;
-    private int income;
+    private List<ProductData> productData;
+    private Double income;
 
-    public Shop() {
-    }
-
-    public Shop(String name, int income) {
+    public Shop(String name, Double income) {
         this.name = name;
         this.income = income;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
-
-    public int getIncome() {
-        return income;
-    }
-
-    public void setIncome(int income) {
-        this.income = income;
-    }
-
-    @Override
-    public String toString() {
-        return "Shop{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", income=" + income +
-                '}';
     }
 }

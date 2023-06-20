@@ -1,15 +1,23 @@
 package com.serhiihurin.shop.online_shop.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "feedbacks")
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 public class Feedback {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private String text;
     private LocalDateTime time;
     private int rate;
@@ -20,64 +28,11 @@ public class Feedback {
 
     @ManyToOne
     @JoinColumn(name = "product_id")
-    private Product product;
-
-    public Feedback() {
-    }
+    private ProductData productData;
 
     public Feedback(String text, LocalDateTime time, int rate) {
         this.text = text;
         this.time = time;
         this.rate = rate;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public LocalDateTime getTime() {
-        return time;
-    }
-
-    public void setTime(LocalDateTime time) {
-        this.time = time;
-    }
-
-    public int getRate() {
-        return rate;
-    }
-
-    public void setRate(int rate) {
-        this.rate = rate;
-    }
-
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
-    }
-
-    @Override
-    public String toString() {
-        return "Feedback{" +
-                "id=" + id +
-                ", text='" + text + '\'' +
-                ", time=" + time +
-                ", rate=" + rate +
-                '}';
     }
 }

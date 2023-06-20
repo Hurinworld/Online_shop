@@ -1,61 +1,35 @@
 package com.serhiihurin.shop.online_shop.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "purchases")
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 public class Purchase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private LocalDateTime time;
-    @OneToOne
+
+    @OneToMany
     @JoinColumn(name = "product_id")
-    private Product product;
+    private List<Product> products;
 
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
 
-    public Purchase() {
-    }
-
-    public Purchase(LocalDateTime time, Product product) {
+    public Purchase(LocalDateTime time) {
         this.time = time;
-        this.product = product;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getTime() {
-        return time;
-    }
-
-    public void setTime(LocalDateTime time) {
-        this.time = time;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    @Override
-    public String toString() {
-        return "Purchase{" +
-                "id=" + id +
-                ", time=" + time +
-                '}';
     }
 }

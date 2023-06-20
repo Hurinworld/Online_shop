@@ -24,7 +24,7 @@ public class ClientServiceImpl implements ClientService{
     }
 
     @Override
-    public Client getClient(int id) {
+    public Client getClient(Long id) {
         Client client = null;
         Optional<Client> optionalClient = clientRepository.findById(id);
         if (optionalClient.isPresent()) {
@@ -34,7 +34,7 @@ public class ClientServiceImpl implements ClientService{
     }
 
     @Override
-    public void deleteClient(int id) {
+    public void deleteClient(Long id) {
         clientRepository.deleteById(id);
     }
 }
