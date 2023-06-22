@@ -24,19 +24,19 @@ public class ShopRESTController {
     }
 
     @PostMapping
-    public Shop addNewClient(@RequestBody Shop shop) {
+    public Shop addNewShop(@RequestBody Shop shop) {
         shopService.saveShop(shop);
         return shop;
     }
 
     @PutMapping
-    public Shop updateClient(@RequestBody Shop shop) {
+    public Shop updateShop(@RequestBody Shop shop) {
         shopService.saveShop(shop);
         return shop;
     }
 
     @DeleteMapping("/{id}")
-    public String deleteClient(@PathVariable Long id) {
+    public String deleteShop(@PathVariable Long id) {
         shopService.deleteShop(id);
         return "Shop with id = " + id + " was deleted";
     }

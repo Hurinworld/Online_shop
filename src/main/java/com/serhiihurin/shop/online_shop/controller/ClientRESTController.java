@@ -19,23 +19,19 @@ public class ClientRESTController {
     }
 
     @GetMapping("/{id}")
-    public Client getEmployee(@PathVariable Long id) {
+    public Client getClient(@PathVariable Long id) {
         return clientService.getClient(id);
     }
 
     @PostMapping
     public Client addNewClient(@RequestBody Client client) {
-
         clientService.saveClient(client);
-
         return client;
     }
 
     @PutMapping
     public Client updateClient(@RequestBody Client client) {
-
         clientService.saveClient(client);
-
         return client;
     }
 

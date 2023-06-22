@@ -1,9 +1,7 @@
 package com.serhiihurin.shop.online_shop.controller;
 
 import com.serhiihurin.shop.online_shop.entity.ProductData;
-import com.serhiihurin.shop.online_shop.entity.Shop;
-import com.serhiihurin.shop.online_shop.services.ProductDataService;
-import com.serhiihurin.shop.online_shop.services.ShopService;
+import com.serhiihurin.shop.online_shop.facades.ProductDataFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,43 +11,35 @@ import java.util.List;
 @RequestMapping("/online_shop/products_data")
 public class ProductDataRESTController {
     @Autowired
-    private ProductDataService productDataService;
-
-    @Autowired
-    private ShopService shopService;
+    private ProductDataFacade productDataFacade;
 
     @GetMapping
     public List<ProductData> showAllProductData() {
-        return productDataService.getAllProductData();
+        return productDataFacade.showAllProductData();
     }
 
     @GetMapping("/get/{id}")
     List<ProductData> showAllProductDataByShopId(@PathVariable Long id) {
-        return productDataService.getProductDataByShopId(id);
+        return productDataFacade.showAllProductDataByShopId(id);
     }
 
     @GetMapping("/{id}")
     public ProductData showProductData(@PathVariable Long id) {
-        return productDataService.getProductData(id);
+        return productDataFacade.showProductData(id);
     }
 
     @PostMapping("/{shopId}")
     public ProductData addNewProductData(@PathVariable Long shopId, @RequestBody ProductData productData) {
-        Shop shop = shopService.getShop(shopId);
-        productData.setShop(shop);
-        productDataService.saveProductData(productData);
-        return productData;
+        return productDataFacade.addProductData(shopId, productData);
     }
 
-    @PutMapping
+    @PatchMapping
     public ProductData updateProductData(@RequestBody ProductData productData) {
-        productDataService.saveProductData(productData);
-        return productData;
+        return productDataFacade.updateProductData(productData);
     }
 
     @DeleteMapping("/{id}")
     public String deleteProductData(@PathVariable Long id) {
-        productDataService.deleteProductData(id);
-        return "Product data with id = " + id + " was deleted";
+        return productDataFacade.deleteProductData(id);
     }
 }
