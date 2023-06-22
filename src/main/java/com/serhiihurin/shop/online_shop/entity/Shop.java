@@ -1,5 +1,6 @@
 package com.serhiihurin.shop.online_shop.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,8 +20,11 @@ public class Shop {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "shop")
+    @JsonIgnore
     private List<ProductData> productData;
+
     private Double income;
 
     public Shop(String name, Double income) {

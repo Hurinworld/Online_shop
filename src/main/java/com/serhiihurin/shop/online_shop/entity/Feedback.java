@@ -1,5 +1,6 @@
 package com.serhiihurin.shop.online_shop.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,15 +25,16 @@ public class Feedback {
 
     @ManyToOne
     @JoinColumn(name = "client_id")
+    @JsonIgnore
     private Client client;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @JsonIgnore
     private ProductData productData;
 
     public Feedback(String text, LocalDateTime time, int rate) {
         this.text = text;
-        this.time = time;
         this.rate = rate;
     }
 }

@@ -1,21 +1,19 @@
 package com.serhiihurin.shop.online_shop.services;
 
-import com.serhiihurin.shop.online_shop.entity.Client;
 import com.serhiihurin.shop.online_shop.entity.Feedback;
-import com.serhiihurin.shop.online_shop.entity.ProductData;
 
 import java.util.List;
 
 public interface FeedbackService {
-    List<Client> getAllFeedbacks();
+    List<Feedback> getAllFeedbacks();
 
-    List<Feedback> getFeedbacksByProductData(ProductData productData);
+    List<Feedback> getFeedbacksByProductDataId(Long id);
 
-    List<Feedback> getFeedbacksByClient(Client client);
+    List<Feedback> getFeedbacksByClientId(Long id);
 
     void saveFeedback(Feedback feedback);
 
-    Client getFeedback(Long id);
+    Feedback getFeedback(Long id);
 
     void deleteFeedback(Long id);
 }

@@ -14,15 +14,8 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String serialNumber;
-    private Double weight;
-
+    private boolean isBought;
     @ManyToOne
     @JoinColumn(name = "product_data_id")
     private ProductData productData;
-
-    public Product(String serialNumber, Double weight) {
-        this.serialNumber = serialNumber;
-        this.weight = weight;
-    }
 }
