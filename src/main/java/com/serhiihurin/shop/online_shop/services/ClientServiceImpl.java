@@ -9,10 +9,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ClientServiceImpl implements ClientService{
+public class ClientServiceImpl implements ClientService {
 
     @Autowired
     private ClientRepository clientRepository;
+
     @Override
     public List<Client> getAllClients() {
         return clientRepository.findAll();

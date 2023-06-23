@@ -14,7 +14,7 @@ public class ShopRESTController {
     private ShopService shopService;
 
     @GetMapping
-    public List<Shop> showAllShops() {
+    public List<Shop> getAllShops() {
         return shopService.getAllShops();
     }
 

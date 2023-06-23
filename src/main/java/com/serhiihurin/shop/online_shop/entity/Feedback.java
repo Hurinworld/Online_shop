@@ -2,10 +2,7 @@ package com.serhiihurin.shop.online_shop.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -33,7 +30,7 @@ public class Feedback {
     @JsonIgnore
     private ProductData productData;
 
-    public Feedback(String text, LocalDateTime time, int rate) {
+    public Feedback(String text, int rate) {
         this.text = text;
         this.rate = rate;
     }

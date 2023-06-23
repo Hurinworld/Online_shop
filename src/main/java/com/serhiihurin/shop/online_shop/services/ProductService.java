@@ -1,16 +1,17 @@
 package com.serhiihurin.shop.online_shop.services;
 
-import com.serhiihurin.shop.online_shop.entity.Client;
 import com.serhiihurin.shop.online_shop.entity.Product;
 
 import java.util.List;
 
 public interface ProductService {
-    List<Client> getAllProducts();
+    List<Product> getAllProducts();
+
+    List<Product> findProductsByProductDataId(Long id);
+
+    Product getProduct(Long id);
 
     void saveProduct(Product product);
-
-    Client getProduct(Long id);
 
     void deleteProduct(Long id);
 }

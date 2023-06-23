@@ -1,9 +1,8 @@
 package com.serhiihurin.shop.online_shop.entity;
 
+//import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "products")
@@ -17,5 +16,6 @@ public class Product {
     private boolean isBought;
     @ManyToOne
     @JoinColumn(name = "product_data_id")
+//    @JsonIgnore
     private ProductData productData;
 }

@@ -1,7 +1,6 @@
 package com.serhiihurin.shop.online_shop.services;
 
 import com.serhiihurin.shop.online_shop.entity.ProductData;
-import com.serhiihurin.shop.online_shop.entity.Shop;
 
 import java.util.List;
 

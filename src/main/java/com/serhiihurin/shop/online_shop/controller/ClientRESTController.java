@@ -14,7 +14,7 @@ public class ClientRESTController {
     private ClientService clientService;
 
     @GetMapping
-    public List<Client> showAllClients() {
+    public List<Client> getAllClients() {
         return clientService.getAllClients();
     }
 

@@ -6,13 +6,19 @@ import java.util.List;
 
 public interface FeedbackFacade {
 
-    List<Feedback> showAllFeedbacks();
-    Feedback showFeedback(Long id);
-    List<Feedback> showAllFeedbacksByProductData(Long id);
-    List<Feedback> showAllFeedbacksByClient(Long id);
+    List<Feedback> getAllFeedbacks();
+
+    Feedback getFeedback(Long id);
+
+    List<Feedback> getAllFeedbacksByProductData(Long id);
+
+    List<Feedback> getAllFeedbacksByClient(Long id);
+
     Feedback addFeedback(Long clientId,
                          Long productDataId,
                          Feedback feedback);
+
     Feedback updateFeedback(Feedback feedback);
+
     String deleteFeedback(Long id);
 }

@@ -1,10 +1,7 @@
 package com.serhiihurin.shop.online_shop.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,7 +19,7 @@ public class Purchase {
     private LocalDateTime time;
 
     @OneToMany
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "purchase_id")
     private List<Product> products;
 
     @ManyToOne

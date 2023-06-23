@@ -20,12 +20,11 @@ public class Shop {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private Double income;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "shop")
     @JsonIgnore
     private List<ProductData> productData;
-
-    private Double income;
 
     public Shop(String name, Double income) {
         this.name = name;

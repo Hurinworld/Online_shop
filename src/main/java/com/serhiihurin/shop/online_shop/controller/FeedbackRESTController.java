@@ -2,6 +2,7 @@ package com.serhiihurin.shop.online_shop.controller;
 
 import com.serhiihurin.shop.online_shop.entity.Feedback;
 import com.serhiihurin.shop.online_shop.facades.FeedbackFacade;
+import com.serhiihurin.shop.online_shop.services.FeedbackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,29 +15,30 @@ public class FeedbackRESTController {
     @Autowired
     private FeedbackFacade feedbackFacade;
 
+
     @GetMapping
-    public List<Feedback> showAllFeedbacks() {
-        return feedbackFacade.showAllFeedbacks();
+    public List<Feedback> getAllFeedbacks() {
+        return feedbackFacade.getAllFeedbacks();
     }
 
     @GetMapping("/{id}")
-    public Feedback showFeedback(@PathVariable Long id) {
-        return feedbackFacade.showFeedback(id);
+    public Feedback getFeedback(@PathVariable Long id) {
+        return feedbackFacade.getFeedback(id);
     }
 
-    @GetMapping("/product/{id}")
-    public List<Feedback> showAllFeedbacksByProductData(@PathVariable Long id) {
-        return feedbackFacade.showAllFeedbacksByProductData(id);
+    @GetMapping("/product_data/{id}")
+    public List<Feedback> getAllFeedbacksByProductData(@PathVariable Long id) {
+        return feedbackFacade.getAllFeedbacksByProductData(id);
     }
 
     @GetMapping("/client/{id}")
-    public List<Feedback> showAllFeedbacksByClient(@PathVariable Long id) {
-        return feedbackFacade.showAllFeedbacksByClient(id);
+    public List<Feedback> getAllFeedbacksByClient(@PathVariable Long id) {
+        return feedbackFacade.getAllFeedbacksByClient(id);
     }
 
-    @PostMapping("/{clientId}/{productDataId}")
-    public Feedback addNewFeedback(@PathVariable Long clientId,
-                                   @PathVariable Long productDataId,
+    @PostMapping()
+    public Feedback addNewFeedback(@RequestParam Long clientId,
+                                   @RequestParam Long productDataId,
                                    @RequestBody Feedback feedback) {
         return feedbackFacade.addFeedback(clientId, productDataId, feedback);
     }

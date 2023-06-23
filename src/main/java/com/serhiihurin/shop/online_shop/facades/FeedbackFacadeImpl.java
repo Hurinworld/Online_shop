@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
-public class FeedbackFacadeImpl implements FeedbackFacade{
+public class FeedbackFacadeImpl implements FeedbackFacade {
 
     @Autowired
     private FeedbackService feedbackService;
@@ -25,22 +25,22 @@ public class FeedbackFacadeImpl implements FeedbackFacade{
     private ProductDataService productDataService;
 
     @Override
-    public List<Feedback> showAllFeedbacks() {
+    public List<Feedback> getAllFeedbacks() {
         return feedbackService.getAllFeedbacks();
     }
 
     @Override
-    public Feedback showFeedback(Long id) {
+    public Feedback getFeedback(Long id) {
         return feedbackService.getFeedback(id);
     }
 
     @Override
-    public List<Feedback> showAllFeedbacksByProductData(Long id) {
+    public List<Feedback> getAllFeedbacksByProductData(Long id) {
         return feedbackService.getFeedbacksByProductDataId(id);
     }
 
     @Override
-    public List<Feedback> showAllFeedbacksByClient(Long id) {
+    public List<Feedback> getAllFeedbacksByClient(Long id) {
         return feedbackService.getFeedbacksByClientId(id);
     }
 

@@ -14,22 +14,22 @@ public class ProductDataRESTController {
     private ProductDataFacade productDataFacade;
 
     @GetMapping
-    public List<ProductData> showAllProductData() {
-        return productDataFacade.showAllProductData();
+    public List<ProductData> getAllProductData() {
+        return productDataFacade.getAllProductData();
     }
 
     @GetMapping("/get/{id}")
-    List<ProductData> showAllProductDataByShopId(@PathVariable Long id) {
-        return productDataFacade.showAllProductDataByShopId(id);
+    List<ProductData> getAllProductDataByShopId(@PathVariable Long id) {
+        return productDataFacade.getAllProductDataByShopId(id);
     }
 
     @GetMapping("/{id}")
-    public ProductData showProductData(@PathVariable Long id) {
-        return productDataFacade.showProductData(id);
+    public ProductData getProductData(@PathVariable Long id) {
+        return productDataFacade.getProductData(id);
     }
 
-    @PostMapping("/{shopId}")
-    public ProductData addNewProductData(@PathVariable Long shopId, @RequestBody ProductData productData) {
+    @PostMapping()
+    public ProductData addNewProductData(@RequestParam Long shopId, @RequestBody ProductData productData) {
         return productDataFacade.addProductData(shopId, productData);
     }
 
