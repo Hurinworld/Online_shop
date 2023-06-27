@@ -28,7 +28,7 @@ public class ProductDataRESTController {
         return productDataFacade.getProductData(id);
     }
 
-    @PostMapping()
+    @PostMapping
     public ProductData addNewProductData(@RequestParam Long shopId, @RequestBody ProductData productData) {
         return productDataFacade.addProductData(shopId, productData);
     }

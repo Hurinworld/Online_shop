@@ -42,7 +42,7 @@ public class ProductRESTController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleteFeedback(@PathVariable Long id) {
+    public String deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
         return "Product with id " + id + " was deleted";
     }

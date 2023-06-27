@@ -14,7 +14,6 @@ import java.util.List;
 
 @Component
 public class FeedbackFacadeImpl implements FeedbackFacade {
-
     @Autowired
     private FeedbackService feedbackService;
 

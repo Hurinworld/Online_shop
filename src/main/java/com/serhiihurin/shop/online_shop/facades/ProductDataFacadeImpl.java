@@ -20,7 +20,7 @@ public class ProductDataFacadeImpl implements ProductDataFacade {
     private ShopService shopService;
 
     @Autowired
-    ProductService productService;
+    private ProductService productService;
 
     @Override
     public List<ProductData> getAllProductData() {
@@ -39,14 +39,16 @@ public class ProductDataFacadeImpl implements ProductDataFacade {
 
     @Override
     public ProductData addProductData(Long shopId, ProductData productData) {
-        Product product;
         Shop shop = shopService.getShop(shopId);
+
         productData.setShop(shop);
         productDataService.saveProductData(productData);
 
-//        for (int i = 0; i < productData.getCount(); i++) {
-//            productService.saveProduct();
-//        }
+        for (int i = 0; i < productData.getCount(); i++) {
+            Product product = new Product();
+            product.setProductData(productData);
+            productService.saveProduct(product);
+        }
 
         return productData;
     }

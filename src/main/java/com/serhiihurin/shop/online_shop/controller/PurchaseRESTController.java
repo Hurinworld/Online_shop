@@ -1,6 +1,7 @@
 package com.serhiihurin.shop.online_shop.controller;
 
 import com.serhiihurin.shop.online_shop.entity.Purchase;
+import com.serhiihurin.shop.online_shop.facades.PurchaseFacadeImpl;
 import com.serhiihurin.shop.online_shop.services.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,13 +13,15 @@ import java.util.List;
 public class PurchaseRESTController {
     @Autowired
     private PurchaseService purchaseService;
+    @Autowired
+    private PurchaseFacadeImpl purchaseFacade;
 
-    @GetMapping
+    @GetMapping("/all")
     public List<Purchase> getAllPurchases() {
         return purchaseService.getAllPurchases();
     }
 
-    @GetMapping
+    @GetMapping("/client")
     public List<Purchase> getPurchasesByClientId(@RequestParam Long clientId) {
         return purchaseService.getPurchasesByClientId(clientId);
     }
@@ -29,9 +32,9 @@ public class PurchaseRESTController {
     }
 
     @PostMapping
-    public Purchase addNewPurchase(@RequestBody Purchase purchase) {
-        purchaseService.savePurchase(purchase);
-        return purchase;
+    public Purchase makePurchase(@RequestParam Long clientId, @RequestParam(name = "productId") List<Long> productIds,
+                                 @RequestBody Purchase purchase) {
+        return purchaseFacade.makePurchase(clientId, productIds, purchase);
     }
 
     @PutMapping

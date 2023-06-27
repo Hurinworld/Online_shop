@@ -1,5 +1,6 @@
 package com.serhiihurin.shop.online_shop.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,9 +23,11 @@ public class Client {
     @JoinTable(name = "clients_products",
             joinColumns = @JoinColumn(name = "client_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
+    @JsonIgnore
     private List<ProductData> shoppingCart;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "client")
+    @JsonIgnore
     private List<Purchase> purchasedProducts;
 
     public Client(String name, Double cash) {
