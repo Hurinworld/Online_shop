@@ -33,4 +33,15 @@ public class ProductFacadeImpl implements ProductFacade {
         productService.saveProduct(product);
         return product;
     }
+
+    @Override
+    public String deleteProduct(Long id) {
+        Product product = productService.getProduct(id);
+        ProductData productData = product.getProductData();
+        productData.setCount(productData.getCount()-1);
+
+        productDataService.saveProductData(productData);
+        productService.deleteProduct(id);
+        return "Product with id " + id + " was deleted";
+    }
 }

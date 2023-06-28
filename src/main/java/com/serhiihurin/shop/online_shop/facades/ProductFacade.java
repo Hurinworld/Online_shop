@@ -6,4 +6,6 @@ public interface ProductFacade {
     Product addProduct(Long productDataId, Product product);
 
     Product updateProduct(Product product);
+
+    String deleteProduct(Long id);
 }
