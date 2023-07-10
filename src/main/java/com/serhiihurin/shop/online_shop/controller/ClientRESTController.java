@@ -2,16 +2,17 @@ package com.serhiihurin.shop.online_shop.controller;
 
 import com.serhiihurin.shop.online_shop.entity.Client;
 import com.serhiihurin.shop.online_shop.services.ClientService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/online_shop/clients")
+@RequestMapping("/online-shop/clients")
+@RequiredArgsConstructor
 public class ClientRESTController {
-    @Autowired
-    private ClientService clientService;
+    private final ClientService clientService;
 
     @GetMapping
     public List<Client> getAllClients() {
@@ -30,14 +31,14 @@ public class ClientRESTController {
     }
 
     @PutMapping
-    public Client updateClient(@RequestBody Client client) {
+    public ResponseEntity<Client> updateClient(@RequestBody Client client) {
         clientService.saveClient(client);
-        return client;
+        return ResponseEntity.ok(client);
     }
 
     @DeleteMapping("/{id}")
-    public String deleteClient(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteClient(@PathVariable Long id) {
         clientService.deleteClient(id);
-        return "Client with id = " + id + " was deleted";
+        return ResponseEntity.ok().build();
     }
 }

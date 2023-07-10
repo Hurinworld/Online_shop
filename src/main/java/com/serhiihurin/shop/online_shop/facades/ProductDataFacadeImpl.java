@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 @Component
 public class ProductDataFacadeImpl implements ProductDataFacade {
@@ -44,11 +45,18 @@ public class ProductDataFacadeImpl implements ProductDataFacade {
         productData.setShop(shop);
         productDataService.saveProductData(productData);
 
-        for (int i = 0; i < productData.getCount(); i++) {
-            Product product = new Product();
-            product.setProductData(productData);
-            productService.saveProduct(product);
-        }
+//        for (int i = 0; i < productData.getCount(); i++) {
+//            Product product = new Product();
+//            product.setProductData(productData);
+//            productService.saveProduct(product);
+//        }
+        IntStream.range(0, productData.getCount())
+                .mapToObj(i -> {
+                    Product product = new Product();
+                    product.setProductData(productData);
+                    return product;
+                })
+                .forEach(productService::saveProduct);
 
         return productData;
     }
@@ -64,8 +72,7 @@ public class ProductDataFacadeImpl implements ProductDataFacade {
     }
 
     @Override
-    public String deleteProductData(Long id) {
+    public void deleteProductData(Long id) {
         productDataService.deleteProductData(id);
-        return "Product data with id = " + id + " was deleted";
     }
 }

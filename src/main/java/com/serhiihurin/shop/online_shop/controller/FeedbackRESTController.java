@@ -2,18 +2,18 @@ package com.serhiihurin.shop.online_shop.controller;
 
 import com.serhiihurin.shop.online_shop.entity.Feedback;
 import com.serhiihurin.shop.online_shop.facades.FeedbackFacade;
-import com.serhiihurin.shop.online_shop.services.FeedbackService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.serhiihurin.shop.online_shop.form.FeedbackForm;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/online_shop/feedbacks")
+@RequestMapping("/online-shop/feedbacks")
+@RequiredArgsConstructor
 public class FeedbackRESTController {
-
-    @Autowired
-    private FeedbackFacade feedbackFacade;
+    private final FeedbackFacade feedbackFacade;
 
 
     @GetMapping
@@ -26,7 +26,7 @@ public class FeedbackRESTController {
         return feedbackFacade.getFeedback(id);
     }
 
-    @GetMapping("/product_data/{id}")
+    @GetMapping("/product-data/{id}")
     public List<Feedback> getAllFeedbacksByProductData(@PathVariable Long id) {
         return feedbackFacade.getAllFeedbacksByProductData(id);
     }
@@ -39,8 +39,8 @@ public class FeedbackRESTController {
     @PostMapping()
     public Feedback addNewFeedback(@RequestParam Long clientId,
                                    @RequestParam Long productDataId,
-                                   @RequestBody Feedback feedback) {
-        return feedbackFacade.addFeedback(clientId, productDataId, feedback);
+                                   @RequestBody FeedbackForm feedbackForm) {
+        return feedbackFacade.addFeedback(clientId, productDataId, feedbackForm);
     }
 
     @PatchMapping
@@ -49,7 +49,8 @@ public class FeedbackRESTController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleteFeedback(@PathVariable Long id) {
-        return feedbackFacade.deleteFeedback(id);
+    public ResponseEntity<Void> deleteFeedback(@PathVariable Long id) {
+        feedbackFacade.deleteFeedback(id);
+        return ResponseEntity.ok().build();
     }
 }

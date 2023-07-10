@@ -3,6 +3,7 @@ package com.serhiihurin.shop.online_shop.facades;
 import com.serhiihurin.shop.online_shop.entity.Client;
 import com.serhiihurin.shop.online_shop.entity.Feedback;
 import com.serhiihurin.shop.online_shop.entity.ProductData;
+import com.serhiihurin.shop.online_shop.form.FeedbackForm;
 import com.serhiihurin.shop.online_shop.services.ClientService;
 import com.serhiihurin.shop.online_shop.services.FeedbackService;
 import com.serhiihurin.shop.online_shop.services.ProductDataService;
@@ -44,7 +45,8 @@ public class FeedbackFacadeImpl implements FeedbackFacade {
     }
 
     @Override
-    public Feedback addFeedback(Long clientId, Long productDataId, Feedback feedback) {
+    public Feedback addFeedback(Long clientId, Long productDataId, FeedbackForm feedbackForm) {
+        Feedback feedback = new Feedback(feedbackForm.getText(), feedbackForm.getRate());
         Client client = clientService.getClient(clientId);
         ProductData productData = productDataService.getProductData(productDataId);
 
@@ -72,8 +74,7 @@ public class FeedbackFacadeImpl implements FeedbackFacade {
     }
 
     @Override
-    public String deleteFeedback(Long id) {
+    public void deleteFeedback(Long id) {
         feedbackService.deleteFeedback(id);
-        return "Feedback with id = " + id + " was deleted";
     }
 }

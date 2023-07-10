@@ -2,31 +2,28 @@ package com.serhiihurin.shop.online_shop.facades;
 
 import com.serhiihurin.shop.online_shop.entity.*;
 import com.serhiihurin.shop.online_shop.services.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class PurchaseFacadeImpl implements PurchaseFacade{
-    @Autowired
-    private ClientService clientService;
+    private final ClientService clientService;
 
-    @Autowired
-    private ProductService productService;
+    private final ProductService productService;
 
-    @Autowired
-    private ProductDataService productDataService;
+    private final ProductDataService productDataService;
 
-    @Autowired
-    private ShopService shopService;
+    private final ShopService shopService;
 
-    @Autowired
-    private PurchaseService purchaseService;
+    private final PurchaseService purchaseService;
 
     @Override
-    public Purchase makePurchase(Long clientId, List<Long> productIds, Purchase purchase) {
+    public Purchase makePurchase(Long clientId, List<Long> productIds) {
+        Purchase purchase = new Purchase();
         Client client = clientService.getClient(clientId);
         for(Long productId : productIds) {
             Product product = productService.getProduct(productId);

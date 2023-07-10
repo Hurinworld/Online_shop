@@ -3,32 +3,27 @@ package com.serhiihurin.shop.online_shop.controller;
 import com.serhiihurin.shop.online_shop.entity.Product;
 import com.serhiihurin.shop.online_shop.facades.ProductFacade;
 import com.serhiihurin.shop.online_shop.services.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/online_shop/products")
+@RequestMapping("/online-shop/products")
+@RequiredArgsConstructor
 public class ProductRESTController {
-    @Autowired
-    private ProductFacade productFacade;
-    @Autowired
-    private ProductService productService;
+    private final ProductFacade productFacade;
+    private final ProductService productService;
 
     @GetMapping
     public List<Product> getAllProducts() {
         return productService.getAllProducts();
     }
 
-    @GetMapping("/product/{id}")
+    @GetMapping("/{id}")
     public Product getProduct(@PathVariable Long id) {
         return productService.getProduct(id);
-    }
-
-    @GetMapping ("/by_data")
-    public List<Product> getProductsByProductDataId(@RequestParam Long productDataId) {
-        return productService.findProductsByProductDataId(productDataId);
     }
 
     @PostMapping
@@ -42,7 +37,8 @@ public class ProductRESTController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleteProduct(@PathVariable Long id) {
-        return productFacade.deleteProduct(id);
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+        productFacade.deleteProduct(id);
+        return ResponseEntity.ok().build();
     }
 }

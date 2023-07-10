@@ -1,17 +1,21 @@
 package com.serhiihurin.shop.online_shop.controller;
 
+import com.serhiihurin.shop.online_shop.entity.Product;
 import com.serhiihurin.shop.online_shop.entity.ProductData;
 import com.serhiihurin.shop.online_shop.facades.ProductDataFacade;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.serhiihurin.shop.online_shop.services.ProductService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/online_shop/products_data")
+@RequestMapping("/online-shop/products-data")
+@RequiredArgsConstructor
 public class ProductDataRESTController {
-    @Autowired
-    private ProductDataFacade productDataFacade;
+    private final ProductDataFacade productDataFacade;
+    private final ProductService productService;
 
     @GetMapping
     public List<ProductData> getAllProductData() {
@@ -28,6 +32,11 @@ public class ProductDataRESTController {
         return productDataFacade.getProductData(id);
     }
 
+    @GetMapping ("/products")
+    public List<Product> getProductsByProductDataId(@RequestParam Long productDataId) {
+        return productService.findProductsByProductDataId(productDataId);
+    }
+
     @PostMapping
     public ProductData addNewProductData(@RequestParam Long shopId, @RequestBody ProductData productData) {
         return productDataFacade.addProductData(shopId, productData);
@@ -39,7 +48,8 @@ public class ProductDataRESTController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleteProductData(@PathVariable Long id) {
-        return productDataFacade.deleteProductData(id);
+    public ResponseEntity<Void> deleteProductData(@PathVariable Long id) {
+        productDataFacade.deleteProductData(id);
+        return ResponseEntity.ok().build();
     }
 }

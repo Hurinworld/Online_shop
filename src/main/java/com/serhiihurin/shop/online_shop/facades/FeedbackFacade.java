@@ -1,6 +1,7 @@
 package com.serhiihurin.shop.online_shop.facades;
 
 import com.serhiihurin.shop.online_shop.entity.Feedback;
+import com.serhiihurin.shop.online_shop.form.FeedbackForm;
 
 import java.util.List;
 
@@ -16,9 +17,9 @@ public interface FeedbackFacade {
 
     Feedback addFeedback(Long clientId,
                          Long productDataId,
-                         Feedback feedback);
+                         FeedbackForm feedbackform);
 
     Feedback updateFeedback(Feedback feedback);
 
-    String deleteFeedback(Long id);
+    void deleteFeedback(Long id);
 }

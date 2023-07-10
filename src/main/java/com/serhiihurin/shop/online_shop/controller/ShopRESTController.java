@@ -2,16 +2,17 @@ package com.serhiihurin.shop.online_shop.controller;
 
 import com.serhiihurin.shop.online_shop.entity.Shop;
 import com.serhiihurin.shop.online_shop.services.ShopService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/online_shop/shops")
+@RequestMapping("/online-shop/shops")
+@RequiredArgsConstructor
 public class ShopRESTController {
-    @Autowired
-    private ShopService shopService;
+    private final ShopService shopService;
 
     @GetMapping
     public List<Shop> getAllShops() {
@@ -36,8 +37,8 @@ public class ShopRESTController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleteShop(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteShop(@PathVariable Long id) {
         shopService.deleteShop(id);
-        return "Shop with id = " + id + " was deleted";
+        return ResponseEntity.ok().build();
     }
 }

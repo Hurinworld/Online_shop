@@ -1,6 +1,7 @@
 package com.serhiihurin.shop.online_shop.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.serhiihurin.shop.online_shop.enums.ProductRate;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,7 +19,8 @@ public class Feedback {
     private Long id;
     private String text;
     private LocalDateTime time;
-    private int rate;
+    @Enumerated(EnumType.STRING)
+    private ProductRate rate;
 
     @ManyToOne
     @JoinColumn(name = "client_id")
@@ -30,7 +32,7 @@ public class Feedback {
     @JsonIgnore
     private ProductData productData;
 
-    public Feedback(String text, int rate) {
+    public Feedback(String text, ProductRate rate) {
         this.text = text;
         this.rate = rate;
     }

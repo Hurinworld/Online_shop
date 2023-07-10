@@ -3,20 +3,20 @@ package com.serhiihurin.shop.online_shop.controller;
 import com.serhiihurin.shop.online_shop.entity.Purchase;
 import com.serhiihurin.shop.online_shop.facades.PurchaseFacadeImpl;
 import com.serhiihurin.shop.online_shop.services.PurchaseService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/online_shop/purchases")
+@RequestMapping("/online-shop/purchases")
+@RequiredArgsConstructor
 public class PurchaseRESTController {
-    @Autowired
-    private PurchaseService purchaseService;
-    @Autowired
-    private PurchaseFacadeImpl purchaseFacade;
+    private final PurchaseService purchaseService;
+    private final PurchaseFacadeImpl purchaseFacade;
 
-    @GetMapping("/all")
+    @GetMapping
     public List<Purchase> getAllPurchases() {
         return purchaseService.getAllPurchases();
     }
@@ -32,9 +32,9 @@ public class PurchaseRESTController {
     }
 
     @PostMapping
-    public Purchase makePurchase(@RequestParam Long clientId, @RequestParam(name = "productId") List<Long> productIds,
-                                 @RequestBody Purchase purchase) {
-        return purchaseFacade.makePurchase(clientId, productIds, purchase);
+    public Purchase makePurchase(@RequestParam Long clientId,
+                                 @RequestParam(name = "productId") List<Long> productIds) {
+        return purchaseFacade.makePurchase(clientId, productIds);
     }
 
     @PutMapping
@@ -44,8 +44,8 @@ public class PurchaseRESTController {
     }
 
     @DeleteMapping("/{id}")
-    public String deletePurchase(@PathVariable Long id) {
+    public ResponseEntity<Void> deletePurchase(@PathVariable Long id) {
         purchaseService.deletePurchase(id);
-        return "Client with id = " + id + " was deleted";
+        return ResponseEntity.ok().build();
     }
 }

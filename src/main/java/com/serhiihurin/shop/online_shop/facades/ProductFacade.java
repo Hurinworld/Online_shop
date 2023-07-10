@@ -7,5 +7,5 @@ public interface ProductFacade {
 
     Product updateProduct(Product product);
 
-    String deleteProduct(Long id);
+    void deleteProduct(Long id);
 }

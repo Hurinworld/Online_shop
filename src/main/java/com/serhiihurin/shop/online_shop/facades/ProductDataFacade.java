@@ -15,5 +15,5 @@ public interface ProductDataFacade {
 
     ProductData updateProductData(ProductData productData);
 
-    String deleteProductData(Long id);
+    void deleteProductData(Long id);
 }

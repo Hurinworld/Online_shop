@@ -9,7 +9,7 @@ public interface PurchaseService {
 
     List<Purchase> getPurchasesByClientId(Long id);
 
-    void savePurchase(Purchase purchase);
+    Purchase savePurchase(Purchase purchase);
 
     Purchase getPurchase(Long id);
 
