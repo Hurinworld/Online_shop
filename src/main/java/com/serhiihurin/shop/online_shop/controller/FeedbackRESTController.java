@@ -37,15 +37,15 @@ public class FeedbackRESTController {
     }
 
     @PostMapping()
-    public Feedback addNewFeedback(@RequestParam Long clientId,
+    public ResponseEntity<Feedback> addNewFeedback(@RequestParam Long clientId,
                                    @RequestParam Long productDataId,
                                    @RequestBody FeedbackForm feedbackForm) {
-        return feedbackFacade.addFeedback(clientId, productDataId, feedbackForm);
+        return ResponseEntity.ok(feedbackFacade.addFeedback(clientId, productDataId, feedbackForm));
     }
 
     @PatchMapping
-    public Feedback updateFeedback(@RequestBody Feedback feedback) {
-        return feedbackFacade.updateFeedback(feedback);
+    public ResponseEntity<Feedback> updateFeedback(@RequestBody Feedback feedback) {
+        return ResponseEntity.ok(feedbackFacade.updateFeedback(feedback));
     }
 
     @DeleteMapping("/{id}")

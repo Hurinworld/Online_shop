@@ -20,8 +20,8 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public void saveShop(Shop shop) {
-        shopRepository.save(shop);
+    public Shop saveShop(Shop shop) {
+        return shopRepository.save(shop);
     }
 
     @Override

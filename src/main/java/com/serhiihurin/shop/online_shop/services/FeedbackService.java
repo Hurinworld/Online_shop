@@ -11,7 +11,7 @@ public interface FeedbackService {
 
     List<Feedback> getFeedbacksByClientId(Long id);
 
-    void saveFeedback(Feedback feedback);
+    Feedback saveFeedback(Feedback feedback);
 
     Feedback getFeedback(Long id);
 

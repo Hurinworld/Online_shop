@@ -38,9 +38,8 @@ public class PurchaseRESTController {
     }
 
     @PutMapping
-    public Purchase updatePurchase(@RequestBody Purchase purchase) {
-        purchaseService.savePurchase(purchase);
-        return purchase;
+    public ResponseEntity<Purchase> updatePurchase(@RequestBody Purchase purchase) {
+        return ResponseEntity.ok(purchaseService.savePurchase(purchase));
     }
 
     @DeleteMapping("/{id}")

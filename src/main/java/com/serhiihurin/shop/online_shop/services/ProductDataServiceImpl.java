@@ -35,8 +35,8 @@ public class ProductDataServiceImpl implements ProductDataService {
     }
 
     @Override
-    public void saveProductData(ProductData productData) {
-        productDataRepository.save(productData);
+    public ProductData saveProductData(ProductData productData) {
+        return productDataRepository.save(productData);
     }
 
     @Override

@@ -27,13 +27,13 @@ public class ProductRESTController {
     }
 
     @PostMapping
-    public Product addNewProduct(@RequestParam Long productDataId, @RequestBody Product product) {
-        return productFacade.addProduct(productDataId,product);
+    public ResponseEntity<Product> addNewProduct(@RequestParam Long productDataId, @RequestBody Product product) {
+        return ResponseEntity.ok(productFacade.addProduct(productDataId,product));
     }
 
     @PatchMapping
-    public Product updateProduct(@RequestBody Product product) {
-        return productFacade.updateProduct(product);
+    public ResponseEntity<Product> updateProduct(@RequestBody Product product) {
+        return ResponseEntity.ok(productFacade.updateProduct(product));
     }
 
     @DeleteMapping("/{id}")

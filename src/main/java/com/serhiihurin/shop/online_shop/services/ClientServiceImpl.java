@@ -20,8 +20,8 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void saveClient(Client client) {
-        clientRepository.save(client);
+    public Client saveClient(Client client) {
+        return clientRepository.save(client);
     }
 
     @Override

@@ -25,9 +25,10 @@ public class AuthenticationServiceImpl implements AuthenticationService{
         Client client = Client.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
+                .cash(request.getCash())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.CLIENT)
+                .role(request.getRole())
                 .build();
         clientRepository.save(client);
         String jwtToken = jwtService.generateAccessToken(client);

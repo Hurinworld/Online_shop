@@ -25,15 +25,13 @@ public class ClientRESTController {
     }
 
     @PostMapping
-    public Client addNewClient(@RequestBody Client client) {
-        clientService.saveClient(client);
-        return client;
+    public ResponseEntity<Client> addNewClient(@RequestBody Client client) {
+        return ResponseEntity.ok(clientService.saveClient(client));
     }
 
     @PutMapping
     public ResponseEntity<Client> updateClient(@RequestBody Client client) {
-        clientService.saveClient(client);
-        return ResponseEntity.ok(client);
+        return ResponseEntity.ok(clientService.saveClient(client));
     }
 
     @DeleteMapping("/{id}")

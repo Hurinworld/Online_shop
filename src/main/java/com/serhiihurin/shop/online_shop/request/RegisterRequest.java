@@ -1,5 +1,6 @@
 package com.serhiihurin.shop.online_shop.request;
 
+import com.serhiihurin.shop.online_shop.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,4 +16,5 @@ public class RegisterRequest {
     private Double cash;
     private String email;
     private String password;
+    private Role role;
 }

@@ -20,8 +20,7 @@ public class ProductFacadeImpl implements ProductFacade {
         productData.setCount(productData.getCount() + 1);
         product.setProductData(productData);
 
-        productService.saveProduct(product);
-        return product;
+        return productService.saveProduct(product);
     }
 
     @Override

@@ -7,7 +7,7 @@ import java.util.List;
 public interface ClientService {
     List<Client> getAllClients();
 
-    void saveClient(Client client);
+    Client saveClient(Client client);
 
     Client getClient(Long id);
 

@@ -25,15 +25,13 @@ public class ShopRESTController {
     }
 
     @PostMapping
-    public Shop addNewShop(@RequestBody Shop shop) {
-        shopService.saveShop(shop);
-        return shop;
+    public ResponseEntity<Shop> addNewShop(@RequestBody Shop shop) {
+        return ResponseEntity.ok(shopService.saveShop(shop));
     }
 
     @PutMapping
-    public Shop updateShop(@RequestBody Shop shop) {
-        shopService.saveShop(shop);
-        return shop;
+    public ResponseEntity<Shop> updateShop(@RequestBody Shop shop) {
+        return ResponseEntity.ok(shopService.saveShop(shop));
     }
 
     @DeleteMapping("/{id}")

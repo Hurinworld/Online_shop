@@ -6,22 +6,18 @@ import com.serhiihurin.shop.online_shop.entity.Shop;
 import com.serhiihurin.shop.online_shop.services.ProductDataService;
 import com.serhiihurin.shop.online_shop.services.ProductService;
 import com.serhiihurin.shop.online_shop.services.ShopService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.IntStream;
 
 @Component
+@RequiredArgsConstructor
 public class ProductDataFacadeImpl implements ProductDataFacade {
-    @Autowired
-    private ProductDataService productDataService;
-
-    @Autowired
-    private ShopService shopService;
-
-    @Autowired
-    private ProductService productService;
+    private final ProductDataService productDataService;
+    private final ShopService shopService;
+    private final ProductService productService;
 
     @Override
     public List<ProductData> getAllProductData() {
@@ -43,13 +39,8 @@ public class ProductDataFacadeImpl implements ProductDataFacade {
         Shop shop = shopService.getShop(shopId);
 
         productData.setShop(shop);
-        productDataService.saveProductData(productData);
+        ProductData savedProductData = productDataService.saveProductData(productData);
 
-//        for (int i = 0; i < productData.getCount(); i++) {
-//            Product product = new Product();
-//            product.setProductData(productData);
-//            productService.saveProduct(product);
-//        }
         IntStream.range(0, productData.getCount())
                 .mapToObj(i -> {
                     Product product = new Product();
@@ -58,7 +49,7 @@ public class ProductDataFacadeImpl implements ProductDataFacade {
                 })
                 .forEach(productService::saveProduct);
 
-        return productData;
+        return savedProductData;
     }
 
     @Override
@@ -67,8 +58,7 @@ public class ProductDataFacadeImpl implements ProductDataFacade {
         Shop shop = oldProductData.getShop();
         productData.setShop(shop);
 
-        productDataService.saveProductData(productData);
-        return productData;
+        return productDataService.saveProductData(productData);
     }
 
     @Override

@@ -38,13 +38,13 @@ public class ProductDataRESTController {
     }
 
     @PostMapping
-    public ProductData addNewProductData(@RequestParam Long shopId, @RequestBody ProductData productData) {
-        return productDataFacade.addProductData(shopId, productData);
+    public ResponseEntity<ProductData> addNewProductData(@RequestParam Long shopId, @RequestBody ProductData productData) {
+        return ResponseEntity.ok(productDataFacade.addProductData(shopId, productData));
     }
 
     @PatchMapping
-    public ProductData updateProductData(@RequestBody ProductData productData) {
-        return productDataFacade.updateProductData(productData);
+    public ResponseEntity<ProductData> updateProductData(@RequestBody ProductData productData) {
+        return ResponseEntity.ok(productDataFacade.updateProductData(productData));
     }
 
     @DeleteMapping("/{id}")

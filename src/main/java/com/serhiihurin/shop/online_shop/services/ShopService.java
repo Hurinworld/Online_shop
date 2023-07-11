@@ -7,7 +7,7 @@ import java.util.List;
 public interface ShopService {
     List<Shop> getAllShops();
 
-    void saveShop(Shop shop);
+    Shop saveShop(Shop shop);
 
     Shop getShop(Long id);
 

@@ -7,22 +7,18 @@ import com.serhiihurin.shop.online_shop.form.FeedbackForm;
 import com.serhiihurin.shop.online_shop.services.ClientService;
 import com.serhiihurin.shop.online_shop.services.FeedbackService;
 import com.serhiihurin.shop.online_shop.services.ProductDataService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class FeedbackFacadeImpl implements FeedbackFacade {
-    @Autowired
-    private FeedbackService feedbackService;
-
-    @Autowired
-    private ClientService clientService;
-
-    @Autowired
-    private ProductDataService productDataService;
+    private final FeedbackService feedbackService;
+    private final ClientService clientService;
+    private final ProductDataService productDataService;
 
     @Override
     public List<Feedback> getAllFeedbacks() {
@@ -54,9 +50,7 @@ public class FeedbackFacadeImpl implements FeedbackFacade {
         feedback.setClient(client);
         feedback.setProductData(productData);
 
-        feedbackService.saveFeedback(feedback);
-
-        return feedback;
+        return feedbackService.saveFeedback(feedback);
     }
 
     @Override
@@ -69,8 +63,7 @@ public class FeedbackFacadeImpl implements FeedbackFacade {
         feedback.setProductData(productData);
         feedback.setTime(LocalDateTime.now());
 
-        feedbackService.saveFeedback(feedback);
-        return feedback;
+        return feedbackService.saveFeedback(feedback);
     }
 
     @Override
