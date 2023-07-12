@@ -1,16 +1,22 @@
 package com.serhiihurin.shop.online_shop.services;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.serhiihurin.shop.online_shop.dao.ClientRepository;
 import com.serhiihurin.shop.online_shop.entity.Client;
-import com.serhiihurin.shop.online_shop.enums.Role;
 import com.serhiihurin.shop.online_shop.request.AuthenticationRequest;
 import com.serhiihurin.shop.online_shop.request.RegisterRequest;
 import com.serhiihurin.shop.online_shop.response.AuthenticationResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Service
 @RequiredArgsConstructor
@@ -32,8 +38,10 @@ public class AuthenticationServiceImpl implements AuthenticationService{
                 .build();
         clientRepository.save(client);
         String jwtToken = jwtService.generateAccessToken(client);
+        String refreshToken = jwtService.generateRefreshToken(client);
         return AuthenticationResponse.builder()
-                .token(jwtToken)
+                .accessToken(jwtToken)
+                .refreshToken(refreshToken)
                 .build();
     }
 
@@ -48,8 +56,37 @@ public class AuthenticationServiceImpl implements AuthenticationService{
         Client client = clientRepository.findByEmail(request.getEmail())
                 .orElseThrow();
         String jwtToken = jwtService.generateAccessToken(client);
+        String refreshToken = jwtService.generateRefreshToken(client);
         return AuthenticationResponse.builder()
-                .token(jwtToken)
+                .accessToken(jwtToken)
+                .refreshToken(refreshToken)
                 .build();
+    }
+
+    @Override
+    public void refreshToken(
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws IOException {
+        final String authHeader = request.getHeader(AUTHORIZATION);
+        final String refreshToken;
+        final String clientEmail;
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return;
+        }
+        refreshToken = authHeader.substring("Bearer ".length());
+        clientEmail = jwtService.extractUsername(refreshToken);
+        if (clientEmail != null) {
+            Client client = this.clientRepository.findByEmail(clientEmail)
+                    .orElseThrow();
+            if (jwtService.isTokenValid(refreshToken, client)) {
+                String accessToken = jwtService.generateAccessToken(client);
+                AuthenticationResponse authenticationResponse = AuthenticationResponse.builder()
+                        .accessToken(accessToken)
+                        .refreshToken(refreshToken)
+                        .build();
+                new ObjectMapper().writeValue(response.getOutputStream(), authenticationResponse);
+            }
+        }
     }
 }

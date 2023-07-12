@@ -7,6 +7,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -20,32 +21,13 @@ import java.util.function.Function;
 
 @Service
 public class JWTServiceImpl implements JWTService{
-    private static final String SECRET_KEY = "cb24f858d80b44012c2af75344f4cbcf4b33bc4ee40130240f17fc9e368fb4f5";
 
-    @Override
-    public String createAccessToken(Client client) {
-        return null;
-    }
-
-    @Override
-    public String createRefreshToken(Client client) {
-        return null;
-    }
-
-    @Override
-    public String decodeAndVerifyToken(String token) {
-        return null;
-    }
-
-    @Override
-    public DecodedJWT decodeJWT(String authorizationHeader) {
-        return null;
-    }
-
-    @Override
-    public ArrayList<SimpleGrantedAuthority> getRoles(DecodedJWT decodedJWT) {
-        return null;
-    }
+    @Value("${application.security.jwt.secret-key}")
+    private String secretKey;
+    @Value("${application.security.jwt.expiration}")
+    private long jwtExpiration;
+    @Value("${application.security.jwt.refresh-token.expiration}")
+    private long refreshJwtExpiration;
 
     @Override
     public String extractUsername(String token) {
@@ -54,19 +36,28 @@ public class JWTServiceImpl implements JWTService{
 
     @Override
     public String generateAccessToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        return Jwts
-                .builder()
-                .setClaims(extraClaims)
-                .setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 24L * 60 * 60 * 1000))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
-                .compact();
+        return buildToken(extraClaims, userDetails, jwtExpiration);
     }
 
     @Override
     public String generateAccessToken(UserDetails userDetails) {
         return generateAccessToken(new HashMap<>(), userDetails);
+    }
+
+    @Override
+    public String generateRefreshToken(UserDetails userDetails) {
+        return buildToken(new HashMap<>(), userDetails, refreshJwtExpiration);
+    }
+
+    private String buildToken(Map<String, Object> extraClaims, UserDetails userDetails, long expiration) {
+        return Jwts
+                .builder()
+                .setClaims(extraClaims)
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .compact();
     }
 
     @Override
@@ -100,7 +91,7 @@ public class JWTServiceImpl implements JWTService{
     }
 
     private Key getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 }

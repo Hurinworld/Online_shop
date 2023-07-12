@@ -13,7 +13,11 @@ public enum Permission {
     SHOP_OWNER_READ("shop owner:read"),
     SHOP_OWNER_CREATE("shop owner:create"),
     SHOP_OWNER_UPDATE("shop owner:update"),
-    SHOP_OWNER_DELETE("shop owner:delete");
+    SHOP_OWNER_DELETE("shop owner:delete"),
+    CLIENT_READ("client:read"),
+    CLIENT_CREATE("client:create"),
+    CLIENT_UPDATE("client:update"),
+    CLIENT_DELETE("client:delete");
 
     @Getter
     private final String permission;

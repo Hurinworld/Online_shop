@@ -13,7 +13,14 @@ import static com.serhiihurin.shop.online_shop.enums.Permission.*;
 
 @RequiredArgsConstructor
 public enum Role {
-    CLIENT(Collections.emptySet()),
+    CLIENT(
+            Set.of(
+                    CLIENT_READ,
+                    CLIENT_CREATE,
+                    CLIENT_UPDATE,
+                    CLIENT_DELETE
+            )
+    ),
     ADMIN(
             Set.of(
                     ADMIN_READ,

@@ -32,7 +32,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         auth -> auth
-                        .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers("/online-shop/auth/**").permitAll()
                         .requestMatchers("/api/v1/shop-owner/**").hasAnyRole(ADMIN.name(), SHOP_OWNER.name())
                         .requestMatchers(GET, "/api/v1/shop-owner/**").hasAnyAuthority(
                                 ADMIN_READ.name(),
