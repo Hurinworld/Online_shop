@@ -2,17 +2,17 @@ package com.serhiihurin.shop.online_shop.services;
 
 import com.serhiihurin.shop.online_shop.dao.ClientRepository;
 import com.serhiihurin.shop.online_shop.entity.Client;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ClientServiceImpl implements ClientService {
 
-    @Autowired
-    private ClientRepository clientRepository;
+    private final ClientRepository clientRepository;
 
     @Override
     public List<Client> getAllClients() {

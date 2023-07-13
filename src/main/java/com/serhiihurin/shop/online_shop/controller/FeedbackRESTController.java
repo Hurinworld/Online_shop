@@ -2,7 +2,7 @@ package com.serhiihurin.shop.online_shop.controller;
 
 import com.serhiihurin.shop.online_shop.entity.Feedback;
 import com.serhiihurin.shop.online_shop.facades.FeedbackFacade;
-import com.serhiihurin.shop.online_shop.form.FeedbackForm;
+import com.serhiihurin.shop.online_shop.form.FeedbackRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -45,9 +45,8 @@ public class FeedbackRESTController {
     @PostMapping()
     @PreAuthorize("hasAuthority('client:create')")
     public ResponseEntity<Feedback> addNewFeedback(@RequestParam Long clientId,
-                                   @RequestParam Long productDataId,
-                                   @RequestBody FeedbackForm feedbackForm) {
-        return ResponseEntity.ok(feedbackFacade.addFeedback(clientId, productDataId, feedbackForm));
+                                   @RequestBody FeedbackRequestDTO feedbackRequestDto) {
+        return ResponseEntity.ok(feedbackFacade.addFeedback(clientId, feedbackRequestDto));
     }
 
     @PatchMapping

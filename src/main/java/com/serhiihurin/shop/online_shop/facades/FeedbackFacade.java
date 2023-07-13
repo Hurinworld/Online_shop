@@ -1,7 +1,7 @@
 package com.serhiihurin.shop.online_shop.facades;
 
 import com.serhiihurin.shop.online_shop.entity.Feedback;
-import com.serhiihurin.shop.online_shop.form.FeedbackForm;
+import com.serhiihurin.shop.online_shop.form.FeedbackRequestDTO;
 
 import java.util.List;
 
@@ -16,8 +16,7 @@ public interface FeedbackFacade {
     List<Feedback> getAllFeedbacksByClient(Long id);
 
     Feedback addFeedback(Long clientId,
-                         Long productDataId,
-                         FeedbackForm feedbackform);
+                         FeedbackRequestDTO feedbackform);
 
     Feedback updateFeedback(Feedback feedback);
 

@@ -2,17 +2,17 @@ package com.serhiihurin.shop.online_shop.services;
 
 import com.serhiihurin.shop.online_shop.dao.FeedbackRepository;
 import com.serhiihurin.shop.online_shop.entity.Feedback;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class FeedbackServiceImpl implements FeedbackService {
 
-    @Autowired
-    private FeedbackRepository feedbackRepository;
+    private final FeedbackRepository feedbackRepository;
 
     @Override
     public List<Feedback> getAllFeedbacks() {
