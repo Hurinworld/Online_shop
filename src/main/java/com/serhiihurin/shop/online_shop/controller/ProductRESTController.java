@@ -1,9 +1,12 @@
 package com.serhiihurin.shop.online_shop.controller;
 
+import com.serhiihurin.shop.online_shop.dto.ProductDTO;
 import com.serhiihurin.shop.online_shop.entity.Product;
 import com.serhiihurin.shop.online_shop.facades.ProductFacade;
 import com.serhiihurin.shop.online_shop.services.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -17,21 +20,30 @@ import java.util.List;
 public class ProductRESTController {
     private final ProductFacade productFacade;
     private final ProductService productService;
+    private final ModelMapper modelMapper;
 
     @GetMapping
-    public List<Product> getAllProducts() {
-        return productService.getAllProducts();
+    public List<ProductDTO> getAllProducts() {
+        return modelMapper.map(
+                productService.getAllProducts(),
+                new TypeToken<List<ProductDTO>>(){}.getType()
+        );
     }
 
     @GetMapping("/{id}")
-    public Product getProduct(@PathVariable Long id) {
-        return productService.getProduct(id);
+    public ProductDTO getProduct(@PathVariable Long id) {
+        return modelMapper.map(productService.getProduct(id), ProductDTO.class);
     }
 
     @PostMapping
     @PreAuthorize("hasAuthority('shop owner:create')")
-    public ResponseEntity<Product> addNewProduct(@RequestParam Long productDataId, @RequestBody Product product) {
-        return ResponseEntity.ok(productFacade.addProduct(productDataId,product));
+    public ResponseEntity<ProductDTO> addNewProduct(@RequestParam Long productDataId, @RequestBody Product product) {
+        return ResponseEntity.ok(
+                modelMapper.map(
+                        productFacade.addProduct(productDataId,product),
+                        ProductDTO.class
+                )
+        );
     }
 
     @PatchMapping

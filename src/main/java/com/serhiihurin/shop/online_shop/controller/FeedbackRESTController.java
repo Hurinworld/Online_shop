@@ -1,9 +1,12 @@
 package com.serhiihurin.shop.online_shop.controller;
 
+import com.serhiihurin.shop.online_shop.dto.FeedbackDTO;
 import com.serhiihurin.shop.online_shop.entity.Feedback;
 import com.serhiihurin.shop.online_shop.facades.FeedbackFacade;
-import com.serhiihurin.shop.online_shop.form.FeedbackRequestDTO;
+import com.serhiihurin.shop.online_shop.dto.FeedbackRequestDTO;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -16,37 +19,52 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FeedbackRESTController {
     private final FeedbackFacade feedbackFacade;
-
+    private final ModelMapper modelMapper;
 
     @GetMapping
     @PreAuthorize("hasAuthority('admin:read')")
-    public List<Feedback> getAllFeedbacks() {
-        return feedbackFacade.getAllFeedbacks();
+    public List<FeedbackDTO> getAllFeedbacks() {
+        return modelMapper.map(
+                feedbackFacade.getAllFeedbacks(),
+                new TypeToken<List<FeedbackDTO>>(){}.getType()
+        );
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('admin:read')")
-    public Feedback getFeedback(@PathVariable Long id) {
-        return feedbackFacade.getFeedback(id);
+    public FeedbackDTO getFeedback(@PathVariable Long id) {
+        return modelMapper.map(feedbackFacade.getFeedback(id), FeedbackDTO.class);
     }
 
+    // TODO: 14.07.2023 convert into request param
     @GetMapping("/product-data/{id}")
     @PreAuthorize("hasAnyAuthority('admin:read', 'client:read')")
-    public List<Feedback> getAllFeedbacksByProductData(@PathVariable Long id) {
-        return feedbackFacade.getAllFeedbacksByProductData(id);
+    public List<FeedbackDTO> getAllFeedbacksByProductData(@PathVariable Long id) {
+        return modelMapper.map(
+                feedbackFacade.getAllFeedbacksByProductData(id),
+                new TypeToken<List<FeedbackDTO>>(){}.getType()
+        );
     }
-
+    // TODO: 14.07.2023 convert into request param
     @GetMapping("/client/{id}")
     @PreAuthorize("hasAnyAuthority('admin:read', 'client:read')")
-    public List<Feedback> getAllFeedbacksByClient(@PathVariable Long id) {
-        return feedbackFacade.getAllFeedbacksByClient(id);
+    public List<FeedbackDTO> getAllFeedbacksByClient(@PathVariable Long id) {
+        return modelMapper.map(
+                feedbackFacade.getAllFeedbacksByClient(id),
+                new TypeToken<List<FeedbackDTO>>(){}.getType()
+        );
     }
 
     @PostMapping()
     @PreAuthorize("hasAuthority('client:create')")
-    public ResponseEntity<Feedback> addNewFeedback(@RequestParam Long clientId,
+    public ResponseEntity<FeedbackDTO> addNewFeedback(@RequestParam Long clientId,
                                    @RequestBody FeedbackRequestDTO feedbackRequestDto) {
-        return ResponseEntity.ok(feedbackFacade.addFeedback(clientId, feedbackRequestDto));
+        return ResponseEntity.ok(
+                modelMapper.map(
+                        feedbackFacade.addFeedback(clientId, feedbackRequestDto),
+                        FeedbackDTO.class
+                )
+        );
     }
 
     @PatchMapping

@@ -3,7 +3,7 @@ package com.serhiihurin.shop.online_shop.facades;
 import com.serhiihurin.shop.online_shop.entity.Client;
 import com.serhiihurin.shop.online_shop.entity.Feedback;
 import com.serhiihurin.shop.online_shop.entity.ProductData;
-import com.serhiihurin.shop.online_shop.form.FeedbackRequestDTO;
+import com.serhiihurin.shop.online_shop.dto.FeedbackRequestDTO;
 import com.serhiihurin.shop.online_shop.services.ClientService;
 import com.serhiihurin.shop.online_shop.services.FeedbackService;
 import com.serhiihurin.shop.online_shop.services.ProductDataService;

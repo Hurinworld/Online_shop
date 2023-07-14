@@ -1,8 +1,11 @@
 package com.serhiihurin.shop.online_shop.controller;
 
+import com.serhiihurin.shop.online_shop.dto.ShopDTO;
 import com.serhiihurin.shop.online_shop.entity.Shop;
 import com.serhiihurin.shop.online_shop.services.ShopService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -15,23 +18,35 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ShopRESTController {
     private final ShopService shopService;
+    private final ModelMapper modelMapper;
 
     @GetMapping
     @PreAuthorize("hasAuthority('admin:read')")
-    public List<Shop> getAllShops() {
-        return shopService.getAllShops();
+    public List<ShopDTO> getAllShops() {
+        return modelMapper.map(
+                shopService.getAllShops(),
+                new TypeToken<List<ShopDTO>>(){}.getType()
+        );
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('admin:read')")
-    public Shop getShop(@PathVariable Long id) {
-        return shopService.getShop(id);
+    public ShopDTO getShop(@PathVariable Long id) {
+        return modelMapper.map(
+                shopService.getShop(id),
+                ShopDTO.class
+        );
     }
 
     @PostMapping
     @PreAuthorize("hasAuthority('shop owner:read')")
-    public ResponseEntity<Shop> addNewShop(@RequestBody Shop shop) {
-        return ResponseEntity.ok(shopService.saveShop(shop));
+    public ResponseEntity<ShopDTO> addNewShop(@RequestBody Shop shop) {
+        return ResponseEntity.ok(
+                modelMapper.map(
+                        shopService.saveShop(shop),
+                        ShopDTO.class
+                )
+        );
     }
 
     @PutMapping

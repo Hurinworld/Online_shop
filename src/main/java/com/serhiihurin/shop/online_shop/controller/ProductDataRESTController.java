@@ -1,10 +1,13 @@
 package com.serhiihurin.shop.online_shop.controller;
 
-import com.serhiihurin.shop.online_shop.entity.Product;
+import com.serhiihurin.shop.online_shop.dto.ProductDTO;
+import com.serhiihurin.shop.online_shop.dto.ProductDataDTO;
 import com.serhiihurin.shop.online_shop.entity.ProductData;
 import com.serhiihurin.shop.online_shop.facades.ProductDataFacade;
 import com.serhiihurin.shop.online_shop.services.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -18,35 +21,51 @@ import java.util.List;
 public class ProductDataRESTController {
     private final ProductDataFacade productDataFacade;
     private final ProductService productService;
+    private final ModelMapper modelMapper;
 
     @GetMapping
     @PreAuthorize("hasAuthority('admin:read')")
-    public List<ProductData> getAllProductData() {
-        return productDataFacade.getAllProductData();
+    public List<ProductDataDTO> getAllProductData() {
+        return modelMapper.map(
+                productDataFacade.getAllProductData(),
+                new TypeToken<List<ProductDataDTO>>(){}.getType()
+        );
     }
 
     @GetMapping("/get/{id}")
     @PreAuthorize("hasAnyAuthority('shop owner:read', 'admin:read')")
-    List<ProductData> getAllProductDataByShopId(@PathVariable Long id) {
-        return productDataFacade.getAllProductDataByShopId(id);
+    List<ProductDataDTO> getAllProductDataByShopId(@PathVariable Long id) {
+        return modelMapper.map(
+                productDataFacade.getAllProductDataByShopId(id),
+                new TypeToken<List<ProductDataDTO>>(){}.getType()
+        );
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('shop owner:read', 'admin:read')")
-    public ProductData getProductData(@PathVariable Long id) {
-        return productDataFacade.getProductData(id);
+    public ProductDataDTO getProductData(@PathVariable Long id) {
+        return modelMapper.map(productDataFacade.getProductData(id), ProductDataDTO.class);
     }
 
     @GetMapping ("/products")
     @PreAuthorize("hasAnyAuthority('shop owner:read', 'admin:read')")
-    public List<Product> getProductsByProductDataId(@RequestParam Long productDataId) {
-        return productService.findProductsByProductDataId(productDataId);
+    public List<ProductDTO> getProductsByProductDataId(@RequestParam Long productDataId) {
+        return modelMapper.map(
+                productService.findProductsByProductDataId(productDataId),
+                new TypeToken<List<ProductDTO>>(){}.getType()
+        );
     }
 
     @PostMapping
     @PreAuthorize("hasAuthority('shop owner:create')")
-    public ResponseEntity<ProductData> addNewProductData(@RequestParam Long shopId, @RequestBody ProductData productData) {
-        return ResponseEntity.ok(productDataFacade.addProductData(shopId, productData));
+    public ResponseEntity<ProductDataDTO> addNewProductData(@RequestParam Long shopId,
+                                                         @RequestBody ProductData productData) {
+        return ResponseEntity.ok(
+                modelMapper.map(
+                        productDataFacade.addProductData(shopId, productData),
+                        ProductDataDTO.class
+                )
+        );
     }
 
     @PatchMapping

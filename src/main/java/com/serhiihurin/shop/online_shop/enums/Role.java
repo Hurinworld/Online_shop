@@ -15,31 +15,39 @@ import static com.serhiihurin.shop.online_shop.enums.Permission.*;
 public enum Role {
     CLIENT(
             Set.of(
-                    CLIENT_READ,
-                    CLIENT_CREATE,
-                    CLIENT_UPDATE,
-                    CLIENT_DELETE
+                    CLIENT_VIEW_INFO,
+                    ACCOUNT_CREATION,
+                    ACCOUNT_MANAGEMENT,
+                    FEEDBACK_MANAGEMENT,
+                    PURCHASE_CREATION
             )
     ),
     ADMIN(
             Set.of(
-                    ADMIN_READ,
-                    ADMIN_CREATE,
-                    ADMIN_UPDATE,
-                    ADMIN_DELETE,
-                    SHOP_OWNER_READ,
-                    SHOP_OWNER_CREATE,
-                    SHOP_OWNER_UPDATE,
-                    SHOP_OWNER_DELETE
+                    ADMIN_VIEW_INFO,
+                    PURCHASE_MANAGEMENT,
+                    ADMIN_INFO_DELETION,
+                    SERVICE_INFORMATION_MANAGEMENT
             )
     ),
-    SUPER_ADMIN(Collections.emptySet()),
+    SUPER_ADMIN(
+            Set.of(
+                    ADMIN_VIEW_INFO,
+                    ACCOUNT_CREATION,
+                    ROLE_MANAGEMENT,
+                    FEEDBACK_MANAGEMENT,
+                    PURCHASE_MANAGEMENT,
+                    SERVICE_INFORMATION_MANAGEMENT,
+                    SUPER_ADMIN_INFO_DELETION
+            )
+    ),
     SHOP_OWNER(
             Set.of(
-                    SHOP_OWNER_READ,
-                    SHOP_OWNER_CREATE,
-                    SHOP_OWNER_UPDATE,
-                    SHOP_OWNER_DELETE
+                    SHOP_OWNER_VIEW_INFO,
+                    ACCOUNT_MANAGEMENT,
+                    SHOP_MANAGEMENT,
+                    PRODUCT_DATA_MANAGEMENT,
+                    PRODUCT_MANAGEMENT
             )
     );
 

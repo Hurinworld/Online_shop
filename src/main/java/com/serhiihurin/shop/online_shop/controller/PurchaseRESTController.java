@@ -1,9 +1,12 @@
 package com.serhiihurin.shop.online_shop.controller;
 
+import com.serhiihurin.shop.online_shop.dto.PurchaseDTO;
 import com.serhiihurin.shop.online_shop.entity.Purchase;
 import com.serhiihurin.shop.online_shop.facades.PurchaseFacadeImpl;
 import com.serhiihurin.shop.online_shop.services.PurchaseService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -17,30 +20,43 @@ import java.util.List;
 public class PurchaseRESTController {
     private final PurchaseService purchaseService;
     private final PurchaseFacadeImpl purchaseFacade;
+    private final ModelMapper modelMapper;
 
     @GetMapping
     @PreAuthorize("hasAuthority('admin:read')")
-    public List<Purchase> getAllPurchases() {
-        return purchaseService.getAllPurchases();
+    public List<PurchaseDTO> getAllPurchases() {
+        return modelMapper.map(
+                purchaseService.getAllPurchases(),
+                new TypeToken<List<PurchaseDTO>>(){}.getType()
+        );
     }
 
     @GetMapping("/client")
     @PreAuthorize("hasAnyAuthority('client:read', 'admin:read')")
-    public List<Purchase> getPurchasesByClientId(@RequestParam Long clientId) {
-        return purchaseService.getPurchasesByClientId(clientId);
+    public List<PurchaseDTO> getPurchasesByClientId(@RequestParam Long clientId) {
+        return modelMapper.map(
+                purchaseService.getPurchasesByClientId(clientId),
+                new TypeToken<List<PurchaseDTO>>(){}.getType()
+        );
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('client:read', 'admin:read')")
-    public Purchase getPurchase(@PathVariable Long id) {
-        return purchaseService.getPurchase(id);
+    public PurchaseDTO getPurchase(@PathVariable Long id) {
+        return modelMapper.map(
+                purchaseService.getPurchase(id),
+                PurchaseDTO.class
+        );
     }
 
     @PostMapping
     @PreAuthorize("hasAuthority('client:create')")
-    public Purchase makePurchase(@RequestParam Long clientId,
+    public PurchaseDTO makePurchase(@RequestParam Long clientId,
                                  @RequestParam(name = "productId") List<Long> productIds) {
-        return purchaseFacade.makePurchase(clientId, productIds);
+        return modelMapper.map(
+                purchaseFacade.makePurchase(clientId, productIds),
+                PurchaseDTO.class
+        );
     }
 
     @PutMapping

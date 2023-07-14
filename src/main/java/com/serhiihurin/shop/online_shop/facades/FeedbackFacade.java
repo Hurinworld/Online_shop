@@ -1,7 +1,7 @@
 package com.serhiihurin.shop.online_shop.facades;
 
 import com.serhiihurin.shop.online_shop.entity.Feedback;
-import com.serhiihurin.shop.online_shop.form.FeedbackRequestDTO;
+import com.serhiihurin.shop.online_shop.dto.FeedbackRequestDTO;
 
 import java.util.List;
 
