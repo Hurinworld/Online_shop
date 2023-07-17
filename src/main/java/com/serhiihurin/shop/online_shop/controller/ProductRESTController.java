@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/online-shop/products")
-@PreAuthorize("hasAnyRole('ADMIN', 'SHOP_OWNER', 'CLIENT')")
+@PreAuthorize("hasAnyRole('ADMIN', 'SHOP_OWNER', 'CLIENT', 'SUPER_ADMIN')")
 @RequiredArgsConstructor
 public class ProductRESTController {
     private final ProductFacade productFacade;
@@ -36,7 +36,7 @@ public class ProductRESTController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('shop owner:create')")
+    @PreAuthorize("hasAuthority('product management')")
     public ResponseEntity<ProductDTO> addNewProduct(@RequestParam Long productDataId, @RequestBody Product product) {
         return ResponseEntity.ok(
                 modelMapper.map(
@@ -47,13 +47,13 @@ public class ProductRESTController {
     }
 
     @PatchMapping
-    @PreAuthorize("hasAuthority('shop owner:update')")
+    @PreAuthorize("hasAuthority('product management')")
     public ResponseEntity<Product> updateProduct(@RequestBody Product product) {
         return ResponseEntity.ok(productFacade.updateProduct(product));
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('shop owner:delete')")
+    @PreAuthorize("hasAnyAuthority('product management', 'super admin info deletion')")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         productFacade.deleteProduct(id);
         return ResponseEntity.ok().build();

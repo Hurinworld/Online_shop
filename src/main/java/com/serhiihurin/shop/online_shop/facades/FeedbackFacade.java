@@ -16,9 +16,9 @@ public interface FeedbackFacade {
     List<Feedback> getAllFeedbacksByClient(Long id);
 
     Feedback addFeedback(Long clientId,
-                         FeedbackRequestDTO feedbackform);
+                         FeedbackRequestDTO feedbackRequestDTO);
 
-    Feedback updateFeedback(Feedback feedback);
+    Feedback updateFeedback(FeedbackRequestDTO feedbackRequestDTO);
 
     void deleteFeedback(Long id);
 }

@@ -9,12 +9,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ClientDTO {
+public class ClientRequestDTO {
     private Long id;
     private String firstName;
     private String lastName;
+    private Double cash;
     private String email;
-
-    private String accessToken;
-    private String refreshToken;
+    private String password;
 }

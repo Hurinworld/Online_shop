@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -38,6 +37,7 @@ public enum Role {
                     FEEDBACK_MANAGEMENT,
                     PURCHASE_MANAGEMENT,
                     SERVICE_INFORMATION_MANAGEMENT,
+                    ADMIN_INFO_DELETION,
                     SUPER_ADMIN_INFO_DELETION
             )
     ),

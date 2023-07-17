@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/online-shop/purchases")
-@PreAuthorize("hasAnyRole('ADMIN', 'CLIENT')")
+@PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'CLIENT')")
 @RequiredArgsConstructor
 public class PurchaseRESTController {
     private final PurchaseService purchaseService;
@@ -23,7 +23,7 @@ public class PurchaseRESTController {
     private final ModelMapper modelMapper;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('admin:read')")
+    @PreAuthorize("hasAuthority('admin view info')")
     public List<PurchaseDTO> getAllPurchases() {
         return modelMapper.map(
                 purchaseService.getAllPurchases(),
@@ -32,7 +32,7 @@ public class PurchaseRESTController {
     }
 
     @GetMapping("/client")
-    @PreAuthorize("hasAnyAuthority('client:read', 'admin:read')")
+    @PreAuthorize("hasAnyAuthority('client view info', 'admin view info')")
     public List<PurchaseDTO> getPurchasesByClientId(@RequestParam Long clientId) {
         return modelMapper.map(
                 purchaseService.getPurchasesByClientId(clientId),
@@ -41,7 +41,7 @@ public class PurchaseRESTController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('client:read', 'admin:read')")
+    @PreAuthorize("hasAnyAuthority('client view info', 'admin view info')")
     public PurchaseDTO getPurchase(@PathVariable Long id) {
         return modelMapper.map(
                 purchaseService.getPurchase(id),
@@ -50,7 +50,7 @@ public class PurchaseRESTController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('client:create')")
+    @PreAuthorize("hasAuthority('purchase creation')")
     public PurchaseDTO makePurchase(@RequestParam Long clientId,
                                  @RequestParam(name = "productId") List<Long> productIds) {
         return modelMapper.map(
@@ -60,13 +60,13 @@ public class PurchaseRESTController {
     }
 
     @PutMapping
-    @PreAuthorize("hasAuthority('admin:update')")
+    @PreAuthorize("hasAuthority('purchase management')")
     public ResponseEntity<Purchase> updatePurchase(@RequestBody Purchase purchase) {
         return ResponseEntity.ok(purchaseService.savePurchase(purchase));
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('admin:delete')")
+    @PreAuthorize("hasAuthority('purchase management')")
     public ResponseEntity<Void> deletePurchase(@PathVariable Long id) {
         purchaseService.deletePurchase(id);
         return ResponseEntity.ok().build();

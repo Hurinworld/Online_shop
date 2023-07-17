@@ -39,20 +39,17 @@ public class SecurityConfig {
                         .requestMatchers(AUTH_WHITElIST).permitAll()
                         .requestMatchers("/api/v1/shop-owner/**").hasAnyRole(ADMIN.name(), SHOP_OWNER.name())
                         .requestMatchers(GET, "/api/v1/shop-owner/**").hasAnyAuthority(
-                                ADMIN_READ.name(),
-                                SHOP_OWNER_READ.name()
+                                ADMIN_VIEW_INFO.name(),
+                                SHOP_OWNER_VIEW_INFO.name()
                                 )
                         .requestMatchers(POST, "/api/v1/shop-owner/**").hasAnyAuthority(
-                                ADMIN_CREATE.name(),
-                                SHOP_OWNER_CREATE.name()
+                                SHOP_MANAGEMENT.name()
                                 )
                         .requestMatchers(PUT, "/api/v1/shop-owner/**").hasAnyAuthority(
-                                ADMIN_UPDATE.name(),
-                                SHOP_OWNER_UPDATE.name()
+                                SHOP_MANAGEMENT.name()
                                 )
                         .requestMatchers(DELETE, "/api/v1/shop-owner/**").hasAnyAuthority(
-                                ADMIN_DELETE.name(),
-                                SHOP_OWNER_DELETE.name()
+                                SHOP_MANAGEMENT.name()
                                 )
                         .anyRequest().authenticated()
                 )

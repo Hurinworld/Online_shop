@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/online-shop/products-data")
-@PreAuthorize("hasAnyRole('ADMIN', 'SHOP_OWNER', 'CLIENT')")
+@PreAuthorize("hasAnyRole('ADMIN', 'SHOP_OWNER', 'CLIENT', 'SUPER_ADMIN')")
 @RequiredArgsConstructor
 public class ProductDataRESTController {
     private final ProductDataFacade productDataFacade;
@@ -24,7 +24,7 @@ public class ProductDataRESTController {
     private final ModelMapper modelMapper;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('admin:read')")
+    @PreAuthorize("hasAuthority('admin view info')")
     public List<ProductDataDTO> getAllProductData() {
         return modelMapper.map(
                 productDataFacade.getAllProductData(),
@@ -33,7 +33,7 @@ public class ProductDataRESTController {
     }
 
     @GetMapping("/get/{id}")
-    @PreAuthorize("hasAnyAuthority('shop owner:read', 'admin:read')")
+    @PreAuthorize("hasAnyAuthority('shop owner view info', 'admin view info')")
     List<ProductDataDTO> getAllProductDataByShopId(@PathVariable Long id) {
         return modelMapper.map(
                 productDataFacade.getAllProductDataByShopId(id),
@@ -42,13 +42,13 @@ public class ProductDataRESTController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('shop owner:read', 'admin:read')")
+    @PreAuthorize("hasAnyAuthority('shop owner view info', 'admin view info')")
     public ProductDataDTO getProductData(@PathVariable Long id) {
         return modelMapper.map(productDataFacade.getProductData(id), ProductDataDTO.class);
     }
 
     @GetMapping ("/products")
-    @PreAuthorize("hasAnyAuthority('shop owner:read', 'admin:read')")
+    @PreAuthorize("hasAnyAuthority('shop owner view info', 'admin view info')")
     public List<ProductDTO> getProductsByProductDataId(@RequestParam Long productDataId) {
         return modelMapper.map(
                 productService.findProductsByProductDataId(productDataId),
@@ -57,7 +57,7 @@ public class ProductDataRESTController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('shop owner:create')")
+    @PreAuthorize("hasAuthority('product data management')")
     public ResponseEntity<ProductDataDTO> addNewProductData(@RequestParam Long shopId,
                                                          @RequestBody ProductData productData) {
         return ResponseEntity.ok(
@@ -69,13 +69,13 @@ public class ProductDataRESTController {
     }
 
     @PatchMapping
-    @PreAuthorize("hasAuthority('shop owner:update')")
+    @PreAuthorize("hasAuthority('product data management')")
     public ResponseEntity<ProductData> updateProductData(@RequestBody ProductData productData) {
         return ResponseEntity.ok(productDataFacade.updateProductData(productData));
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('shop owner:delete')")
+    @PreAuthorize("hasAnyAuthority('product data management', 'super admin info deletion')")
     public ResponseEntity<Void> deleteProductData(@PathVariable Long id) {
         productDataFacade.deleteProductData(id);
         return ResponseEntity.ok().build();

@@ -14,14 +14,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/online-shop/shops")
-@PreAuthorize("hasAnyRole('SHOP_OWNER', 'ADMIN')")
+@PreAuthorize("hasAnyRole('SHOP_OWNER', 'ADMIN', 'SUPER_ADMIN')")
 @RequiredArgsConstructor
 public class ShopRESTController {
     private final ShopService shopService;
     private final ModelMapper modelMapper;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('admin:read')")
+    @PreAuthorize("hasAuthority('admin view info')")
     public List<ShopDTO> getAllShops() {
         return modelMapper.map(
                 shopService.getAllShops(),
@@ -30,7 +30,7 @@ public class ShopRESTController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('admin:read')")
+    @PreAuthorize("hasAuthority('admin view info')")
     public ShopDTO getShop(@PathVariable Long id) {
         return modelMapper.map(
                 shopService.getShop(id),
@@ -39,7 +39,7 @@ public class ShopRESTController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('shop owner:read')")
+    @PreAuthorize("hasAuthority('shop management')")
     public ResponseEntity<ShopDTO> addNewShop(@RequestBody Shop shop) {
         return ResponseEntity.ok(
                 modelMapper.map(
@@ -50,13 +50,13 @@ public class ShopRESTController {
     }
 
     @PutMapping
-    @PreAuthorize("hasAuthority('shop owner:update')")
+    @PreAuthorize("hasAuthority('shop management')")
     public ResponseEntity<Shop> updateShop(@RequestBody Shop shop) {
         return ResponseEntity.ok(shopService.saveShop(shop));
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('shop owner:delete', 'admin:delete')")
+    @PreAuthorize("hasAnyAuthority('shop management', 'super admin info deletion')")
     public ResponseEntity<Void> deleteShop(@PathVariable Long id) {
         shopService.deleteShop(id);
         return ResponseEntity.ok().build();

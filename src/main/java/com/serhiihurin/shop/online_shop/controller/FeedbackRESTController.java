@@ -1,7 +1,6 @@
 package com.serhiihurin.shop.online_shop.controller;
 
 import com.serhiihurin.shop.online_shop.dto.FeedbackDTO;
-import com.serhiihurin.shop.online_shop.entity.Feedback;
 import com.serhiihurin.shop.online_shop.facades.FeedbackFacade;
 import com.serhiihurin.shop.online_shop.dto.FeedbackRequestDTO;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +21,7 @@ public class FeedbackRESTController {
     private final ModelMapper modelMapper;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('admin:read')")
+    @PreAuthorize("hasAuthority('admin view info')")
     public List<FeedbackDTO> getAllFeedbacks() {
         return modelMapper.map(
                 feedbackFacade.getAllFeedbacks(),
@@ -31,14 +30,14 @@ public class FeedbackRESTController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('admin:read')")
+    @PreAuthorize("hasAuthority('admin view info')")
     public FeedbackDTO getFeedback(@PathVariable Long id) {
         return modelMapper.map(feedbackFacade.getFeedback(id), FeedbackDTO.class);
     }
 
     // TODO: 14.07.2023 convert into request param
     @GetMapping("/product-data/{id}")
-    @PreAuthorize("hasAnyAuthority('admin:read', 'client:read')")
+    @PreAuthorize("hasAnyAuthority('admin view info', 'client view info')")
     public List<FeedbackDTO> getAllFeedbacksByProductData(@PathVariable Long id) {
         return modelMapper.map(
                 feedbackFacade.getAllFeedbacksByProductData(id),
@@ -47,7 +46,7 @@ public class FeedbackRESTController {
     }
     // TODO: 14.07.2023 convert into request param
     @GetMapping("/client/{id}")
-    @PreAuthorize("hasAnyAuthority('admin:read', 'client:read')")
+    @PreAuthorize("hasAnyAuthority('admin view info', 'client view info')")
     public List<FeedbackDTO> getAllFeedbacksByClient(@PathVariable Long id) {
         return modelMapper.map(
                 feedbackFacade.getAllFeedbacksByClient(id),
@@ -56,7 +55,7 @@ public class FeedbackRESTController {
     }
 
     @PostMapping()
-    @PreAuthorize("hasAuthority('client:create')")
+    @PreAuthorize("hasAuthority('feedback management')")
     public ResponseEntity<FeedbackDTO> addNewFeedback(@RequestParam Long clientId,
                                    @RequestBody FeedbackRequestDTO feedbackRequestDto) {
         return ResponseEntity.ok(
@@ -68,13 +67,15 @@ public class FeedbackRESTController {
     }
 
     @PatchMapping
-    @PreAuthorize("hasAuthority('client:update')")
-    public ResponseEntity<Feedback> updateFeedback(@RequestBody Feedback feedback) {
-        return ResponseEntity.ok(feedbackFacade.updateFeedback(feedback));
+    @PreAuthorize("hasAuthority('feedback management')")
+    public ResponseEntity<FeedbackDTO> updateFeedback(@RequestBody FeedbackRequestDTO feedbackRequestDTO) {
+        return ResponseEntity.ok(
+                modelMapper.map(feedbackFacade.updateFeedback(feedbackRequestDTO), FeedbackDTO.class)
+        );
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('admin:delete', 'client:delete')")
+    @PreAuthorize("hasAnyAuthority('admin info deletion', 'feedback management')")
     public ResponseEntity<Void> deleteFeedback(@PathVariable Long id) {
         feedbackFacade.deleteFeedback(id);
         return ResponseEntity.ok().build();
