@@ -32,6 +32,7 @@ public class ProductDataRESTController {
         );
     }
 
+    //TODO delete verbs from url path
     @GetMapping("/get/{id}")
     @PreAuthorize("hasAnyAuthority('shop owner view info', 'admin view info')")
     List<ProductDataDTO> getAllProductDataByShopId(@PathVariable Long id) {
@@ -60,12 +61,12 @@ public class ProductDataRESTController {
     @PreAuthorize("hasAuthority('product data management')")
     public ResponseEntity<ProductDataDTO> addNewProductData(@RequestParam Long shopId,
                                                          @RequestBody ProductData productData) {
-        return ResponseEntity.ok(
-                modelMapper.map(
-                        productDataFacade.addProductData(shopId, productData),
-                        ProductDataDTO.class
-                )
+        ProductDataDTO productDataDTO = modelMapper.map(
+                productDataFacade.addProductData(shopId, productData),
+                ProductDataDTO.class
         );
+
+        return ResponseEntity.ok(productDataDTO);
     }
 
     @PatchMapping

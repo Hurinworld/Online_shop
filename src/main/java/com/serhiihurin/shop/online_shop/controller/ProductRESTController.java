@@ -19,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductRESTController {
     private final ProductFacade productFacade;
+    //TODO move method calls to facade
     private final ProductService productService;
     private final ModelMapper modelMapper;
 

@@ -39,6 +39,7 @@ public class OnlineShopRESTController {
         return client;
     }
 
+    //FIXME
     @DeleteMapping("/clients/{id}")
     public String deleteClient(@PathVariable int id) {
         clientService.deleteClient(id);
