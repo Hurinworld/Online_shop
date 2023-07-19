@@ -37,20 +37,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         auth -> auth
                         .requestMatchers(AUTH_WHITElIST).permitAll()
-                        .requestMatchers("/api/v1/shop-owner/**").hasAnyRole(ADMIN.name(), SHOP_OWNER.name())
-                        .requestMatchers(GET, "/api/v1/shop-owner/**").hasAnyAuthority(
-                                ADMIN_VIEW_INFO.name(),
-                                SHOP_OWNER_VIEW_INFO.name()
-                                )
-                        .requestMatchers(POST, "/api/v1/shop-owner/**").hasAnyAuthority(
-                                SHOP_MANAGEMENT.name()
-                                )
-                        .requestMatchers(PUT, "/api/v1/shop-owner/**").hasAnyAuthority(
-                                SHOP_MANAGEMENT.name()
-                                )
-                        .requestMatchers(DELETE, "/api/v1/shop-owner/**").hasAnyAuthority(
-                                SHOP_MANAGEMENT.name()
-                                )
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
