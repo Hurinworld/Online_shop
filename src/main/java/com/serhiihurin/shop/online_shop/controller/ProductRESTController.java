@@ -4,7 +4,6 @@ import com.serhiihurin.shop.online_shop.dto.ProductRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.ProductResponseDTO;
 import com.serhiihurin.shop.online_shop.dto.ProductUpdateRequestDTO;
 import com.serhiihurin.shop.online_shop.facades.ProductFacade;
-import com.serhiihurin.shop.online_shop.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -20,20 +19,19 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductRESTController {
     private final ProductFacade productFacade;
-    private final ProductService productService;
     private final ModelMapper modelMapper;
 
     @GetMapping
     public List<ProductResponseDTO> getAllProducts() {
         return modelMapper.map(
-                productService.getAllProducts(),
+                productFacade.getAllProducts(),
                 new TypeToken<List<ProductResponseDTO>>(){}.getType()
         );
     }
 
     @GetMapping("/{id}")
     public ProductResponseDTO getProduct(@PathVariable Long id) {
-        return modelMapper.map(productService.getProduct(id), ProductResponseDTO.class);
+        return modelMapper.map(productFacade.getProduct(id), ProductResponseDTO.class);
     }
 
     @PostMapping

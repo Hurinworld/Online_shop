@@ -3,7 +3,6 @@ package com.serhiihurin.shop.online_shop.controller;
 import com.serhiihurin.shop.online_shop.dto.ShopRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.ShopResponseDTO;
 import com.serhiihurin.shop.online_shop.facades.ShopFacade;
-import com.serhiihurin.shop.online_shop.services.ShopService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -19,14 +18,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ShopRESTController {
     private final ShopFacade shopFacade;
-    private final ShopService shopService;
     private final ModelMapper modelMapper;
 
     @GetMapping
     @PreAuthorize("hasAuthority('admin view info')")
     public List<ShopResponseDTO> getAllShops() {
         return modelMapper.map(
-                shopService.getAllShops(),
+                shopFacade.getAllShops(),
                 new TypeToken<List<ShopResponseDTO>>(){}.getType()
         );
     }
@@ -35,7 +33,7 @@ public class ShopRESTController {
     @PreAuthorize("hasAuthority('admin view info')")
     public ShopResponseDTO getShop(@PathVariable Long id) {
         return modelMapper.map(
-                shopService.getShop(id),
+                shopFacade.getShop(id),
                 ShopResponseDTO.class
         );
     }
@@ -45,7 +43,7 @@ public class ShopRESTController {
     public ResponseEntity<ShopResponseDTO> addNewShop(@RequestBody ShopRequestDTO shopRequestDTO) {
         return ResponseEntity.ok(
                 modelMapper.map(
-                        shopService.saveShop(shopRequestDTO),
+                        shopFacade.saveShop(shopRequestDTO),
                         ShopResponseDTO.class
                 )
         );
@@ -65,7 +63,7 @@ public class ShopRESTController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('shop management', 'super admin info deletion')")
     public ResponseEntity<Void> deleteShop(@PathVariable Long id) {
-        shopService.deleteShop(id);
+        shopFacade.deleteShop(id);
         return ResponseEntity.ok().build();
     }
 }

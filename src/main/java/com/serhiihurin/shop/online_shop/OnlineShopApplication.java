@@ -5,8 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 //TODO create exception (later) and userPrincipal controller advices
 //TODO check urls for a hierarchy structure
-//TODO create gitignore for target
-//TODO delete .prop
+//TODO create gitignore for target //done
+//TODO delete .prop //done
 //TODO add cors config
 @SpringBootApplication
 public class OnlineShopApplication {

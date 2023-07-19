@@ -56,18 +56,8 @@ public class FeedbackFacadeImpl implements FeedbackFacade {
     @Override
     public Feedback updateFeedback(FeedbackRequestDTO feedbackRequestDTO) {
         Feedback oldFeedback = feedbackService.getFeedback(feedbackRequestDTO.getFeedbackId());
-        ProductData productData = productDataService.getProductData(feedbackRequestDTO.getProductDataId());
-        Feedback feedback = new Feedback();
 
-        feedback.setRate(
-                feedbackRequestDTO.getRate() != null? feedbackRequestDTO.getRate() : oldFeedback.getRate()
-        );
-
-        feedback.setClient(oldFeedback.getClient());
-        feedback.setProductData(productData);
-        feedback.setTime(LocalDateTime.now());
-
-        return feedbackService.saveFeedback(feedback);
+        return feedbackService.updateFeedback(feedbackRequestDTO, oldFeedback);
     }
 
     @Override

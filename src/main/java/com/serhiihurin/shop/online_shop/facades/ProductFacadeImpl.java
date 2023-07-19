@@ -9,12 +9,26 @@ import com.serhiihurin.shop.online_shop.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class ProductFacadeImpl implements ProductFacade {
     //TODO move method calls to facade
     private final ProductService productService;
     private final ProductDataService productDataService;
+
+
+    @Override
+    public List<Product> getAllProducts() {
+        return productService.getAllProducts();
+    }
+
+    @Override
+    public Product getProduct(Long id) {
+        return productService.getProduct(id);
+    }
+
 
     @Override
     public Product addProduct(ProductRequestDTO productRequestDTO) {

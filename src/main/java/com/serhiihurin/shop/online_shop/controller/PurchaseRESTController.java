@@ -30,7 +30,7 @@ public class PurchaseRESTController {
         );
     }
 
-    @GetMapping("/client")
+    @GetMapping("/client-purchases")
     @PreAuthorize("hasAnyAuthority('client view info', 'admin view info')")
     public List<PurchaseDTO> getPurchasesByClientId(@RequestParam Long clientId) {
         return modelMapper.map(

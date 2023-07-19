@@ -1,9 +1,10 @@
 package com.serhiihurin.shop.online_shop.services;
 
 import com.serhiihurin.shop.online_shop.dao.ProductDataRepository;
+import com.serhiihurin.shop.online_shop.dto.ProductDataRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.ProductData;
+import com.serhiihurin.shop.online_shop.entity.Shop;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,6 +39,29 @@ public class ProductDataServiceImpl implements ProductDataService {
     public ProductData saveProductData(ProductData productData) {
         return productDataRepository.save(productData);
     }
+
+    @Override
+    public ProductData updateProductData(
+            ProductDataRequestDTO productDataRequestDTO,
+            Shop shop,
+            ProductData productData
+    ) {
+        if (shop != null) {
+            productData.setShop(shop);
+        }
+        if (productDataRequestDTO.getName() != null) {
+            productData.setName(productDataRequestDTO.getName());
+        }
+        if (productDataRequestDTO.getDescription() != null) {
+            productData.setDescription(productDataRequestDTO.getDescription());
+        }
+        if (productDataRequestDTO.getPrice() != null) {
+            productData.setPrice(productDataRequestDTO.getPrice());
+        }
+
+        return productDataRepository.save(productData);
+    }
+
 
     @Override
     public void deleteProductData(Long id) {

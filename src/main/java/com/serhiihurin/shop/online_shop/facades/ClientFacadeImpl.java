@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class ClientFacadeImpl implements ClientFacade{
@@ -16,40 +18,35 @@ public class ClientFacadeImpl implements ClientFacade{
     private final JWTService jwtService;
     private final ModelMapper modelMapper;
 
-    //TODO change this update to patch format
-    //TODO reformat this method for facade style
+    @Override
+    public List<Client> getAllClients() {
+        return clientService.getAllClients();
+    }
+
+    @Override
+    public Client getClient(Long id) {
+        return clientService.getClient(id);
+    }
+
+    //TODO change this update to patch format //done
+    //TODO reformat this method for facade style //done
     @Override
     public ClientResponseDTO updateClient(ClientRequestDTO clientRequestDTO) {
         Client oldClient = clientService.getClient(clientRequestDTO.getId());
-
-        Client client = new Client();
-
-        client.setId(oldClient.getId());
-        client.setRole(oldClient.getRole());
-
-        client.setFirstName(
-                clientRequestDTO.getFirstName() != null ? clientRequestDTO.getFirstName() : oldClient.getFirstName()
-        );
-        client.setLastName(
-                clientRequestDTO.getLastName() != null ? clientRequestDTO.getLastName() : oldClient.getLastName()
-        );
-        client.setCash(
-                clientRequestDTO.getCash() != null ? clientRequestDTO.getCash() : oldClient.getCash()
-        );
-        client.setEmail(
-                clientRequestDTO.getEmail() != null ? clientRequestDTO.getEmail() : oldClient.getEmail()
-        );
-        client.setPassword(
-                clientRequestDTO.getPassword() != null ? clientRequestDTO.getPassword() : oldClient.getPassword()
-        );
+        Client updatedClient = clientService.updateClient(clientRequestDTO, oldClient);
 
         ClientResponseDTO clientResponseDTO = modelMapper.map(
-                clientService.saveClient(client), ClientResponseDTO.class
+                updatedClient, ClientResponseDTO.class
         );
 
-        clientResponseDTO.setAccessToken(jwtService.generateAccessToken(client));
-        clientResponseDTO.setRefreshToken(jwtService.generateRefreshToken(client));
+        clientResponseDTO.setAccessToken(jwtService.generateAccessToken(updatedClient));
+        clientResponseDTO.setRefreshToken(jwtService.generateRefreshToken(updatedClient));
 
         return clientResponseDTO;
+    }
+
+    @Override
+    public void deleteClient(Long id) {
+        clientService.deleteClient(id);
     }
 }

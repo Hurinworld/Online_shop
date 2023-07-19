@@ -36,18 +36,18 @@ public class FeedbackRESTController {
     }
 
     // TODO: 14.07.2023 convert into request param
-    @GetMapping("/product-data/{id}")
+    @GetMapping("/product-data-feedbacks")
     @PreAuthorize("hasAnyAuthority('admin view info', 'client view info')")
-    public List<FeedbackDTO> getAllFeedbacksByProductData(@PathVariable Long id) {
+    public List<FeedbackDTO> getAllFeedbacksByProductData(@RequestParam Long id) {
         return modelMapper.map(
                 feedbackFacade.getAllFeedbacksByProductData(id),
                 new TypeToken<List<FeedbackDTO>>(){}.getType()
         );
     }
     // TODO: 14.07.2023 convert into request param
-    @GetMapping("/client/{id}")
+    @GetMapping("/client-feedbacks")
     @PreAuthorize("hasAnyAuthority('admin view info', 'client view info')")
-    public List<FeedbackDTO> getAllFeedbacksByClient(@PathVariable Long id) {
+    public List<FeedbackDTO> getAllFeedbacksByClient(@RequestParam Long id) {
         return modelMapper.map(
                 feedbackFacade.getAllFeedbacksByClient(id),
                 new TypeToken<List<FeedbackDTO>>(){}.getType()

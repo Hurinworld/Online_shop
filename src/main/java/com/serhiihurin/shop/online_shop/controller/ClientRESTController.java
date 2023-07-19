@@ -3,7 +3,6 @@ package com.serhiihurin.shop.online_shop.controller;
 import com.serhiihurin.shop.online_shop.dto.ClientResponseDTO;
 import com.serhiihurin.shop.online_shop.dto.ClientRequestDTO;
 import com.serhiihurin.shop.online_shop.facades.ClientFacade;
-import com.serhiihurin.shop.online_shop.services.ClientService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -19,14 +18,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ClientRESTController {
     private final ClientFacade clientFacade;
-    private final ClientService clientService;
     private final ModelMapper modelMapper;
 
     @GetMapping
     @PreAuthorize("hasAuthority('admin view info')")
     public List<ClientResponseDTO> getAllClients() {
         return modelMapper.map(
-                clientService.getAllClients(),
+                clientFacade.getAllClients(),
                 new TypeToken<List<ClientResponseDTO>>(){}.getType()
         );
     }
@@ -34,7 +32,7 @@ public class ClientRESTController {
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('admin view info')")
     public ClientResponseDTO getClient(@PathVariable Long id) {
-        return modelMapper.map(clientService.getClient(id), ClientResponseDTO.class);
+        return modelMapper.map(clientFacade.getClient(id), ClientResponseDTO.class);
     }
 
 //    @PostMapping
@@ -42,7 +40,7 @@ public class ClientRESTController {
 //        return ResponseEntity.ok(clientService.saveClient(client));
 //    }
 
-    @PutMapping
+    @PatchMapping
     @PreAuthorize("hasAuthority('account management')")
     public ResponseEntity<ClientResponseDTO> updateClient(@RequestBody ClientRequestDTO clientRequestDTO) {
         return ResponseEntity.ok(clientFacade.updateClient(clientRequestDTO));
@@ -51,7 +49,7 @@ public class ClientRESTController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('account management')")
     public ResponseEntity<Void> deleteClient(@PathVariable Long id) {
-        clientService.deleteClient(id);
+        clientFacade.deleteClient(id);
         return ResponseEntity.ok().build();
     }
 }

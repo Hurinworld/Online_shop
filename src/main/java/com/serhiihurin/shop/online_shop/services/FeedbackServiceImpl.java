@@ -1,10 +1,12 @@
 package com.serhiihurin.shop.online_shop.services;
 
 import com.serhiihurin.shop.online_shop.dao.FeedbackRepository;
+import com.serhiihurin.shop.online_shop.dto.FeedbackRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.Feedback;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,11 +32,6 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public Feedback saveFeedback(Feedback feedback) {
-        return feedbackRepository.save(feedback);
-    }
-
-    @Override
     public Feedback getFeedback(Long id) {
         Feedback feedback = null;
         Optional<Feedback> optionalFeedback = feedbackRepository.findById(id);
@@ -43,6 +40,22 @@ public class FeedbackServiceImpl implements FeedbackService {
         }
         return feedback;
     }
+
+    @Override
+    public Feedback saveFeedback(Feedback feedback) {
+        return feedbackRepository.save(feedback);
+    }
+
+    @Override
+    public Feedback updateFeedback(FeedbackRequestDTO feedbackRequestDTO, Feedback feedback) {
+        if (feedbackRequestDTO.getRate() != null) {
+            feedback.setRate(feedbackRequestDTO.getRate());
+        }
+        feedback.setTime(LocalDateTime.now());
+
+        return feedbackRepository.save(feedback);
+    }
+
 
     @Override
     public void deleteFeedback(Long id) {

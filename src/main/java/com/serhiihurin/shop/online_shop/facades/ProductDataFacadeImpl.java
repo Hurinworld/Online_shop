@@ -34,6 +34,11 @@ public class ProductDataFacadeImpl implements ProductDataFacade {
     }
 
     @Override
+    public List<Product> getProductsByProductDataId(Long productDataId) {
+        return productService.findProductsByProductDataId(productDataId);
+    }
+
+    @Override
     public ProductData getProductData(Long id) {
         return productDataService.getProductData(id);
     }
@@ -66,26 +71,19 @@ public class ProductDataFacadeImpl implements ProductDataFacade {
     @Override
     public ProductDataResponseDTO updateProductData(ProductDataRequestDTO productDataRequestDTO) {
         ProductData oldProductData = productDataService.getProductData(productDataRequestDTO.getId());
+        Shop shop = null;
+        if (productDataRequestDTO.getShopId() != null) {
+            shop = shopService.getShop(productDataRequestDTO.getShopId());
+        }
 
-        ProductData productData = new ProductData();
-
-        productData.setShop(
-                productDataRequestDTO.getShopId() != null ? shopService.getShop(productDataRequestDTO.getShopId())
-                        : oldProductData.getShop()
-        );
-        productData.setName(
-                productDataRequestDTO.getName() != null ? productDataRequestDTO.getName() : oldProductData.getName()
-        );
-        productData.setDescription(
-                productDataRequestDTO.getDescription() != null ? productDataRequestDTO.getDescription()
-                        : oldProductData.getDescription()
-        );
-        productData.setPrice(
-                productDataRequestDTO.getPrice() != null ? productDataRequestDTO.getPrice() : oldProductData.getPrice()
+        ProductData productData = productDataService.updateProductData(
+                productDataRequestDTO,
+                shop,
+                oldProductData
         );
 
         ProductDataResponseDTO productDataResponseDTO = modelMapper.map(
-                productDataService.saveProductData(productData),
+                productData,
                 ProductDataResponseDTO.class
         );
 
