@@ -1,7 +1,8 @@
 package com.serhiihurin.shop.online_shop.controller;
 
-import com.serhiihurin.shop.online_shop.dto.ShopDTO;
-import com.serhiihurin.shop.online_shop.entity.Shop;
+import com.serhiihurin.shop.online_shop.dto.ShopRequestDTO;
+import com.serhiihurin.shop.online_shop.dto.ShopResponseDTO;
+import com.serhiihurin.shop.online_shop.facades.ShopFacade;
 import com.serhiihurin.shop.online_shop.services.ShopService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -17,42 +18,48 @@ import java.util.List;
 @PreAuthorize("hasAnyRole('SHOP_OWNER', 'ADMIN', 'SUPER_ADMIN')")
 @RequiredArgsConstructor
 public class ShopRESTController {
+    private final ShopFacade shopFacade;
     private final ShopService shopService;
     private final ModelMapper modelMapper;
 
     @GetMapping
     @PreAuthorize("hasAuthority('admin view info')")
-    public List<ShopDTO> getAllShops() {
+    public List<ShopResponseDTO> getAllShops() {
         return modelMapper.map(
                 shopService.getAllShops(),
-                new TypeToken<List<ShopDTO>>(){}.getType()
+                new TypeToken<List<ShopResponseDTO>>(){}.getType()
         );
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('admin view info')")
-    public ShopDTO getShop(@PathVariable Long id) {
+    public ShopResponseDTO getShop(@PathVariable Long id) {
         return modelMapper.map(
                 shopService.getShop(id),
-                ShopDTO.class
+                ShopResponseDTO.class
         );
     }
 
     @PostMapping
     @PreAuthorize("hasAuthority('shop management')")
-    public ResponseEntity<ShopDTO> addNewShop(@RequestBody Shop shop) {
+    public ResponseEntity<ShopResponseDTO> addNewShop(@RequestBody ShopRequestDTO shopRequestDTO) {
         return ResponseEntity.ok(
                 modelMapper.map(
-                        shopService.saveShop(shop),
-                        ShopDTO.class
+                        shopService.saveShop(shopRequestDTO),
+                        ShopResponseDTO.class
                 )
         );
     }
 
     @PutMapping
     @PreAuthorize("hasAuthority('shop management')")
-    public ResponseEntity<Shop> updateShop(@RequestBody Shop shop) {
-        return ResponseEntity.ok(shopService.saveShop(shop));
+    public ResponseEntity<ShopResponseDTO> updateShop(@RequestBody ShopRequestDTO shopRequestDTO) {
+        return ResponseEntity.ok(
+                modelMapper.map(
+                        shopFacade.updateShop(shopRequestDTO),
+                        ShopResponseDTO.class
+                )
+        );
     }
 
     @DeleteMapping("/{id}")

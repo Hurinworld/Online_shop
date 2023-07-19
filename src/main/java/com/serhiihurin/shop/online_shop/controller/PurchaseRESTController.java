@@ -1,7 +1,6 @@
 package com.serhiihurin.shop.online_shop.controller;
 
 import com.serhiihurin.shop.online_shop.dto.PurchaseDTO;
-import com.serhiihurin.shop.online_shop.entity.Purchase;
 import com.serhiihurin.shop.online_shop.facades.PurchaseFacadeImpl;
 import com.serhiihurin.shop.online_shop.services.PurchaseService;
 import lombok.RequiredArgsConstructor;
@@ -57,12 +56,6 @@ public class PurchaseRESTController {
                 purchaseFacade.makePurchase(clientId, productIds),
                 PurchaseDTO.class
         );
-    }
-
-    @PutMapping
-    @PreAuthorize("hasAuthority('purchase management')")
-    public ResponseEntity<Purchase> updatePurchase(@RequestBody Purchase purchase) {
-        return ResponseEntity.ok(purchaseService.savePurchase(purchase));
     }
 
     @DeleteMapping("/{id}")

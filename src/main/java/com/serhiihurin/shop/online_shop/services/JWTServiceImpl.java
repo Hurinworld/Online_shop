@@ -60,7 +60,6 @@ public class JWTServiceImpl implements JWTService{
                 .compact();
     }
 
-    //TODO its redundant
     @Override
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);

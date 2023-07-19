@@ -1,6 +1,6 @@
 package com.serhiihurin.shop.online_shop.facades;
 
-import com.serhiihurin.shop.online_shop.dto.ClientDTO;
+import com.serhiihurin.shop.online_shop.dto.ClientResponseDTO;
 import com.serhiihurin.shop.online_shop.dto.ClientRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.Client;
 import com.serhiihurin.shop.online_shop.services.ClientService;
@@ -16,10 +16,8 @@ public class ClientFacadeImpl implements ClientFacade{
     private final JWTService jwtService;
     private final ModelMapper modelMapper;
 
-    //TODO change this update to patch format
-    //TODO reformat this method for facade style
     @Override
-    public ClientDTO updateClient(ClientRequestDTO clientRequestDTO) {
+    public ClientResponseDTO updateClient(ClientRequestDTO clientRequestDTO) {
         Client oldClient = clientService.getClient(clientRequestDTO.getId());
 
         Client client = new Client();
@@ -43,13 +41,13 @@ public class ClientFacadeImpl implements ClientFacade{
                 clientRequestDTO.getPassword() != null ? clientRequestDTO.getPassword() : oldClient.getPassword()
         );
 
-        ClientDTO clientDTO = modelMapper.map(
-                clientService.saveClient(client), ClientDTO.class
+        ClientResponseDTO clientResponseDTO = modelMapper.map(
+                clientService.saveClient(client), ClientResponseDTO.class
         );
 
-        clientDTO.setAccessToken(jwtService.generateAccessToken(client));
-        clientDTO.setRefreshToken(jwtService.generateRefreshToken(client));
+        clientResponseDTO.setAccessToken(jwtService.generateAccessToken(client));
+        clientResponseDTO.setRefreshToken(jwtService.generateRefreshToken(client));
 
-        return clientDTO;
+        return clientResponseDTO;
     }
 }

@@ -1,6 +1,6 @@
 package com.serhiihurin.shop.online_shop.controller;
 
-import com.serhiihurin.shop.online_shop.dto.ClientDTO;
+import com.serhiihurin.shop.online_shop.dto.ClientResponseDTO;
 import com.serhiihurin.shop.online_shop.dto.ClientRequestDTO;
 import com.serhiihurin.shop.online_shop.facades.ClientFacade;
 import com.serhiihurin.shop.online_shop.services.ClientService;
@@ -24,17 +24,17 @@ public class ClientRESTController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('admin view info')")
-    public List<ClientDTO> getAllClients() {
+    public List<ClientResponseDTO> getAllClients() {
         return modelMapper.map(
                 clientService.getAllClients(),
-                new TypeToken<List<ClientDTO>>(){}.getType()
+                new TypeToken<List<ClientResponseDTO>>(){}.getType()
         );
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('admin view info')")
-    public ClientDTO getClient(@PathVariable Long id) {
-        return modelMapper.map(clientService.getClient(id), ClientDTO.class);
+    public ClientResponseDTO getClient(@PathVariable Long id) {
+        return modelMapper.map(clientService.getClient(id), ClientResponseDTO.class);
     }
 
 //    @PostMapping
@@ -44,7 +44,7 @@ public class ClientRESTController {
 
     @PutMapping
     @PreAuthorize("hasAuthority('account management')")
-    public ResponseEntity<ClientDTO> updateClient(@RequestBody ClientRequestDTO clientRequestDTO) {
+    public ResponseEntity<ClientResponseDTO> updateClient(@RequestBody ClientRequestDTO clientRequestDTO) {
         return ResponseEntity.ok(clientFacade.updateClient(clientRequestDTO));
     }
 

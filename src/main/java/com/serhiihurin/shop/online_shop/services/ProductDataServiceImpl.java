@@ -3,6 +3,7 @@ package com.serhiihurin.shop.online_shop.services;
 import com.serhiihurin.shop.online_shop.dao.ProductDataRepository;
 import com.serhiihurin.shop.online_shop.entity.ProductData;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

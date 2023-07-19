@@ -1,6 +1,5 @@
 package com.serhiihurin.shop.online_shop.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,7 +20,6 @@ public class Purchase {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "purchase")
 //    @JoinColumn(name = "product_id")
-    @JsonIgnore
     private List<Product> products;
 
     @ManyToOne

@@ -1,5 +1,7 @@
 package com.serhiihurin.shop.online_shop.facades;
 
+import com.serhiihurin.shop.online_shop.dto.ProductDataRequestDTO;
+import com.serhiihurin.shop.online_shop.dto.ProductDataResponseDTO;
 import com.serhiihurin.shop.online_shop.entity.ProductData;
 
 import java.util.List;
@@ -11,9 +13,9 @@ public interface ProductDataFacade {
 
     ProductData getProductData(Long id);
 
-    ProductData addProductData(Long shopId, ProductData productData);
+    ProductData addProductData(Long shopId, ProductDataRequestDTO productDataRequestDTO);
 
-    ProductData updateProductData(ProductData productData);
+    ProductDataResponseDTO updateProductData(ProductDataRequestDTO productDataRequestDTO);
 
     void deleteProductData(Long id);
 }

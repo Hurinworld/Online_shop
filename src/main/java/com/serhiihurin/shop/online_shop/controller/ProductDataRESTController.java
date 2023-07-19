@@ -1,8 +1,8 @@
 package com.serhiihurin.shop.online_shop.controller;
 
-import com.serhiihurin.shop.online_shop.dto.ProductDTO;
-import com.serhiihurin.shop.online_shop.dto.ProductDataDTO;
-import com.serhiihurin.shop.online_shop.entity.ProductData;
+import com.serhiihurin.shop.online_shop.dto.ProductResponseDTO;
+import com.serhiihurin.shop.online_shop.dto.ProductDataRequestDTO;
+import com.serhiihurin.shop.online_shop.dto.ProductDataResponseDTO;
 import com.serhiihurin.shop.online_shop.facades.ProductDataFacade;
 import com.serhiihurin.shop.online_shop.services.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -25,54 +25,60 @@ public class ProductDataRESTController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('admin view info')")
-    public List<ProductDataDTO> getAllProductData() {
+    public List<ProductDataResponseDTO> getAllProductData() {
         return modelMapper.map(
                 productDataFacade.getAllProductData(),
-                new TypeToken<List<ProductDataDTO>>(){}.getType()
+                new TypeToken<List<ProductDataResponseDTO>>(){}.getType()
         );
     }
 
-    //TODO delete verbs from url path
     @GetMapping("/get/{id}")
     @PreAuthorize("hasAnyAuthority('shop owner view info', 'admin view info')")
-    List<ProductDataDTO> getAllProductDataByShopId(@PathVariable Long id) {
+    List<ProductDataResponseDTO> getAllProductDataByShopId(@PathVariable Long id) {
         return modelMapper.map(
                 productDataFacade.getAllProductDataByShopId(id),
-                new TypeToken<List<ProductDataDTO>>(){}.getType()
+                new TypeToken<List<ProductDataResponseDTO>>(){}.getType()
         );
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('shop owner view info', 'admin view info')")
-    public ProductDataDTO getProductData(@PathVariable Long id) {
-        return modelMapper.map(productDataFacade.getProductData(id), ProductDataDTO.class);
+    public ProductDataResponseDTO getProductData(@PathVariable Long id) {
+        return modelMapper.map(productDataFacade.getProductData(id), ProductDataResponseDTO.class);
     }
 
     @GetMapping ("/products")
     @PreAuthorize("hasAnyAuthority('shop owner view info', 'admin view info')")
-    public List<ProductDTO> getProductsByProductDataId(@RequestParam Long productDataId) {
+    public List<ProductResponseDTO> getProductsByProductDataId(@RequestParam Long productDataId) {
         return modelMapper.map(
                 productService.findProductsByProductDataId(productDataId),
-                new TypeToken<List<ProductDTO>>(){}.getType()
+                new TypeToken<List<ProductResponseDTO>>(){}.getType()
         );
     }
 
     @PostMapping
     @PreAuthorize("hasAuthority('product data management')")
-    public ResponseEntity<ProductDataDTO> addNewProductData(@RequestParam Long shopId,
-                                                         @RequestBody ProductData productData) {
-        ProductDataDTO productDataDTO = modelMapper.map(
-                productDataFacade.addProductData(shopId, productData),
-                ProductDataDTO.class
+    public ResponseEntity<ProductDataResponseDTO> addNewProductData
+            (
+                    @RequestParam Long shopId,
+                    @RequestBody ProductDataRequestDTO productDataRequestDTO
+            ) {
+        return ResponseEntity.ok(
+                modelMapper.map(
+                        productDataFacade.addProductData(shopId, productDataRequestDTO),
+                        ProductDataResponseDTO.class
+                )
         );
-
-        return ResponseEntity.ok(productDataDTO);
     }
 
     @PatchMapping
     @PreAuthorize("hasAuthority('product data management')")
-    public ResponseEntity<ProductData> updateProductData(@RequestBody ProductData productData) {
-        return ResponseEntity.ok(productDataFacade.updateProductData(productData));
+    public ResponseEntity<ProductDataResponseDTO> updateProductData(
+            @RequestBody ProductDataRequestDTO productDataRequestDTO
+    ) {
+        return ResponseEntity.ok(
+                productDataFacade.updateProductData(productDataRequestDTO)
+        );
     }
 
     @DeleteMapping("/{id}")

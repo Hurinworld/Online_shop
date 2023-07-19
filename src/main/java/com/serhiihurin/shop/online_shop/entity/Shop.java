@@ -1,19 +1,16 @@
 package com.serhiihurin.shop.online_shop.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
 @Table(name = "shop")
 @NoArgsConstructor
-@Getter
-@Setter
+@AllArgsConstructor
+@Data
+@Builder
 @ToString(exclude = {"productData"})
 public class Shop {
     @Id
@@ -23,11 +20,5 @@ public class Shop {
     private Double income;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "shop")
-    @JsonIgnore
     private List<ProductData> productData;
-
-    public Shop(String name, Double income) {
-        this.name = name;
-        this.income = income;
-    }
 }

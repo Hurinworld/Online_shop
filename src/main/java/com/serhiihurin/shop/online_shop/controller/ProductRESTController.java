@@ -1,7 +1,8 @@
 package com.serhiihurin.shop.online_shop.controller;
 
-import com.serhiihurin.shop.online_shop.dto.ProductDTO;
-import com.serhiihurin.shop.online_shop.entity.Product;
+import com.serhiihurin.shop.online_shop.dto.ProductRequestDTO;
+import com.serhiihurin.shop.online_shop.dto.ProductResponseDTO;
+import com.serhiihurin.shop.online_shop.dto.ProductUpdateRequestDTO;
 import com.serhiihurin.shop.online_shop.facades.ProductFacade;
 import com.serhiihurin.shop.online_shop.services.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -19,38 +20,45 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductRESTController {
     private final ProductFacade productFacade;
-    //TODO move method calls to facade
     private final ProductService productService;
     private final ModelMapper modelMapper;
 
     @GetMapping
-    public List<ProductDTO> getAllProducts() {
+    public List<ProductResponseDTO> getAllProducts() {
         return modelMapper.map(
                 productService.getAllProducts(),
-                new TypeToken<List<ProductDTO>>(){}.getType()
+                new TypeToken<List<ProductResponseDTO>>(){}.getType()
         );
     }
 
     @GetMapping("/{id}")
-    public ProductDTO getProduct(@PathVariable Long id) {
-        return modelMapper.map(productService.getProduct(id), ProductDTO.class);
+    public ProductResponseDTO getProduct(@PathVariable Long id) {
+        return modelMapper.map(productService.getProduct(id), ProductResponseDTO.class);
     }
 
     @PostMapping
     @PreAuthorize("hasAuthority('product management')")
-    public ResponseEntity<ProductDTO> addNewProduct(@RequestParam Long productDataId, @RequestBody Product product) {
+    public ResponseEntity<ProductResponseDTO> addNewProduct(
+            @RequestBody ProductRequestDTO productRequestDTO) {
         return ResponseEntity.ok(
                 modelMapper.map(
-                        productFacade.addProduct(productDataId,product),
-                        ProductDTO.class
+                        productFacade.addProduct(productRequestDTO),
+                        ProductResponseDTO.class
                 )
         );
     }
 
     @PatchMapping
     @PreAuthorize("hasAuthority('product management')")
-    public ResponseEntity<Product> updateProduct(@RequestBody Product product) {
-        return ResponseEntity.ok(productFacade.updateProduct(product));
+    public ResponseEntity<ProductResponseDTO> updateProduct(
+            @RequestBody ProductUpdateRequestDTO productUpdateRequestDTO
+    ) {
+        return ResponseEntity.ok(
+                modelMapper.map(
+                        productFacade.updateProduct(productUpdateRequestDTO),
+                        ProductResponseDTO.class
+                )
+        );
     }
 
     @DeleteMapping("/{id}")

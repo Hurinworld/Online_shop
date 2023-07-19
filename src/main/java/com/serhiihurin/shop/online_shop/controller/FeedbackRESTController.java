@@ -70,7 +70,10 @@ public class FeedbackRESTController {
     @PreAuthorize("hasAuthority('feedback management')")
     public ResponseEntity<FeedbackDTO> updateFeedback(@RequestBody FeedbackRequestDTO feedbackRequestDTO) {
         return ResponseEntity.ok(
-                modelMapper.map(feedbackFacade.updateFeedback(feedbackRequestDTO), FeedbackDTO.class)
+                modelMapper.map(
+                        feedbackFacade.updateFeedback(feedbackRequestDTO),
+                        FeedbackDTO.class
+                )
         );
     }
 

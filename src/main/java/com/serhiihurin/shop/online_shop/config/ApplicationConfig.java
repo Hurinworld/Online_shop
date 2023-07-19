@@ -49,7 +49,6 @@ public class ApplicationConfig {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration()
                 .setMatchingStrategy(MatchingStrategies.LOOSE);
-        // TODO: 14.07.2023 reed about matching strategies
         return modelMapper;
     }
 }

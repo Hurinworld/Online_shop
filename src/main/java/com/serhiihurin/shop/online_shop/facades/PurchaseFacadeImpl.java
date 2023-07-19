@@ -1,8 +1,10 @@
 package com.serhiihurin.shop.online_shop.facades;
 
+import com.serhiihurin.shop.online_shop.dto.ShopRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.*;
 import com.serhiihurin.shop.online_shop.services.*;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -20,6 +22,8 @@ public class PurchaseFacadeImpl implements PurchaseFacade{
     private final ShopService shopService;
 
     private final PurchaseService purchaseService;
+
+    private final ModelMapper modelMapper;
 
     @Override
     public Purchase makePurchase(Long clientId, List<Long> productIds) {
@@ -42,7 +46,7 @@ public class PurchaseFacadeImpl implements PurchaseFacade{
             productService.saveProduct(product);
             clientService.saveClient(client);
             productDataService.saveProductData(productData);
-            shopService.saveShop(shop);
+            shopService.saveShop(modelMapper.map(shop, ShopRequestDTO.class));
         }
         return purchase;
     }
