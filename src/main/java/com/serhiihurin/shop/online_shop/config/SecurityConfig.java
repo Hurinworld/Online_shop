@@ -13,11 +13,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static com.serhiihurin.shop.online_shop.enums.Permission.*;
-import static com.serhiihurin.shop.online_shop.enums.Role.ADMIN;
-import static com.serhiihurin.shop.online_shop.enums.Role.SHOP_OWNER;
-import static org.springframework.http.HttpMethod.*;
-
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
