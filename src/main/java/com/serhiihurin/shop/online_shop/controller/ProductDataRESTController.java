@@ -32,6 +32,7 @@ public class ProductDataRESTController {
         );
     }
 
+    //TODO delete verbs from url path
     @GetMapping("/get/{id}")
     @PreAuthorize("hasAnyAuthority('shop owner view info', 'admin view info')")
     List<ProductDataResponseDTO> getAllProductDataByShopId(@PathVariable Long id) {

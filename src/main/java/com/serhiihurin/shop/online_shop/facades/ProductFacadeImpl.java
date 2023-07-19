@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class ProductFacadeImpl implements ProductFacade {
+    //TODO move method calls to facade
     private final ProductService productService;
     private final ProductDataService productDataService;
 

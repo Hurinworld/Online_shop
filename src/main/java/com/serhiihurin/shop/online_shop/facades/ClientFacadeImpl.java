@@ -16,6 +16,8 @@ public class ClientFacadeImpl implements ClientFacade{
     private final JWTService jwtService;
     private final ModelMapper modelMapper;
 
+    //TODO change this update to patch format
+    //TODO reformat this method for facade style
     @Override
     public ClientResponseDTO updateClient(ClientRequestDTO clientRequestDTO) {
         Client oldClient = clientService.getClient(clientRequestDTO.getId());
