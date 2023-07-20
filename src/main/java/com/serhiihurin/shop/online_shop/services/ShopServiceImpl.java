@@ -4,7 +4,6 @@ import com.serhiihurin.shop.online_shop.dao.ShopRepository;
 import com.serhiihurin.shop.online_shop.dto.ShopRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.Shop;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
