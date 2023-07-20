@@ -2,7 +2,6 @@ package com.serhiihurin.shop.online_shop.controller;
 
 import com.serhiihurin.shop.online_shop.dto.PurchaseDTO;
 import com.serhiihurin.shop.online_shop.facades.PurchaseFacadeImpl;
-import com.serhiihurin.shop.online_shop.services.PurchaseService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -17,7 +16,6 @@ import java.util.List;
 @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'CLIENT')")
 @RequiredArgsConstructor
 public class PurchaseRESTController {
-    private final PurchaseService purchaseService;
     private final PurchaseFacadeImpl purchaseFacade;
     private final ModelMapper modelMapper;
 
@@ -25,7 +23,7 @@ public class PurchaseRESTController {
     @PreAuthorize("hasAuthority('admin view info')")
     public List<PurchaseDTO> getAllPurchases() {
         return modelMapper.map(
-                purchaseService.getAllPurchases(),
+                purchaseFacade.getAllPurchases(),
                 new TypeToken<List<PurchaseDTO>>(){}.getType()
         );
     }
@@ -34,7 +32,7 @@ public class PurchaseRESTController {
     @PreAuthorize("hasAnyAuthority('client view info', 'admin view info')")
     public List<PurchaseDTO> getPurchasesByClientId(@RequestParam Long clientId) {
         return modelMapper.map(
-                purchaseService.getPurchasesByClientId(clientId),
+                purchaseFacade.getPurchasesByClientId(clientId),
                 new TypeToken<List<PurchaseDTO>>(){}.getType()
         );
     }
@@ -43,7 +41,7 @@ public class PurchaseRESTController {
     @PreAuthorize("hasAnyAuthority('client view info', 'admin view info')")
     public PurchaseDTO getPurchase(@PathVariable Long id) {
         return modelMapper.map(
-                purchaseService.getPurchase(id),
+                purchaseFacade.getPurchase(id),
                 PurchaseDTO.class
         );
     }
@@ -61,7 +59,7 @@ public class PurchaseRESTController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('purchase management')")
     public ResponseEntity<Void> deletePurchase(@PathVariable Long id) {
-        purchaseService.deletePurchase(id);
+        purchaseFacade.deletePurchase(id);
         return ResponseEntity.ok().build();
     }
 }

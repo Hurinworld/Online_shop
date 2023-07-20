@@ -14,7 +14,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class ProductFacadeImpl implements ProductFacade {
-    //TODO move method calls to facade
+    //TODO move method calls to facade //done
     private final ProductService productService;
     private final ProductDataService productDataService;
 
@@ -42,16 +42,16 @@ public class ProductFacadeImpl implements ProductFacade {
 
     @Override
     public Product updateProduct(ProductUpdateRequestDTO productUpdateRequestDTO) {
-        Product oldProduct = productService.getProduct(productUpdateRequestDTO.getId());
-        ProductData productData = oldProduct.getProductData();
+        Product product = productService.getProduct(productUpdateRequestDTO.getId());
 
-        Product product = new Product();
+        if (productUpdateRequestDTO.getProductDataId() != null) {
+            product.setProductData(
+                    productDataService.getProductData(
+                            productUpdateRequestDTO.getProductDataId()
+                    )
+            );
+        }
 
-        product.setProductData(
-                productUpdateRequestDTO.getProductDataId() != null ?
-                        productDataService.getProductData(productUpdateRequestDTO.getProductDataId())
-                        : productData
-        );
         return productService.saveProduct(product);
     }
 

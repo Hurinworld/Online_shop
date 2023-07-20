@@ -12,5 +12,7 @@ public interface ShopService {
 
     Shop getShop(Long id);
 
+    Shop updateShop(ShopRequestDTO shopRequestDTO, Shop shop);
+
     void deleteShop(Long id);
 }

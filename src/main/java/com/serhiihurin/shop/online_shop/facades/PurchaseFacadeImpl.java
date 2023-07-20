@@ -6,6 +6,7 @@ import com.serhiihurin.shop.online_shop.services.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,7 +26,24 @@ public class PurchaseFacadeImpl implements PurchaseFacade{
 
     private final ModelMapper modelMapper;
 
+
     @Override
+    public List<Purchase> getAllPurchases() {
+        return purchaseService.getAllPurchases();
+    }
+
+    @Override
+    public List<Purchase> getPurchasesByClientId(Long clientId) {
+        return purchaseService.getPurchasesByClientId(clientId);
+    }
+
+    @Override
+    public Purchase getPurchase(Long id) {
+        return purchaseService.getPurchase(id);
+    }
+
+    @Override
+    @Transactional
     public Purchase makePurchase(Long clientId, List<Long> productIds) {
         Purchase purchase = new Purchase();
         Client client = clientService.getClient(clientId);
@@ -49,5 +67,10 @@ public class PurchaseFacadeImpl implements PurchaseFacade{
             shopService.saveShop(modelMapper.map(shop, ShopRequestDTO.class));
         }
         return purchase;
+    }
+
+    @Override
+    public void deletePurchase(Long id) {
+        purchaseService.deletePurchase(id);
     }
 }

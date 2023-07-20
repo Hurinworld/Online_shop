@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 //TODO create exception (later) and userPrincipal controller advices
-//TODO check urls for a hierarchy structure
+//TODO check urls for a hierarchy structure //done
 //TODO create gitignore for target //done
 //TODO delete .prop //done
 //TODO add cors config

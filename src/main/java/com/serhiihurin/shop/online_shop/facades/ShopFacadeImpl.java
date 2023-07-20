@@ -33,12 +33,7 @@ public class ShopFacadeImpl implements ShopFacade{
     @Override
     public Shop updateShop(ShopRequestDTO shopRequestDTO) {
         Shop oldShop = shopService.getShop(shopRequestDTO.getId());
-
-        Shop newShop = new Shop();
-        newShop.setName(shopRequestDTO.getName() != null ? shopRequestDTO.getName() : oldShop.getName());
-        newShop.setIncome(shopRequestDTO.getIncome() != null ? shopRequestDTO.getIncome() : oldShop.getIncome());
-
-        return newShop;
+        return shopService.updateShop(shopRequestDTO, oldShop);
     }
 
     @Override

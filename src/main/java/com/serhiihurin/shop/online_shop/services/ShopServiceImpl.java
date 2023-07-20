@@ -31,6 +31,17 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
+    public Shop updateShop(ShopRequestDTO shopRequestDTO, Shop shop) {
+        if (shopRequestDTO.getName() != null) {
+            shop.setName(shopRequestDTO.getName());
+        }
+        if (shopRequestDTO.getIncome() != null) {
+            shop.setIncome(shopRequestDTO.getIncome());
+        }
+        return shop;
+    }
+
+    @Override
     public Shop saveShop(ShopRequestDTO shopRequestDTO) {
         Shop shop = Shop.builder()
                 .name(shopRequestDTO.getName())
@@ -38,6 +49,8 @@ public class ShopServiceImpl implements ShopService {
         shop.setIncome(shopRequestDTO.getIncome() != null ? shopRequestDTO.getIncome() : 0.0);
         return shopRepository.save(shop);
     }
+
+
 
     @Override
     public void deleteShop(Long id) {
