@@ -8,7 +8,12 @@ import java.util.List;
 
 public interface ClientFacade {
     List<Client> getAllClients();
+
     Client getClient(Long id);
-    ClientResponseDTO updateClient(ClientRequestDTO clientRequestDTO);
+
+    Client updateClient(ClientRequestDTO clientRequestDTO);
+
+    ClientResponseDTO updateUsername(ClientRequestDTO clientRequestDTO);
+
     void deleteClient(Long id);
 }

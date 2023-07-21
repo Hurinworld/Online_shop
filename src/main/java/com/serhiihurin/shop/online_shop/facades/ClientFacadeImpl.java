@@ -31,16 +31,22 @@ public class ClientFacadeImpl implements ClientFacade{
     //TODO change this update to patch format //done
     //TODO reformat this method for facade style //done
     @Override
-    public ClientResponseDTO updateClient(ClientRequestDTO clientRequestDTO) {
+    public Client updateClient(ClientRequestDTO clientRequestDTO) {
         Client oldClient = clientService.getClient(clientRequestDTO.getId());
-        Client updatedClient = clientService.updateClient(clientRequestDTO, oldClient);
+        return clientService.updateClient(clientRequestDTO, oldClient);
+    }
+
+    @Override
+    public ClientResponseDTO updateUsername(ClientRequestDTO clientRequestDTO) {
+        Client oldClient = clientService.getClient(clientRequestDTO.getId());
+        Client newClient = clientService.updateUsername(clientRequestDTO, oldClient);
 
         ClientResponseDTO clientResponseDTO = modelMapper.map(
-                updatedClient, ClientResponseDTO.class
+                newClient, ClientResponseDTO.class
         );
 
-        clientResponseDTO.setAccessToken(jwtService.generateAccessToken(updatedClient));
-        clientResponseDTO.setRefreshToken(jwtService.generateRefreshToken(updatedClient));
+        clientResponseDTO.setAccessToken(jwtService.generateAccessToken(newClient));
+        clientResponseDTO.setRefreshToken(jwtService.generateRefreshToken(newClient));
 
         return clientResponseDTO;
     }

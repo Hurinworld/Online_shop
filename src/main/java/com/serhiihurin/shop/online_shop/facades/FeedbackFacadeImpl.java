@@ -56,7 +56,6 @@ public class FeedbackFacadeImpl implements FeedbackFacade {
     @Override
     public Feedback updateFeedback(FeedbackRequestDTO feedbackRequestDTO) {
         Feedback oldFeedback = feedbackService.getFeedback(feedbackRequestDTO.getFeedbackId());
-
         return feedbackService.updateFeedback(feedbackRequestDTO, oldFeedback);
     }
 

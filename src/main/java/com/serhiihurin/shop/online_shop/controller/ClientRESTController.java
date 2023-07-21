@@ -39,11 +39,22 @@ public class ClientRESTController {
 //    public ResponseEntity<Client> addNewClient(@RequestBody Client client) {
 //        return ResponseEntity.ok(clientService.saveClient(client));
 //    }
-
-    @PatchMapping
+//TODO add usernameUpdate
+    @PatchMapping("/info")
     @PreAuthorize("hasAuthority('account management')")
     public ResponseEntity<ClientResponseDTO> updateClient(@RequestBody ClientRequestDTO clientRequestDTO) {
-        return ResponseEntity.ok(clientFacade.updateClient(clientRequestDTO));
+        return ResponseEntity.ok(
+                modelMapper.map(
+                        clientFacade.updateClient(clientRequestDTO),
+                        ClientResponseDTO.class
+                )
+        );
+    }
+
+    @PatchMapping("/info/username")
+    @PreAuthorize("hasAuthority('account management')")
+    public ResponseEntity<ClientResponseDTO> updateUsername(@RequestBody ClientRequestDTO clientRequestDTO) {
+        return ResponseEntity.ok(clientFacade.updateUsername(clientRequestDTO));
     }
 
     @DeleteMapping("/{id}")

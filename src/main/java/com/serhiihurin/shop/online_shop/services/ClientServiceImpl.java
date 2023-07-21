@@ -46,15 +46,21 @@ public class ClientServiceImpl implements ClientService {
         if (clientRequestDTO.getCash() != null) {
             client.setCash(clientRequestDTO.getCash());
         }
-        if (clientRequestDTO.getEmail() != null) {
-            client.setEmail(clientRequestDTO.getEmail());
-        }
         if (clientRequestDTO.getPassword() != null) {
             client.setPassword(clientRequestDTO.getPassword());
         }
 
         return clientRepository.save(client);
     }
+
+    @Override
+    public Client updateUsername(ClientRequestDTO clientRequestDTO, Client client) {
+        if (!clientRequestDTO.getEmail().equals(client.getEmail())) {
+            client.setEmail(clientRequestDTO.getEmail());
+        }
+        return clientRepository.save(client);
+    }
+
 
     @Override
     public void deleteClient(Long id) {

@@ -29,7 +29,8 @@ public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
 
     private final String [] AUTH_WHITElIST = new String[]{
-            "/online-shop/auth/**"
+            "/online-shop/auth/register",
+            "/online-shop/auth/authenticate"
     };
 
     @Bean
@@ -53,9 +54,9 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:8080/online-shop"));
+        configuration.setAllowedOrigins(List.of("*"));
         configuration.setAllowedMethods(List.of("PATCH", "GET"));
-        configuration.setAllowedHeaders(List.of("Authorization"));
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

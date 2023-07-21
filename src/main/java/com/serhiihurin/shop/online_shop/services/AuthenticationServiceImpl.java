@@ -69,24 +69,29 @@ public class AuthenticationServiceImpl implements AuthenticationService{
             HttpServletResponse response
     ) throws IOException {
         final String authHeader = request.getHeader(AUTHORIZATION);
-        final String refreshToken;
-        final String clientEmail;
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return;
         }
-        refreshToken = authHeader.substring("Bearer ".length());
-        clientEmail = jwtService.extractUsername(refreshToken);
-        if (clientEmail != null) {
-            Client client = this.clientRepository.findByEmail(clientEmail)
-                    .orElseThrow();
-            if (jwtService.isTokenValid(refreshToken, client)) {
-                String accessToken = jwtService.generateAccessToken(client);
-                AuthenticationResponse authenticationResponse = AuthenticationResponse.builder()
-                        .accessToken(accessToken)
-                        .refreshToken(refreshToken)
-                        .build();
-                new ObjectMapper().writeValue(response.getOutputStream(), authenticationResponse);
-            }
+
+        String refreshToken = authHeader.substring("Bearer ".length());
+        String clientEmail = jwtService.extractUsername(refreshToken);
+
+        if (clientEmail == null) {
+            return;
         }
+
+        Client client = this.clientRepository.findByEmail(clientEmail).orElseThrow();
+
+//        if (!jwtService.isTokenValid(refreshToken, client)) {
+//            return;
+//        }
+
+        String accessToken = jwtService.generateAccessToken(client);
+        AuthenticationResponse authenticationResponse = AuthenticationResponse.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
+
+        new ObjectMapper().writeValue(response.getOutputStream(), authenticationResponse);
     }
 }
