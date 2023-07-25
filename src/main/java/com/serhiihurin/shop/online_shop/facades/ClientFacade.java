@@ -11,6 +11,8 @@ public interface ClientFacade {
 
     Client getClient(Long id);
 
+    Client getClientByEmail(String email);
+
     Client updateClient(ClientRequestDTO clientRequestDTO);
 
     ClientResponseDTO updateUsername(ClientRequestDTO clientRequestDTO);

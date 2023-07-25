@@ -10,6 +10,8 @@ public interface ClientService {
 
     Client getClient(Long id);
 
+    Client getClientByEmail(String email);
+
     void saveClient(Client client);
 
     Client updateClient(ClientRequestDTO clientRequestDTO, Client client);

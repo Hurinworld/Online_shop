@@ -28,6 +28,12 @@ public class ClientFacadeImpl implements ClientFacade{
         return clientService.getClient(id);
     }
 
+    @Override
+    public Client getClientByEmail(String email) {
+        return clientService.getClientByEmail(email);
+    }
+
+
     //TODO change this update to patch format //done
     //TODO reformat this method for facade style //done
     @Override

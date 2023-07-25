@@ -3,6 +3,7 @@ package com.serhiihurin.shop.online_shop.services;
 import com.serhiihurin.shop.online_shop.dao.ClientRepository;
 import com.serhiihurin.shop.online_shop.dto.ClientRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.Client;
+import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,18 @@ public class ClientServiceImpl implements ClientService {
         }
         return client;
     }
+
+    @Override
+    public Client getClientByEmail(String email) {
+        Client client = null;
+        Optional<Client> optionalClient = clientRepository.findByEmail(email);
+        if (optionalClient.isEmpty()) {
+            throw new ApiRequestException("Could not find user");
+        }
+        client = optionalClient.get();
+        return client;
+    }
+
 
     @Override
     public void saveClient(Client client) {

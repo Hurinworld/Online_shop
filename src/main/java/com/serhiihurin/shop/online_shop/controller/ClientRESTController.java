@@ -2,12 +2,15 @@ package com.serhiihurin.shop.online_shop.controller;
 
 import com.serhiihurin.shop.online_shop.dto.ClientResponseDTO;
 import com.serhiihurin.shop.online_shop.dto.ClientRequestDTO;
+import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
 import com.serhiihurin.shop.online_shop.facades.ClientFacade;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,10 +32,10 @@ public class ClientRESTController {
         );
     }
 
-    @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('admin view info')")
-    public ClientResponseDTO getClient(@PathVariable Long id) {
-        return modelMapper.map(clientFacade.getClient(id), ClientResponseDTO.class);
+    @GetMapping("/client")
+    @PreAuthorize("hasAnyAuthority('admin view info', 'client view info')")
+    public ClientResponseDTO getClient(Authentication authentication) throws ApiRequestException {
+        return modelMapper.map(clientFacade.getClientByEmail(authentication.getName()), ClientResponseDTO.class);
     }
 
 //    @PostMapping
