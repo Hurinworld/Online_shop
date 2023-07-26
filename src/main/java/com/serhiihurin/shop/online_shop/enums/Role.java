@@ -34,7 +34,6 @@ public enum Role {
                     ADMIN_VIEW_INFO,
                     ACCOUNT_CREATION,
                     ROLE_MANAGEMENT,
-                    FEEDBACK_MANAGEMENT,
                     PURCHASE_MANAGEMENT,
                     SERVICE_INFORMATION_MANAGEMENT,
                     ADMIN_INFO_DELETION,

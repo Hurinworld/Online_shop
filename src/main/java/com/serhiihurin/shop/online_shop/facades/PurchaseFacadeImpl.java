@@ -2,6 +2,8 @@ package com.serhiihurin.shop.online_shop.facades;
 
 import com.serhiihurin.shop.online_shop.dto.ShopRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.*;
+import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
+import com.serhiihurin.shop.online_shop.exception.PurchaseException;
 import com.serhiihurin.shop.online_shop.services.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -34,6 +36,9 @@ public class PurchaseFacadeImpl implements PurchaseFacade{
 
     @Override
     public List<Purchase> getPurchasesByClientId(Long clientId) {
+        if (clientService.getClient(clientId) == null) {
+            throw new ApiRequestException("Could not find client with id " + clientId);
+        }
         return purchaseService.getPurchasesByClientId(clientId);
     }
 
@@ -51,6 +56,10 @@ public class PurchaseFacadeImpl implements PurchaseFacade{
             Product product = productService.getProduct(productId);
             ProductData productData = product.getProductData();
             Shop shop = productData.getShop();
+
+            if (client.getCash() < productData.getPrice()) {
+                throw new PurchaseException("Purchase failed. Not enough money in wallet");
+            }
 
             product.setBought(true);
             productData.setCount(productData.getCount() - 1);

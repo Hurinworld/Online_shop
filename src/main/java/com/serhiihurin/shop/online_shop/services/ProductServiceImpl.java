@@ -2,8 +2,8 @@ package com.serhiihurin.shop.online_shop.services;
 
 import com.serhiihurin.shop.online_shop.dao.ProductRepository;
 import com.serhiihurin.shop.online_shop.entity.Product;
+import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,12 +31,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getProduct(Long id) {
-        Product product = null;
         Optional<Product> optionalProduct = productRepository.findById(id);
-        if (optionalProduct.isPresent()) {
-            product = optionalProduct.get();
+        if (optionalProduct.isEmpty()) {
+            throw new ApiRequestException("Could not find product");
         }
-        return product;
+        return optionalProduct.get();
     }
 
     @Override

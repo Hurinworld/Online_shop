@@ -3,6 +3,7 @@ package com.serhiihurin.shop.online_shop.services;
 import com.serhiihurin.shop.online_shop.dao.FeedbackRepository;
 import com.serhiihurin.shop.online_shop.dto.FeedbackRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.Feedback;
+import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -33,12 +34,11 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public Feedback getFeedback(Long id) {
-        Feedback feedback = null;
         Optional<Feedback> optionalFeedback = feedbackRepository.findById(id);
-        if (optionalFeedback.isPresent()) {
-            feedback = optionalFeedback.get();
+        if (optionalFeedback.isEmpty()) {
+            throw new ApiRequestException("Could not find feedback with id" + id);
         }
-        return feedback;
+        return optionalFeedback.get();
     }
 
     @Override
@@ -50,6 +50,9 @@ public class FeedbackServiceImpl implements FeedbackService {
     public Feedback updateFeedback(FeedbackRequestDTO feedbackRequestDTO, Feedback feedback) {
         if (feedbackRequestDTO.getRate() != null) {
             feedback.setRate(feedbackRequestDTO.getRate());
+        }
+        if (feedbackRequestDTO.getText() != null) {
+            feedback.setText(feedbackRequestDTO.getText());
         }
         feedback.setTime(LocalDateTime.now());
 

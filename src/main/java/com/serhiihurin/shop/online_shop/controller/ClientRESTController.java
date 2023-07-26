@@ -2,15 +2,15 @@ package com.serhiihurin.shop.online_shop.controller;
 
 import com.serhiihurin.shop.online_shop.dto.ClientResponseDTO;
 import com.serhiihurin.shop.online_shop.dto.ClientRequestDTO;
-import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
+import com.serhiihurin.shop.online_shop.entity.Client;
+import com.serhiihurin.shop.online_shop.enums.Role;
+import com.serhiihurin.shop.online_shop.exception.UnauthorizedAccessException;
 import com.serhiihurin.shop.online_shop.facades.ClientFacade;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,10 +32,32 @@ public class ClientRESTController {
         );
     }
 
+//    @GetMapping("/{id}")
+//    @PreAuthorize("hasAuthority('admin view info')")
+//    public ClientResponseDTO getClient(@PathVariable Long id) throws ApiRequestException {
+//        return modelMapper.map(clientFacade.getClient(id), ClientResponseDTO.class);
+//    }
+
     @GetMapping("/client")
     @PreAuthorize("hasAnyAuthority('admin view info', 'client view info')")
-    public ClientResponseDTO getClient(Authentication authentication) throws ApiRequestException {
-        return modelMapper.map(clientFacade.getClientByEmail(authentication.getName()), ClientResponseDTO.class);
+    public ClientResponseDTO getClient(@ModelAttribute("currentClient") Client currentClient,
+                                       @RequestParam(required = false) Long clientId) {
+        if (!currentClient.getRole().equals(Role.ADMIN)
+                && !currentClient.getRole().equals(Role.SUPER_ADMIN)
+                && clientId != null) {
+            throw new UnauthorizedAccessException("Access to the resource is not allowed");
+        }
+        if (
+                (currentClient.getRole().equals(Role.ADMIN) || currentClient.getRole().equals(Role.SUPER_ADMIN))
+                && clientId == null) {
+            return modelMapper.map(
+                    clientFacade.getClient(currentClient.getId()), ClientResponseDTO.class
+            );
+        } else if (clientId != null){
+            return modelMapper.map(clientFacade.getClient(clientId), ClientResponseDTO.class);
+        }
+
+        return modelMapper.map(clientFacade.getClient(currentClient.getId()), ClientResponseDTO.class);
     }
 
 //    @PostMapping
@@ -60,10 +82,23 @@ public class ClientRESTController {
         return ResponseEntity.ok(clientFacade.updateUsername(clientRequestDTO));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping
     @PreAuthorize("hasAuthority('account management')")
-    public ResponseEntity<Void> deleteClient(@PathVariable Long id) {
-        clientFacade.deleteClient(id);
+    public ResponseEntity<Void> deleteClient(@ModelAttribute("currentClient") Client currentClient,
+                                             @RequestParam(required = false) Long id) {
+        if (!currentClient.getRole().equals(Role.ADMIN)
+                && !currentClient.getRole().equals(Role.SUPER_ADMIN)
+                && id != null) {
+            throw new UnauthorizedAccessException("Access to the resource is not allowed");
+        }
+        if (currentClient.getRole().equals(Role.SUPER_ADMIN)) {
+            clientFacade.deleteClient(id);
+        }
+        if (!currentClient.getRole().equals(Role.ADMIN)
+                && !currentClient.getRole().equals(Role.SUPER_ADMIN)
+                && id == null){
+            clientFacade.deleteClient(currentClient.getId());
+        }
         return ResponseEntity.ok().build();
     }
 }

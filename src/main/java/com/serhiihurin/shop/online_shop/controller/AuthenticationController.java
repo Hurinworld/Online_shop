@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 
 @RestController
-@Order(Ordered.HIGHEST_PRECEDENCE)
+//@Order(Ordered.HIGHEST_PRECEDENCE)
 @RequestMapping("/online-shop/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {

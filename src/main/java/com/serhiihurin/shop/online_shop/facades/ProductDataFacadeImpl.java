@@ -5,6 +5,7 @@ import com.serhiihurin.shop.online_shop.dto.ProductDataResponseDTO;
 import com.serhiihurin.shop.online_shop.entity.Product;
 import com.serhiihurin.shop.online_shop.entity.ProductData;
 import com.serhiihurin.shop.online_shop.entity.Shop;
+import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
 import com.serhiihurin.shop.online_shop.services.ProductDataService;
 import com.serhiihurin.shop.online_shop.services.ProductService;
 import com.serhiihurin.shop.online_shop.services.ShopService;
@@ -35,6 +36,9 @@ public class ProductDataFacadeImpl implements ProductDataFacade {
 
     @Override
     public List<Product> getProductsByProductDataId(Long productDataId) {
+        if(productDataService.getProductData(productDataId) == null) {
+            throw new ApiRequestException("Could not find the data");
+        }
         return productService.findProductsByProductDataId(productDataId);
     }
 
@@ -45,6 +49,10 @@ public class ProductDataFacadeImpl implements ProductDataFacade {
 
     @Override
     public ProductData addProductData(Long shopId, ProductDataRequestDTO productDataRequestDTO) {
+        if (shopService.getShop(shopId) == null) {
+            throw new ApiRequestException("Could not add product because shop doesn't exists");
+        }
+
         Shop shop = shopService.getShop(shopId);
 
         ProductData productData = ProductData.builder()
@@ -52,9 +60,9 @@ public class ProductDataFacadeImpl implements ProductDataFacade {
                 .description(productDataRequestDTO.getDescription())
                 .price(productDataRequestDTO.getPrice())
                 .count(productDataRequestDTO.getCount())
+                .shop(shop)
                 .build();
 
-        productData.setShop(shop);
         ProductData savedProductData = productDataService.saveProductData(productData);
 
         IntStream.range(0, productData.getCount())

@@ -4,6 +4,7 @@ import com.serhiihurin.shop.online_shop.entity.Client;
 import com.serhiihurin.shop.online_shop.entity.Feedback;
 import com.serhiihurin.shop.online_shop.entity.ProductData;
 import com.serhiihurin.shop.online_shop.dto.FeedbackRequestDTO;
+import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
 import com.serhiihurin.shop.online_shop.services.ClientService;
 import com.serhiihurin.shop.online_shop.services.FeedbackService;
 import com.serhiihurin.shop.online_shop.services.ProductDataService;
@@ -32,11 +33,17 @@ public class FeedbackFacadeImpl implements FeedbackFacade {
 
     @Override
     public List<Feedback> getAllFeedbacksByProductData(Long id) {
+        if (productDataService.getProductData(id) == null) {
+            throw new ApiRequestException("Could not find feedbacks of this product");
+        }
         return feedbackService.getFeedbacksByProductDataId(id);
     }
 
     @Override
     public List<Feedback> getAllFeedbacksByClient(Long id) {
+        if (clientService.getClient(id) == null) {
+            throw new ApiRequestException("Could not find feedbacks of this client");
+        }
         return feedbackService.getFeedbacksByClientId(id);
     }
 

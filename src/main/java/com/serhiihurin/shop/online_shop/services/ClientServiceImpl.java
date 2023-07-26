@@ -23,23 +23,20 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Client getClient(Long id) {
-        Client client = null;
         Optional<Client> optionalClient = clientRepository.findById(id);
-        if (optionalClient.isPresent()) {
-            client = optionalClient.get();
+        if (optionalClient.isEmpty()) {
+            throw new ApiRequestException("Could not find user with id " + id);
         }
-        return client;
+        return optionalClient.get();
     }
 
     @Override
     public Client getClientByEmail(String email) {
-        Client client = null;
         Optional<Client> optionalClient = clientRepository.findByEmail(email);
         if (optionalClient.isEmpty()) {
             throw new ApiRequestException("Could not find user");
         }
-        client = optionalClient.get();
-        return client;
+        return optionalClient.get();
     }
 
 
