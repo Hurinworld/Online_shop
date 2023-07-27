@@ -29,13 +29,16 @@ public class ProductServiceImpl implements ProductService {
        return productRepository.save(product);
     }
 
+    //TODO refactor
     @Override
     public Product getProduct(Long id) {
-        Optional<Product> optionalProduct = productRepository.findById(id);
-        if (optionalProduct.isEmpty()) {
-            throw new ApiRequestException("Could not find product");
-        }
-        return optionalProduct.get();
+//        Optional<Product> optionalProduct = productRepository.findById(id);
+//        if (optionalProduct.isEmpty()) {
+//            throw new ApiRequestException("Could not find product");
+//        }
+//        return optionalProduct.get();
+        return productRepository.findById(id)
+                .orElseThrow(() -> new ApiRequestException("Could not find product"));
     }
 
     @Override

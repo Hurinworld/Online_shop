@@ -38,6 +38,8 @@ public class ClientRESTController {
 //        return modelMapper.map(clientFacade.getClient(id), ClientResponseDTO.class);
 //    }
 
+    //TODO rename path to "/me"
+    //TODO divide into 2 endpoints
     @GetMapping("/client")
     @PreAuthorize("hasAnyAuthority('admin view info', 'client view info')")
     public ClientResponseDTO getClient(@ModelAttribute("currentClient") Client currentClient,
@@ -59,7 +61,7 @@ public class ClientRESTController {
 
         return modelMapper.map(clientFacade.getClient(currentClient.getId()), ClientResponseDTO.class);
     }
-
+//TODO delete
 //    @PostMapping
 //    public ResponseEntity<Client> addNewClient(@RequestBody Client client) {
 //        return ResponseEntity.ok(clientService.saveClient(client));
@@ -76,8 +78,11 @@ public class ClientRESTController {
         );
     }
 
+    //TODO change http-method to put
     @PatchMapping("/info/username")
     @PreAuthorize("hasAuthority('account management')")
+    //TODO retrieve userDetails for id
+    //TODO change requestBody to requestParam(username)
     public ResponseEntity<ClientResponseDTO> updateUsername(@RequestBody ClientRequestDTO clientRequestDTO) {
         return ResponseEntity.ok(clientFacade.updateUsername(clientRequestDTO));
     }
@@ -91,6 +96,8 @@ public class ClientRESTController {
                 && id != null) {
             throw new UnauthorizedAccessException("Access to the resource is not allowed");
         }
+        //FIXME: 401 status when id is null and role 'SUPER_ADMIN'
+        //TODO change order of args in equals(everywhere)
         if (currentClient.getRole().equals(Role.SUPER_ADMIN)) {
             clientFacade.deleteClient(id);
         }

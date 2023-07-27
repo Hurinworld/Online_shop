@@ -63,6 +63,7 @@ public class ClientServiceImpl implements ClientService {
         return clientRepository.save(client);
     }
 
+    //TODO work only with username in args
     @Override
     public Client updateUsername(ClientRequestDTO clientRequestDTO, Client client) {
         if (!clientRequestDTO.getEmail().equals(client.getEmail())) {

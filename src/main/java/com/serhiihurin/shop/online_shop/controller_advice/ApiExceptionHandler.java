@@ -16,7 +16,7 @@ import java.time.ZonedDateTime;
 public class ApiExceptionHandler {
 
     @ExceptionHandler(value = ApiRequestException.class)
-    public ResponseEntity<Object> handleApiRequestException(ApiRequestException exception) {
+    public ResponseEntity<ApiException> handleApiRequestException(ApiRequestException exception) {
         ApiException apiException = new ApiException(
                 exception.getMessage(),
                 HttpStatus.BAD_REQUEST,
@@ -26,7 +26,9 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(apiException, HttpStatus.BAD_REQUEST);
     }
 
+
     @ExceptionHandler(value = PurchaseException.class)
+    //TODO return ApiException in return params of method
     public ResponseEntity<Object> handlePurchaseException(PurchaseException exception) {
         ApiException apiException = new ApiException(
                 exception.getMessage(),

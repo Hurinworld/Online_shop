@@ -42,6 +42,7 @@ public class ClientFacadeImpl implements ClientFacade{
         return clientService.updateClient(clientRequestDTO, oldClient);
     }
 
+    //TODO work only with username in args
     @Override
     public ClientResponseDTO updateUsername(ClientRequestDTO clientRequestDTO) {
         Client oldClient = clientService.getClient(clientRequestDTO.getId());

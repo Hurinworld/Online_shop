@@ -28,6 +28,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
 
     @Override
     public AuthenticationResponse register(RegisterRequest request) {
+        //TODO move to clientService::createClient
         Client client = Client.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
@@ -63,6 +64,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
                 .build();
     }
 
+    //TODO change name of method
     @Override
     public void refreshToken(
             HttpServletRequest request,

@@ -13,10 +13,7 @@ public class ClientControllerAdvice {
 
     @ModelAttribute("currentClient")
     public Client getCurrentClient(WebRequest request, Principal principal) {
-        if (request == null) {
-            return null;
-        }
-        if(!(principal instanceof Authentication authentication)) {
+        if (request == null || !(principal instanceof Authentication authentication)) {
             return null;
         }
 
