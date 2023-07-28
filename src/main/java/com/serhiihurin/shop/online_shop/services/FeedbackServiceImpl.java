@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -34,11 +33,8 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public Feedback getFeedback(Long id) {
-        Optional<Feedback> optionalFeedback = feedbackRepository.findById(id);
-        if (optionalFeedback.isEmpty()) {
-            throw new ApiRequestException("Could not find feedback with id" + id);
-        }
-        return optionalFeedback.get();
+        return feedbackRepository.findById(id)
+                .orElseThrow(() -> new ApiRequestException("Could not find feedback with id" + id));
     }
 
     @Override

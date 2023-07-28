@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public enum Permission {
-    // TODO: 14.07.2023 permissions should not depend on roles
+    // TODO: 14.07.2023 permissions should not depend on roles //done
     CLIENT_VIEW_INFO ("client view info"),
     SHOP_OWNER_VIEW_INFO ("shop owner view info"),
     ADMIN_VIEW_INFO ("admin view info"),

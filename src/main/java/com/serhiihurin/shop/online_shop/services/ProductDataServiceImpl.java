@@ -32,11 +32,8 @@ public class ProductDataServiceImpl implements ProductDataService {
 
     @Override
     public ProductData getProductData(Long id) {
-        Optional<ProductData> optionalProductData = productDataRepository.findById(id);
-        if (optionalProductData.isEmpty()) {
-            throw new ApiRequestException("Could not find data about product");
-        }
-        return optionalProductData.get();
+        return productDataRepository.findById(id)
+                .orElseThrow(() -> new ApiRequestException("Could not find data about product"));
     }
 
     @Override

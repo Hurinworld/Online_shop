@@ -4,17 +4,18 @@ import com.serhiihurin.shop.online_shop.dao.ClientRepository;
 import com.serhiihurin.shop.online_shop.dto.ClientRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.Client;
 import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
+import com.serhiihurin.shop.online_shop.request.RegisterRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ClientServiceImpl implements ClientService {
-
     private final ClientRepository clientRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public List<Client> getAllClients() {
@@ -23,20 +24,27 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Client getClient(Long id) {
-        Optional<Client> optionalClient = clientRepository.findById(id);
-        if (optionalClient.isEmpty()) {
-            throw new ApiRequestException("Could not find user with id " + id);
-        }
-        return optionalClient.get();
+        return clientRepository.findById(id)
+                .orElseThrow(() -> new ApiRequestException("Could not find user"));
     }
 
     @Override
     public Client getClientByEmail(String email) {
-        Optional<Client> optionalClient = clientRepository.findByEmail(email);
-        if (optionalClient.isEmpty()) {
-            throw new ApiRequestException("Could not find user");
-        }
-        return optionalClient.get();
+        return clientRepository.findByEmail(email)
+                .orElseThrow(() -> new ApiRequestException("Could not find user"));
+    }
+
+    @Override
+    public Client createClient(RegisterRequest registerRequest) {
+        Client client = Client.builder()
+                .firstName(registerRequest.getFirstName())
+                .lastName(registerRequest.getLastName())
+                .cash(registerRequest.getCash())
+                .email(registerRequest.getEmail())
+                .password(passwordEncoder.encode(registerRequest.getPassword()))
+                .role(registerRequest.getRole())
+                .build();
+        return clientRepository.save(client);
     }
 
 
@@ -63,13 +71,13 @@ public class ClientServiceImpl implements ClientService {
         return clientRepository.save(client);
     }
 
-    //TODO work only with username in args
+    //TODO work only with username in args //done
     @Override
-    public Client updateUsername(ClientRequestDTO clientRequestDTO, Client client) {
-        if (!clientRequestDTO.getEmail().equals(client.getEmail())) {
-            client.setEmail(clientRequestDTO.getEmail());
+    public Client updateUsername(Client currenAuthenticatedtClient, String email) {
+        if (!currenAuthenticatedtClient.getEmail().equals(email)) {
+            currenAuthenticatedtClient.setEmail(email);
         }
-        return clientRepository.save(client);
+        return clientRepository.save(currenAuthenticatedtClient);
     }
 
 

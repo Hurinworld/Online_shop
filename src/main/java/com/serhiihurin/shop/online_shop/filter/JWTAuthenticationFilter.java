@@ -33,19 +33,13 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         final String authHeader = request.getHeader(AUTHORIZATION);
         final String jwt;
-        String clientEmail = null;
+        String clientEmail;
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
         jwt = authHeader.substring("Bearer ".length());
-//        try {
         clientEmail = jwtService.extractUsername(jwt);
-//        } catch (Exception e) {
-//            response.setHeader("Access-Control-Allow-Origin", "*");
-//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//            response.setContentType(String.valueOf(APPLICATION_JSON));
-//        }
         if (clientEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(clientEmail);
             UsernamePasswordAuthenticationToken authenticationToken =

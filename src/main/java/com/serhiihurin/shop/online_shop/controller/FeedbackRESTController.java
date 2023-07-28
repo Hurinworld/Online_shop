@@ -35,7 +35,7 @@ public class FeedbackRESTController {
         return modelMapper.map(feedbackFacade.getFeedback(id), FeedbackDTO.class);
     }
 
-    // TODO: 14.07.2023 convert into request param
+    // TODO: 14.07.2023 convert into request param //done
     @GetMapping("/product-data-feedbacks")
     @PreAuthorize("hasAnyAuthority('admin view info', 'client view info')")
     public List<FeedbackDTO> getAllFeedbacksByProductData(@RequestParam Long id) {
@@ -44,7 +44,7 @@ public class FeedbackRESTController {
                 new TypeToken<List<FeedbackDTO>>(){}.getType()
         );
     }
-    // TODO: 14.07.2023 convert into request param
+    // TODO: 14.07.2023 convert into request param //done
     @GetMapping("/client-feedbacks")
     @PreAuthorize("hasAnyAuthority('admin view info', 'client view info')")
     public List<FeedbackDTO> getAllFeedbacksByClient(@RequestParam Long id) {

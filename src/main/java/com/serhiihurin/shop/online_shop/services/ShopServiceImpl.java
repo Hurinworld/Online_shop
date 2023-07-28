@@ -3,11 +3,11 @@ package com.serhiihurin.shop.online_shop.services;
 import com.serhiihurin.shop.online_shop.dao.ShopRepository;
 import com.serhiihurin.shop.online_shop.dto.ShopRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.Shop;
+import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,12 +21,8 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     public Shop getShop(Long id) {
-        Shop shop = null;
-        Optional<Shop> optionalShop = shopRepository.findById(id);
-        if (optionalShop.isPresent()) {
-            shop = optionalShop.get();
-        }
-        return shop;
+        return shopRepository.findById(id)
+                .orElseThrow(() -> new ApiRequestException("Could not find shop with id" + id));
     }
 
     @Override

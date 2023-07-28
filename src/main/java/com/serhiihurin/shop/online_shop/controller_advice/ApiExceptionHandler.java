@@ -28,8 +28,8 @@ public class ApiExceptionHandler {
 
 
     @ExceptionHandler(value = PurchaseException.class)
-    //TODO return ApiException in return params of method
-    public ResponseEntity<Object> handlePurchaseException(PurchaseException exception) {
+    //TODO return ApiException in return params of method //done
+    public ResponseEntity<ApiException> handlePurchaseException(PurchaseException exception) {
         ApiException apiException = new ApiException(
                 exception.getMessage(),
                 HttpStatus.CONFLICT,
@@ -39,7 +39,7 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(apiException, HttpStatus.CONFLICT);
     }
     @ExceptionHandler(value = UnauthorizedAccessException.class)
-    public ResponseEntity<Object> handleUnauthorizedAccessException(UnauthorizedAccessException exception) {
+    public ResponseEntity<ApiException> handleUnauthorizedAccessException(UnauthorizedAccessException exception) {
         ApiException apiException = new ApiException(
                 exception.getMessage(),
                 HttpStatus.FORBIDDEN,
