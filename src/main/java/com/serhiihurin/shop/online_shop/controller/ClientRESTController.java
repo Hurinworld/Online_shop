@@ -3,8 +3,6 @@ package com.serhiihurin.shop.online_shop.controller;
 import com.serhiihurin.shop.online_shop.dto.ClientResponseDTO;
 import com.serhiihurin.shop.online_shop.dto.ClientRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.Client;
-import com.serhiihurin.shop.online_shop.enums.Permission;
-import com.serhiihurin.shop.online_shop.enums.Role;
 import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
 import com.serhiihurin.shop.online_shop.facades.ClientFacade;
 import lombok.RequiredArgsConstructor;
@@ -77,25 +75,20 @@ public class ClientRESTController {
     }
 
     @DeleteMapping
-    @PreAuthorize("hasAnyAuthority('account management', 'super admin info deletion')")
-    public ResponseEntity<Void> deleteClient(@ModelAttribute("currentClient") Client currentClient,
-                                             @RequestParam(required = false) Long id) {
-        for (Permission permission : currentClient.getRole().getPermissions()) {
-            if(Permission.SUPER_ADMIN_INFO_DELETION.equals(permission)) {
-                if (id == null) {
-                    throw new ApiRequestException("Invalid URL");
-                } else clientFacade.deleteClient(id);
-            }
-            else if (Permission.ACCOUNT_MANAGEMENT.equals(permission)) {
-                if (id != null) {
-                    throw new ApiRequestException("Invalid URL");
-                }
-                clientFacade.deleteClient(currentClient.getId());
-            }
+    @PreAuthorize("hasAuthority('super admin info deletion')")
+    public ResponseEntity<Void> deleteClient(@RequestParam(required = false) Long id) {
+        if (id == null) {
+            throw new ApiRequestException("Invalid URL");
         }
-        //FIXME: 401 status when id is null and role 'SUPER_ADMIN'
-        //TODO change order of args in equals(everywhere) //done
+        Client client = clientFacade.getClient(id);
+        clientFacade.deleteClient(client.getId());
+        return ResponseEntity.ok().build();
+    }
 
+    @DeleteMapping("/my-account")
+    @PreAuthorize("hasAuthority('account management')")
+    public ResponseEntity<Void> deleteClient(@ModelAttribute("currentClient") Client currentClient) {
+        clientFacade.deleteClient(currentClient.getId());
         return ResponseEntity.ok().build();
     }
 }
