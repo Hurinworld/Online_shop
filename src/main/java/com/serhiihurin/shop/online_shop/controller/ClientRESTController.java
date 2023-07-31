@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.slf4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -21,12 +22,14 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class ClientRESTController {
+    private final Logger logger;
     private final ClientFacade clientFacade;
     private final ModelMapper modelMapper;
 
     @GetMapping
     @PreAuthorize("hasAuthority('admin view info')")
     public List<ClientResponseDTO> getAllClients() {
+        logger.info("Admin: getting all clients info");
         return modelMapper.map(
                 clientFacade.getAllClients(),
                 new TypeToken<List<ClientResponseDTO>>(){}.getType()
@@ -36,6 +39,7 @@ public class ClientRESTController {
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('admin view info')")
     public ClientResponseDTO getClient(@PathVariable Long id) {
+        logger.info("Admin: getting client info");
         return modelMapper.map(clientFacade.getClient(id), ClientResponseDTO.class);
     }
 
@@ -54,6 +58,7 @@ public class ClientRESTController {
     @PatchMapping("/info")
     @PreAuthorize("hasAuthority('account management')")
     public ResponseEntity<ClientResponseDTO> updateClient(@RequestBody ClientRequestDTO clientRequestDTO) {
+        logger.info("Updating client account information with id: {}", clientRequestDTO.getId());
         return ResponseEntity.ok(
                 modelMapper.map(
                         clientFacade.updateClient(clientRequestDTO),
@@ -71,6 +76,7 @@ public class ClientRESTController {
             @ModelAttribute("currentClient") Client currentAuthenticatedClient,
             @RequestParam String email
     ) {
+        logger.info("Updating client account username with id: {}", currentAuthenticatedClient.getId());
         return ResponseEntity.ok(clientFacade.updateUsername(currentAuthenticatedClient, email));
     }
 
@@ -82,13 +88,15 @@ public class ClientRESTController {
         }
         Client client = clientFacade.getClient(id);
         clientFacade.deleteClient(client.getId());
+        logger.info("Super admin: deleted client with id: {}", id);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/my-account")
     @PreAuthorize("hasAuthority('account management')")
-    public ResponseEntity<Void> deleteClient(@ModelAttribute("currentClient") Client currentClient) {
-        clientFacade.deleteClient(currentClient.getId());
+    public ResponseEntity<Void> deleteClient(@ModelAttribute("currentClient") Client currentAuthenticatedClient) {
+        clientFacade.deleteClient(currentAuthenticatedClient.getId());
+        logger.info("Deleted client with id: {}", currentAuthenticatedClient.getId());
         return ResponseEntity.ok().build();
     }
 }

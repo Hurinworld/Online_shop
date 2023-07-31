@@ -6,6 +6,7 @@ import com.serhiihurin.shop.online_shop.facades.ShopFacade;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.slf4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import java.util.List;
 @PreAuthorize("hasAnyRole('SHOP_OWNER', 'ADMIN', 'SUPER_ADMIN')")
 @RequiredArgsConstructor
 public class ShopRESTController {
+    private final Logger logger;
     private final ShopFacade shopFacade;
     private final ModelMapper modelMapper;
 
@@ -41,6 +43,7 @@ public class ShopRESTController {
     @PostMapping
     @PreAuthorize("hasAuthority('shop management')")
     public ResponseEntity<ShopResponseDTO> addNewShop(@RequestBody ShopRequestDTO shopRequestDTO) {
+        logger.info("Adding new shop with name: {}", shopRequestDTO.getName());
         return ResponseEntity.ok(
                 modelMapper.map(
                         shopFacade.saveShop(shopRequestDTO),
@@ -52,6 +55,7 @@ public class ShopRESTController {
     @PutMapping
     @PreAuthorize("hasAuthority('shop management')")
     public ResponseEntity<ShopResponseDTO> updateShop(@RequestBody ShopRequestDTO shopRequestDTO) {
+        logger.info("Updating shop with id: {}", shopRequestDTO.getId());
         return ResponseEntity.ok(
                 modelMapper.map(
                         shopFacade.updateShop(shopRequestDTO),
@@ -64,6 +68,7 @@ public class ShopRESTController {
     @PreAuthorize("hasAnyAuthority('shop management', 'super admin info deletion')")
     public ResponseEntity<Void> deleteShop(@PathVariable Long id) {
         shopFacade.deleteShop(id);
+        logger.info("Deleting shop with id: {}", id);
         return ResponseEntity.ok().build();
     }
 }

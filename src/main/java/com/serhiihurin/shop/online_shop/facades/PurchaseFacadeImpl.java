@@ -7,6 +7,7 @@ import com.serhiihurin.shop.online_shop.exception.PurchaseException;
 import com.serhiihurin.shop.online_shop.services.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +17,8 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class PurchaseFacadeImpl implements PurchaseFacade{
+    private final Logger logger;
+
     private final ClientService clientService;
 
     private final ProductService productService;
@@ -75,6 +78,7 @@ public class PurchaseFacadeImpl implements PurchaseFacade{
             productDataService.saveProductData(productData);
             shopService.saveShop(modelMapper.map(shop, ShopRequestDTO.class));
         }
+        logger.info("Successful purchase proceeding. Purchase id: {}", purchase.getId());
         return purchase;
     }
 

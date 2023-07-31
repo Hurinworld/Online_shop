@@ -5,6 +5,7 @@ import com.serhiihurin.shop.online_shop.facades.PurchaseFacadeImpl;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.slf4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -16,12 +17,14 @@ import java.util.List;
 @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'CLIENT')")
 @RequiredArgsConstructor
 public class PurchaseRESTController {
+    private final Logger logger;
     private final PurchaseFacadeImpl purchaseFacade;
     private final ModelMapper modelMapper;
 
     @GetMapping
     @PreAuthorize("hasAuthority('admin view info')")
     public List<PurchaseDTO> getAllPurchases() {
+        logger.info("Admin: getting list of purchases");
         return modelMapper.map(
                 purchaseFacade.getAllPurchases(),
                 new TypeToken<List<PurchaseDTO>>(){}.getType()
@@ -60,6 +63,7 @@ public class PurchaseRESTController {
     @PreAuthorize("hasAuthority('purchase management')")
     public ResponseEntity<Void> deletePurchase(@PathVariable Long id) {
         purchaseFacade.deletePurchase(id);
+        logger.info("Deleting of purchase with id: {}", id);
         return ResponseEntity.ok().build();
     }
 }

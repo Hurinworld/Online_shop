@@ -7,6 +7,7 @@ import com.serhiihurin.shop.online_shop.facades.ProductDataFacade;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.slf4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import java.util.List;
 @PreAuthorize("hasAnyRole('ADMIN', 'SHOP_OWNER', 'CLIENT', 'SUPER_ADMIN')")
 @RequiredArgsConstructor
 public class ProductDataRESTController {
+    private final Logger logger;
     private final ProductDataFacade productDataFacade;
     private final ModelMapper modelMapper;
 
@@ -62,6 +64,7 @@ public class ProductDataRESTController {
                     @RequestParam Long shopId,
                     @RequestBody ProductDataRequestDTO productDataRequestDTO
             ) {
+        logger.info("Added new product data");
         return ResponseEntity.ok(
                 modelMapper.map(
                         productDataFacade.addProductData(shopId, productDataRequestDTO),
@@ -75,6 +78,7 @@ public class ProductDataRESTController {
     public ResponseEntity<ProductDataResponseDTO> updateProductData(
             @RequestBody ProductDataRequestDTO productDataRequestDTO
     ) {
+        logger.info("Updating product data with id: {}", productDataRequestDTO.getId());
         return ResponseEntity.ok(
                 productDataFacade.updateProductData(productDataRequestDTO)
         );
@@ -84,6 +88,7 @@ public class ProductDataRESTController {
     @PreAuthorize("hasAnyAuthority('product data management', 'super admin info deletion')")
     public ResponseEntity<Void> deleteProductData(@PathVariable Long id) {
         productDataFacade.deleteProductData(id);
+        logger.info("Deleting product data with id: {}", id);
         return ResponseEntity.ok().build();
     }
 }
