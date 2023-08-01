@@ -32,7 +32,7 @@ public class ProductDataRESTController {
         );
     }
 
-    //TODO delete verbs from url path //done
+    //TODO refactor path
     @GetMapping("/shop-product-data")
     @PreAuthorize("hasAnyAuthority('shop owner view info', 'admin view info')")
     List<ProductDataResponseDTO> getAllProductDataByShopId(@RequestParam Long id) {
@@ -73,6 +73,7 @@ public class ProductDataRESTController {
         );
     }
 
+    //TODO add id to path
     @PatchMapping
     @PreAuthorize("hasAuthority('product data management')")
     public ResponseEntity<ProductDataResponseDTO> updateProductData(

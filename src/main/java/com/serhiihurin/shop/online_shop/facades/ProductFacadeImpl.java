@@ -14,7 +14,6 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class ProductFacadeImpl implements ProductFacade {
-    //TODO move method calls to facade //done
     private final ProductService productService;
     private final ProductDataService productDataService;
 

@@ -34,7 +34,6 @@ public class ApiExceptionHandler {
 
 
     @ExceptionHandler(value = PurchaseException.class)
-    //TODO return ApiException in return params of method //done
     public ResponseEntity<ApiException> handlePurchaseException(PurchaseException exception) {
         ApiException apiException = new ApiException(
                 exception.getMessage(),

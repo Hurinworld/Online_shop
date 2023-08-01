@@ -20,13 +20,13 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService{
+    //TODO check is it correct
     private final ClientFacade clientFacade;
     private final JWTService jwtService;
     private final AuthenticationManager authenticationManager;
 
     @Override
     public AuthenticationResponse register(RegisterRequest registerRequest) {
-        //TODO move to clientService::createClient //done
         Client client = clientFacade.createClient(registerRequest);
         String jwtToken = jwtService.generateAccessToken(client);
         String refreshToken = jwtService.generateRefreshToken(client);
@@ -53,7 +53,6 @@ public class AuthenticationServiceImpl implements AuthenticationService{
                 .build();
     }
 
-    //TODO change name of method //done
     @Override
     public void updateAccessToken(
             HttpServletRequest request,
@@ -71,6 +70,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
             return;
         }
 
+        //TODO 'this' is redundant here
         Client client = this.clientFacade.getClientByEmail(clientEmail);
 
         String accessToken = jwtService.generateAccessToken(client);

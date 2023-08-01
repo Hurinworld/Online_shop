@@ -4,11 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.PropertySource;
 
-//TODO create exception (later) and userPrincipal controller advices
-//TODO check urls for a hierarchy structure //done
-//TODO create gitignore for target //done
-//TODO delete .prop //done
-//TODO add cors config //done
+//TODO use @Slf4j instead
+//TODO add handler for Exception.class
+//TODO create gitignore for logs
+//TODO add postman collection
 @SpringBootApplication
 public class OnlineShopApplication {
 

@@ -43,18 +43,15 @@ public class ClientRESTController {
         return modelMapper.map(clientFacade.getClient(id), ClientResponseDTO.class);
     }
 
-    //TODO rename path to "/me" //done
-    //TODO divide into 2 endpoints //done
     @GetMapping("/me")
     @PreAuthorize("hasAnyAuthority('admin view info', 'client view info', 'shop owner view info')")
+    //TODO remove model attribute
     public ClientResponseDTO getClient(@ModelAttribute("currentClient") Client currentAuthenticatedClient) {
         return modelMapper.map(
                 clientFacade.getClient(currentAuthenticatedClient.getId()), ClientResponseDTO.class
         );
     }
-//TODO delete //done
 
-//TODO add usernameUpdate //done
     @PatchMapping("/info")
     @PreAuthorize("hasAuthority('account management')")
     public ResponseEntity<ClientResponseDTO> updateClient(@RequestBody ClientRequestDTO clientRequestDTO) {
@@ -67,15 +64,13 @@ public class ClientRESTController {
         );
     }
 
-    //TODO change http-method to put //done
     @PutMapping("/info/username")
     @PreAuthorize("hasAuthority('account management')")
-    //TODO retrieve userDetails for id //done
-    //TODO change requestBody to requestParam(username) //done
     public ResponseEntity<ClientResponseDTO> updateUsername(
             @ModelAttribute("currentClient") Client currentAuthenticatedClient,
             @RequestParam String email
     ) {
+        //TODO move logging to facade
         logger.info("Updating client account username with id: {}", currentAuthenticatedClient.getId());
         return ResponseEntity.ok(clientFacade.updateUsername(currentAuthenticatedClient, email));
     }
@@ -83,9 +78,12 @@ public class ClientRESTController {
     @DeleteMapping
     @PreAuthorize("hasAuthority('super admin info deletion')")
     public ResponseEntity<Void> deleteClient(@RequestParam(required = false) Long id) {
-        if (id == null) {
-            throw new ApiRequestException("Invalid URL");
-        }
+//        if (id == null) {
+//            throw new ApiRequestException("Invalid URL");
+//        }
+        //FIXME 401 exception
+        if(2==2)
+        throw new RuntimeException();
         Client client = clientFacade.getClient(id);
         clientFacade.deleteClient(client.getId());
         logger.info("Super admin: deleted client with id: {}", id);
