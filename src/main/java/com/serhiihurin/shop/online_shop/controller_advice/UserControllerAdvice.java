@@ -1,6 +1,6 @@
 package com.serhiihurin.shop.online_shop.controller_advice;
 
-import com.serhiihurin.shop.online_shop.entity.Client;
+import com.serhiihurin.shop.online_shop.entity.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -9,14 +9,14 @@ import org.springframework.web.context.request.WebRequest;
 import java.security.Principal;
 
 @ControllerAdvice
-public class ClientControllerAdvice {
+public class UserControllerAdvice {
 
-    @ModelAttribute("currentClient")
-    public Client getCurrentClient(WebRequest request, Principal principal) {
+    @ModelAttribute
+    public User getCurrentUser(WebRequest request, Principal principal) {
         if (request == null || !(principal instanceof Authentication authentication)) {
             return null;
         }
 
-        return (Client) authentication.getPrincipal();
+        return (User) authentication.getPrincipal();
     }
 }

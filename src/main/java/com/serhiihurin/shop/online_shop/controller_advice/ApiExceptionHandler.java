@@ -5,7 +5,7 @@ import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
 import com.serhiihurin.shop.online_shop.exception.PurchaseException;
 import com.serhiihurin.shop.online_shop.exception.UnauthorizedAccessException;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -16,9 +16,8 @@ import java.time.ZonedDateTime;
 
 @ControllerAdvice
 @RequiredArgsConstructor
+@Slf4j
 public class ApiExceptionHandler {
-    private final Logger logger;
-
     @ExceptionHandler(value = ApiRequestException.class)
     public ResponseEntity<ApiException> handleApiRequestException(ApiRequestException exception) {
         ApiException apiException = new ApiException(
@@ -26,7 +25,7 @@ public class ApiExceptionHandler {
                 HttpStatus.BAD_REQUEST,
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
-        logger.warn("ApiRequestException caught with HTTP status: {} and message: {}",
+        log.warn("ApiRequestException caught with HTTP status: {} and message: {}",
                 HttpStatus.BAD_REQUEST,
                 exception.getMessage());
         return new ResponseEntity<>(apiException, HttpStatus.BAD_REQUEST);
@@ -40,7 +39,7 @@ public class ApiExceptionHandler {
                 HttpStatus.CONFLICT,
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
-        logger.warn("PurchaseException caught with HTTP status: {} and message: {}",
+        log.warn("PurchaseException caught with HTTP status: {} and message: {}",
                 HttpStatus.CONFLICT,
                 exception.getMessage());
         return new ResponseEntity<>(apiException, HttpStatus.CONFLICT);
@@ -53,9 +52,22 @@ public class ApiExceptionHandler {
                 HttpStatus.FORBIDDEN,
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
-        logger.warn("UnauthorizedAccessException caught with HTTP status: {} and message: {}",
+        log.warn("UnauthorizedAccessException caught with HTTP status: {} and message: {}",
                 HttpStatus.FORBIDDEN,
                 exception.getMessage());
         return new ResponseEntity<>(apiException, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(value = Exception.class)
+    public ResponseEntity<ApiException> handleException(Exception exception) {
+        ApiException apiException = new ApiException(
+                exception.getMessage(),
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+        log.warn("Exception caught with HTTP status: {} and message: {}",
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                exception.getMessage());
+        return new ResponseEntity<>(apiException, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

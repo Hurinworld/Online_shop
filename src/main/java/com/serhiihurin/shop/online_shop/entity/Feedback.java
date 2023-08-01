@@ -23,7 +23,7 @@ public class Feedback {
 
     @ManyToOne
     @JoinColumn(name = "client_id")
-    private Client client;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "product_id")

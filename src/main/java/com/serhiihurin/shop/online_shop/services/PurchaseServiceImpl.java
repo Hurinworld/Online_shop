@@ -20,7 +20,7 @@ public class PurchaseServiceImpl implements PurchaseService{
 
     @Override
     public List<Purchase> getPurchasesByClientId(Long id) {
-        return purchaseRepository.getPurchasesByClientId(id);
+        return purchaseRepository.getPurchasesByUserId(id);
     }
 
     @Override

@@ -28,7 +28,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public List<Feedback> getFeedbacksByClientId(Long id) {
-        return feedbackRepository.getFeedbacksByClientId(id);
+        return feedbackRepository.getFeedbacksByUserId(id);
     }
 
     @Override

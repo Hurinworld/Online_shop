@@ -1,8 +1,8 @@
 package com.serhiihurin.shop.online_shop.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.serhiihurin.shop.online_shop.entity.Client;
-import com.serhiihurin.shop.online_shop.facades.ClientFacade;
+import com.serhiihurin.shop.online_shop.entity.User;
+import com.serhiihurin.shop.online_shop.facades.UserFacade;
 import com.serhiihurin.shop.online_shop.request.AuthenticationRequest;
 import com.serhiihurin.shop.online_shop.request.RegisterRequest;
 import com.serhiihurin.shop.online_shop.response.AuthenticationResponse;
@@ -21,15 +21,15 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService{
     //TODO check is it correct
-    private final ClientFacade clientFacade;
+    private final UserFacade userFacade;
     private final JWTService jwtService;
     private final AuthenticationManager authenticationManager;
 
     @Override
     public AuthenticationResponse register(RegisterRequest registerRequest) {
-        Client client = clientFacade.createClient(registerRequest);
-        String jwtToken = jwtService.generateAccessToken(client);
-        String refreshToken = jwtService.generateRefreshToken(client);
+        User user = userFacade.createUser(registerRequest);
+        String jwtToken = jwtService.generateAccessToken(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
@@ -44,9 +44,9 @@ public class AuthenticationServiceImpl implements AuthenticationService{
                         request.getPassword()
                 )
         );
-        Client client = clientFacade.getClientByEmail(request.getEmail());
-        String jwtToken = jwtService.generateAccessToken(client);
-        String refreshToken = jwtService.generateRefreshToken(client);
+        User user = userFacade.getUserByEmail(request.getEmail());
+        String jwtToken = jwtService.generateAccessToken(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
@@ -70,10 +70,10 @@ public class AuthenticationServiceImpl implements AuthenticationService{
             return;
         }
 
-        //TODO 'this' is redundant here
-        Client client = this.clientFacade.getClientByEmail(clientEmail);
+        //TODO 'this' is redundant here //done
+        User user = userFacade.getUserByEmail(clientEmail);
 
-        String accessToken = jwtService.generateAccessToken(client);
+        String accessToken = jwtService.generateAccessToken(user);
         AuthenticationResponse authenticationResponse = AuthenticationResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)

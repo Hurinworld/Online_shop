@@ -5,9 +5,9 @@ import com.serhiihurin.shop.online_shop.dto.ProductDataRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.ProductDataResponseDTO;
 import com.serhiihurin.shop.online_shop.facades.ProductDataFacade;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
-import org.slf4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +18,8 @@ import java.util.List;
 @RequestMapping("/online-shop/products-data")
 @PreAuthorize("hasAnyRole('ADMIN', 'SHOP_OWNER', 'CLIENT', 'SUPER_ADMIN')")
 @RequiredArgsConstructor
+@Slf4j
 public class ProductDataRESTController {
-    private final Logger logger;
     private final ProductDataFacade productDataFacade;
     private final ModelMapper modelMapper;
 
@@ -32,8 +32,8 @@ public class ProductDataRESTController {
         );
     }
 
-    //TODO refactor path
-    @GetMapping("/shop-product-data")
+    //TODO refactor path //done
+    @GetMapping("/shop")
     @PreAuthorize("hasAnyAuthority('shop owner view info', 'admin view info')")
     List<ProductDataResponseDTO> getAllProductDataByShopId(@RequestParam Long id) {
         return modelMapper.map(
@@ -64,7 +64,7 @@ public class ProductDataRESTController {
                     @RequestParam Long shopId,
                     @RequestBody ProductDataRequestDTO productDataRequestDTO
             ) {
-        logger.info("Added new product data");
+        log.info("Added new product data");
         return ResponseEntity.ok(
                 modelMapper.map(
                         productDataFacade.addProductData(shopId, productDataRequestDTO),
@@ -79,7 +79,7 @@ public class ProductDataRESTController {
     public ResponseEntity<ProductDataResponseDTO> updateProductData(
             @RequestBody ProductDataRequestDTO productDataRequestDTO
     ) {
-        logger.info("Updating product data with id: {}", productDataRequestDTO.getId());
+        log.info("Updating product data with id: {}", productDataRequestDTO.getId());
         return ResponseEntity.ok(
                 productDataFacade.updateProductData(productDataRequestDTO)
         );
@@ -89,7 +89,7 @@ public class ProductDataRESTController {
     @PreAuthorize("hasAnyAuthority('product data management', 'super admin info deletion')")
     public ResponseEntity<Void> deleteProductData(@PathVariable Long id) {
         productDataFacade.deleteProductData(id);
-        logger.info("Deleting product data with id: {}", id);
+        log.info("Deleting product data with id: {}", id);
         return ResponseEntity.ok().build();
     }
 }

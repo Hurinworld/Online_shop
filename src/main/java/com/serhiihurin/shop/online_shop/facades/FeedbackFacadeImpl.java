@@ -1,11 +1,11 @@
 package com.serhiihurin.shop.online_shop.facades;
 
-import com.serhiihurin.shop.online_shop.entity.Client;
 import com.serhiihurin.shop.online_shop.entity.Feedback;
 import com.serhiihurin.shop.online_shop.entity.ProductData;
 import com.serhiihurin.shop.online_shop.dto.FeedbackRequestDTO;
+import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
-import com.serhiihurin.shop.online_shop.services.ClientService;
+import com.serhiihurin.shop.online_shop.services.UserService;
 import com.serhiihurin.shop.online_shop.services.FeedbackService;
 import com.serhiihurin.shop.online_shop.services.ProductDataService;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FeedbackFacadeImpl implements FeedbackFacade {
     private final FeedbackService feedbackService;
-    private final ClientService clientService;
+    private final UserService userService;
     private final ProductDataService productDataService;
 
     @Override
@@ -41,7 +41,7 @@ public class FeedbackFacadeImpl implements FeedbackFacade {
 
     @Override
     public List<Feedback> getAllFeedbacksByClient(Long id) {
-        if (clientService.getClient(id) == null) {
+        if (userService.getUser(id) == null) {
             throw new ApiRequestException("Could not find feedbacks of this client");
         }
         return feedbackService.getFeedbacksByClientId(id);
@@ -50,11 +50,11 @@ public class FeedbackFacadeImpl implements FeedbackFacade {
     @Override
     public Feedback addFeedback(Long clientId, FeedbackRequestDTO feedbackRequestDto) {
         Feedback feedback = new Feedback(feedbackRequestDto.getText(), feedbackRequestDto.getRate());
-        Client client = clientService.getClient(clientId);
+        User user = userService.getUser(clientId);
         ProductData productData = productDataService.getProductData(feedbackRequestDto.getProductDataId());
 
         feedback.setTime(LocalDateTime.now());
-        feedback.setClient(client);
+        feedback.setUser(user);
         feedback.setProductData(productData);
 
         return feedbackService.saveFeedback(feedback);

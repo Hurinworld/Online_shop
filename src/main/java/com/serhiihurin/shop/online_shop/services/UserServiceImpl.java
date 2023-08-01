@@ -1,0 +1,88 @@
+package com.serhiihurin.shop.online_shop.services;
+
+import com.serhiihurin.shop.online_shop.dao.UserRepository;
+import com.serhiihurin.shop.online_shop.dto.UserRequestDTO;
+import com.serhiihurin.shop.online_shop.entity.User;
+import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
+import com.serhiihurin.shop.online_shop.request.RegisterRequest;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class UserServiceImpl implements UserService {
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public User getUser(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ApiRequestException("Could not find user"));
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new ApiRequestException("Could not find user"));
+    }
+
+    @Override
+    public User createUser(RegisterRequest registerRequest) {
+        User user = User.builder()
+                .firstName(registerRequest.getFirstName())
+                .lastName(registerRequest.getLastName())
+                .cash(registerRequest.getCash())
+                .email(registerRequest.getEmail())
+                .password(passwordEncoder.encode(registerRequest.getPassword()))
+                .role(registerRequest.getRole())
+                .build();
+        return userRepository.save(user);
+    }
+
+
+    @Override
+    public void saveUser(User user) {
+        userRepository.save(user);
+    }
+
+    @Override
+    public User updateUser(UserRequestDTO userRequestDTO, User user) {
+        if (userRequestDTO.getFirstName() != null) {
+            user.setFirstName(userRequestDTO.getFirstName());
+        }
+        if (userRequestDTO.getLastName() != null) {
+            user.setLastName(userRequestDTO.getLastName());
+        }
+        if (userRequestDTO.getCash() != null) {
+            user.setCash(userRequestDTO.getCash());
+        }
+        if (userRequestDTO.getPassword() != null) {
+            user.setPassword(userRequestDTO.getPassword());
+        }
+
+        return userRepository.save(user);
+    }
+
+    //TODO work only with username in args //done
+    @Override
+    public User updateUsername(User currenAuthenticatedUser, String email) {
+        if (!currenAuthenticatedUser.getEmail().equals(email)) {
+            currenAuthenticatedUser.setEmail(email);
+        }
+        return userRepository.save(currenAuthenticatedUser);
+    }
+
+
+    @Override
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
+}

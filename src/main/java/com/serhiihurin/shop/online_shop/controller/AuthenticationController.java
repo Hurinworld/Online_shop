@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
-import org.slf4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,15 +20,15 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/online-shop/auth")
 @RequiredArgsConstructor
+@Slf4j
 public class AuthenticationController {
-    private final Logger logger;
     private final AuthenticationService authenticationService;
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody RegisterRequest request
     ) {
-        logger.info("Registering new client with email: {}", request.getEmail());
+        log.info("Registering new client with email: {}", request.getEmail());
         return ResponseEntity.ok(authenticationService.register(request));
     }
 
@@ -37,12 +37,12 @@ public class AuthenticationController {
             @RequestBody AuthenticationRequest request
     ) {
         AuthenticationResponse response = authenticationService.authenticate(request);
-        logger.info("Log in to system with account email: {}", request.getEmail());
+        log.info("Log in to system with account email: {}", request.getEmail());
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/access-token")
-    public void refreshToken(
+    public void updateAccessToken(
             HttpServletRequest request,
             HttpServletResponse response
     ) throws IOException {

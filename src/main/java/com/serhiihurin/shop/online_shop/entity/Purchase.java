@@ -24,7 +24,7 @@ public class Purchase {
 
     @ManyToOne
     @JoinColumn(name = "client_id")
-    private Client client;
+    private User user;
 
     public Purchase(LocalDateTime time) {
         this.time = time;
