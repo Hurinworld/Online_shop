@@ -5,7 +5,6 @@ import com.serhiihurin.shop.online_shop.dto.ProductDataRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.ProductDataResponseDTO;
 import com.serhiihurin.shop.online_shop.facades.ProductDataFacade;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +17,6 @@ import java.util.List;
 @RequestMapping("/online-shop/products-data")
 @PreAuthorize("hasAnyRole('ADMIN', 'SHOP_OWNER', 'CLIENT', 'SUPER_ADMIN')")
 @RequiredArgsConstructor
-@Slf4j
 public class ProductDataRESTController {
     private final ProductDataFacade productDataFacade;
     private final ModelMapper modelMapper;
@@ -64,7 +62,6 @@ public class ProductDataRESTController {
                     @RequestParam Long shopId,
                     @RequestBody ProductDataRequestDTO productDataRequestDTO
             ) {
-        log.info("Added new product data");
         return ResponseEntity.ok(
                 modelMapper.map(
                         productDataFacade.addProductData(shopId, productDataRequestDTO),
@@ -79,7 +76,6 @@ public class ProductDataRESTController {
     public ResponseEntity<ProductDataResponseDTO> updateProductData(
             @RequestBody ProductDataRequestDTO productDataRequestDTO
     ) {
-        log.info("Updating product data with id: {}", productDataRequestDTO.getId());
         return ResponseEntity.ok(
                 productDataFacade.updateProductData(productDataRequestDTO)
         );
@@ -89,7 +85,6 @@ public class ProductDataRESTController {
     @PreAuthorize("hasAnyAuthority('product data management', 'super admin info deletion')")
     public ResponseEntity<Void> deleteProductData(@PathVariable Long id) {
         productDataFacade.deleteProductData(id);
-        log.info("Deleting product data with id: {}", id);
         return ResponseEntity.ok().build();
     }
 }

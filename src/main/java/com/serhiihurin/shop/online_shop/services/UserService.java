@@ -17,7 +17,7 @@ public interface UserService {
 
     void saveUser(User user);
 
-    User updateUser(UserRequestDTO userRequestDTO, User user);
+    User updateUser(User currentAuthenticatedUser, UserRequestDTO userRequestDTO);
 
     User updateUsername(User currenAuthenticatedUser, String email);
 

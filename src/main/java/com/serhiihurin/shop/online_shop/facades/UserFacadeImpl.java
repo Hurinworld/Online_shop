@@ -7,6 +7,7 @@ import com.serhiihurin.shop.online_shop.request.RegisterRequest;
 import com.serhiihurin.shop.online_shop.services.UserService;
 import com.serhiihurin.shop.online_shop.services.JWTService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class UserFacadeImpl implements UserFacade {
     private final UserService userService;
     private final JWTService jwtService;
@@ -21,11 +23,13 @@ public class UserFacadeImpl implements UserFacade {
 
     @Override
     public List<User> getAllUsers() {
+        log.info("Admin: getting all users info");
         return userService.getAllUsers();
     }
 
     @Override
     public User getUser(Long id) {
+        log.info("Admin: getting client info");
         return userService.getUser(id);
     }
 
@@ -43,9 +47,9 @@ public class UserFacadeImpl implements UserFacade {
     //TODO change this update to patch format //done
     //TODO reformat this method for facade style //done
     @Override
-    public User updateUser(UserRequestDTO userRequestDTO) {
-        User oldUser = userService.getUser(userRequestDTO.getId());
-        return userService.updateUser(userRequestDTO, oldUser);
+    public User updateUser(User currentAuthenticatedUser, UserRequestDTO userRequestDTO) {
+        log.info("Updating client account information with id: {}", currentAuthenticatedUser.getId());
+        return userService.updateUser(currentAuthenticatedUser, userRequestDTO);
     }
 
     //TODO work only with username in args //done
@@ -60,6 +64,7 @@ public class UserFacadeImpl implements UserFacade {
         clientResponseDTO.setAccessToken(jwtService.generateAccessToken(currentAuthenticatedUser));
         clientResponseDTO.setRefreshToken(jwtService.generateRefreshToken(currentAuthenticatedUser));
 
+        log.info("Updating client account username with id: {}", currentAuthenticatedUser.getId());
         return clientResponseDTO;
     }
 

@@ -2,7 +2,6 @@ package com.serhiihurin.shop.online_shop.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.serhiihurin.shop.online_shop.entity.User;
-import com.serhiihurin.shop.online_shop.facades.UserFacade;
 import com.serhiihurin.shop.online_shop.request.AuthenticationRequest;
 import com.serhiihurin.shop.online_shop.request.RegisterRequest;
 import com.serhiihurin.shop.online_shop.response.AuthenticationResponse;
@@ -20,14 +19,14 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService{
-    //TODO check is it correct
-    private final UserFacade userFacade;
+    //TODO check is it correct //done
+    private final UserService userService;
     private final JWTService jwtService;
     private final AuthenticationManager authenticationManager;
 
     @Override
     public AuthenticationResponse register(RegisterRequest registerRequest) {
-        User user = userFacade.createUser(registerRequest);
+        User user = userService.createUser(registerRequest);
         String jwtToken = jwtService.generateAccessToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
         return AuthenticationResponse.builder()
@@ -44,7 +43,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
                         request.getPassword()
                 )
         );
-        User user = userFacade.getUserByEmail(request.getEmail());
+        User user = userService.getUserByEmail(request.getEmail());
         String jwtToken = jwtService.generateAccessToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
         return AuthenticationResponse.builder()
@@ -71,7 +70,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
         }
 
         //TODO 'this' is redundant here //done
-        User user = userFacade.getUserByEmail(clientEmail);
+        User user = userService.getUserByEmail(clientEmail);
 
         String accessToken = jwtService.generateAccessToken(user);
         AuthenticationResponse authenticationResponse = AuthenticationResponse.builder()

@@ -16,7 +16,7 @@ public interface UserFacade {
 
     User createUser(RegisterRequest registerRequest);
 
-    User updateUser(UserRequestDTO userRequestDTO);
+    User updateUser(User currentAuthenticatedUser, UserRequestDTO userRequestDTO);
 
     UserResponseDTO updateUsername(User currentAuthenticatedUser, String email);
 

@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserRequestDTO {
-    private Long id;
     private String firstName;
     private String lastName;
     private Double cash;

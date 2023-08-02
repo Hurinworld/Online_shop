@@ -33,6 +33,7 @@ public class PurchaseFacadeImpl implements PurchaseFacade{
 
     @Override
     public List<Purchase> getAllPurchases() {
+        log.info("Admin: getting list of purchases");
         return purchaseService.getAllPurchases();
     }
 
@@ -83,6 +84,7 @@ public class PurchaseFacadeImpl implements PurchaseFacade{
 
     @Override
     public void deletePurchase(Long id) {
+        log.info("Deleting of purchase with id: {}", id);
         purchaseService.deletePurchase(id);
     }
 }

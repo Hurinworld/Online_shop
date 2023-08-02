@@ -54,21 +54,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(UserRequestDTO userRequestDTO, User user) {
+    public User updateUser(User currentAuthenticatedUser, UserRequestDTO userRequestDTO) {
         if (userRequestDTO.getFirstName() != null) {
-            user.setFirstName(userRequestDTO.getFirstName());
+            currentAuthenticatedUser.setFirstName(userRequestDTO.getFirstName());
         }
         if (userRequestDTO.getLastName() != null) {
-            user.setLastName(userRequestDTO.getLastName());
+            currentAuthenticatedUser.setLastName(userRequestDTO.getLastName());
         }
         if (userRequestDTO.getCash() != null) {
-            user.setCash(userRequestDTO.getCash());
+            currentAuthenticatedUser.setCash(userRequestDTO.getCash());
         }
         if (userRequestDTO.getPassword() != null) {
-            user.setPassword(userRequestDTO.getPassword());
+            currentAuthenticatedUser.setPassword(userRequestDTO.getPassword());
         }
 
-        return userRepository.save(user);
+        return userRepository.save(currentAuthenticatedUser);
     }
 
     //TODO work only with username in args //done

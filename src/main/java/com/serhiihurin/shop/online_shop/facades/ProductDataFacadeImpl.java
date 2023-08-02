@@ -10,6 +10,7 @@ import com.serhiihurin.shop.online_shop.services.ProductDataService;
 import com.serhiihurin.shop.online_shop.services.ProductService;
 import com.serhiihurin.shop.online_shop.services.ShopService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,7 @@ import java.util.stream.IntStream;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class ProductDataFacadeImpl implements ProductDataFacade {
     private final ProductDataService productDataService;
     private final ShopService shopService;
@@ -39,7 +41,7 @@ public class ProductDataFacadeImpl implements ProductDataFacade {
         if(productDataService.getProductData(productDataId) == null) {
             throw new ApiRequestException("Could not find the data");
         }
-        return productService.findProductsByProductDataId(productDataId);
+        return productService.getProductsByProductDataId(productDataId);
     }
 
     @Override
@@ -73,6 +75,7 @@ public class ProductDataFacadeImpl implements ProductDataFacade {
                 })
                 .forEach(productService::saveProduct);
 
+        log.info("Added new product data with id: {}", savedProductData.getId());
         return savedProductData;
     }
 
@@ -97,11 +100,13 @@ public class ProductDataFacadeImpl implements ProductDataFacade {
 
         productDataResponseDTO.setShopId(productData.getShop().getId());
 
+        log.info("Updated product data with id: {}", productDataRequestDTO.getId());
         return productDataResponseDTO;
     }
 
     @Override
     public void deleteProductData(Long id) {
+        log.info("Deleting product data with id: {}", id);
         productDataService.deleteProductData(id);
     }
 }

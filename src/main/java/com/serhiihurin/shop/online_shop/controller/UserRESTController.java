@@ -26,7 +26,6 @@ public class UserRESTController {
     @GetMapping
     @PreAuthorize("hasAuthority('admin view info')")
     public List<UserResponseDTO> getAllUsers() {
-        log.info("Admin: getting all users info");
         return modelMapper.map(
                 userFacade.getAllUsers(),
                 new TypeToken<List<UserResponseDTO>>(){}.getType()
@@ -36,7 +35,6 @@ public class UserRESTController {
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('admin view info')")
     public UserResponseDTO getUser(@PathVariable Long id) {
-        log.info("Admin: getting client info");
         return modelMapper.map(userFacade.getUser(id), UserResponseDTO.class);
     }
 
@@ -51,11 +49,11 @@ public class UserRESTController {
 
     @PatchMapping("/info")
     @PreAuthorize("hasAuthority('account management')")
-    public ResponseEntity<UserResponseDTO> updateUser(@RequestBody UserRequestDTO userRequestDTO) {
-        log.info("Updating client account information with id: {}", userRequestDTO.getId());
+    public ResponseEntity<UserResponseDTO> updateUser(User currentAuthenticatedUser,
+                                                      @RequestBody UserRequestDTO userRequestDTO) {
         return ResponseEntity.ok(
                 modelMapper.map(
-                        userFacade.updateUser(userRequestDTO),
+                        userFacade.updateUser(currentAuthenticatedUser, userRequestDTO),
                         UserResponseDTO.class
                 )
         );
@@ -67,8 +65,7 @@ public class UserRESTController {
             User currentAuthenticatedUser,
             @RequestParam String email
     ) {
-        //TODO move logging to facade
-        log.info("Updating client account username with id: {}", currentAuthenticatedUser.getId());
+        //TODO move logging to facade //done
         return ResponseEntity.ok(userFacade.updateUsername(currentAuthenticatedUser, email));
     }
 
@@ -79,10 +76,11 @@ public class UserRESTController {
 //            throw new ApiRequestException("Invalid URL");
 //        }
         //FIXME 401 exception
-        if(2==2)
-        throw new RuntimeException();
-        User user = userFacade.getUser(id);
-        userFacade.deleteUser(user.getId());
+//        if(2==2)
+//        throw new RuntimeException();
+//        User user = userFacade.getUser(id);
+        log.info("got here");
+        userFacade.deleteUser(id);
         log.info("Super admin: deleted user with id: {}", id);
         return ResponseEntity.ok().build();
     }
