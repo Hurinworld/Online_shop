@@ -42,6 +42,7 @@ public class UserRESTController {
     @PreAuthorize("hasAnyAuthority('admin view info', 'client view info', 'shop owner view info')")
     //TODO remove model attribute //done
     public UserResponseDTO getUser(User currentAuthenticatedUser) {
+        if (2==2) throw new RuntimeException();
         return modelMapper.map(
                 userFacade.getUser(currentAuthenticatedUser.getId()), UserResponseDTO.class
         );
