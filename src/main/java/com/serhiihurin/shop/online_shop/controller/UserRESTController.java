@@ -40,9 +40,7 @@ public class UserRESTController {
 
     @GetMapping("/me")
     @PreAuthorize("hasAnyAuthority('admin view info', 'client view info', 'shop owner view info')")
-    //TODO remove model attribute //done
     public UserResponseDTO getUser(User currentAuthenticatedUser) {
-        if (2==2) throw new RuntimeException();
         return modelMapper.map(
                 userFacade.getUser(currentAuthenticatedUser.getId()), UserResponseDTO.class
         );
@@ -66,19 +64,16 @@ public class UserRESTController {
             User currentAuthenticatedUser,
             @RequestParam String email
     ) {
-        //TODO move logging to facade //done
         return ResponseEntity.ok(userFacade.updateUsername(currentAuthenticatedUser, email));
     }
 
     @DeleteMapping
     @PreAuthorize("hasAuthority('super admin info deletion')")
     public ResponseEntity<Void> deleteUser(@RequestParam(required = false) Long id) {
+        //TODO resolve
 //        if (id == null) {
 //            throw new ApiRequestException("Invalid URL");
 //        }
-        //FIXME 401 exception
-//        if(2==2)
-//        throw new RuntimeException();
 //        User user = userFacade.getUser(id);
         log.info("got here");
         userFacade.deleteUser(id);

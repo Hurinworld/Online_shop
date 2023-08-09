@@ -30,6 +30,7 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    //TODO use user_id instead of client_id
     @ManyToMany
     @JoinTable(name = "clients_products",
             joinColumns = @JoinColumn(name = "client_id"),

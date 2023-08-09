@@ -58,6 +58,7 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(apiException, HttpStatus.FORBIDDEN);
     }
 
+    //TODO uncomment
 //    @ExceptionHandler(value = Exception.class)
 //    public ResponseEntity<ApiException> handleException(Exception exception) {
 //        ApiException apiException = new ApiException(

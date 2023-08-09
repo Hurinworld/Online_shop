@@ -30,7 +30,6 @@ public class ProductDataRESTController {
         );
     }
 
-    //TODO refactor path //done
     @GetMapping("/shop")
     @PreAuthorize("hasAnyAuthority('shop owner view info', 'admin view info')")
     List<ProductDataResponseDTO> getAllProductDataByShopId(@RequestParam Long id) {
@@ -70,7 +69,7 @@ public class ProductDataRESTController {
         );
     }
 
-    //TODO add id to path
+    //TODO add id to path!
     @PatchMapping
     @PreAuthorize("hasAuthority('product data management')")
     public ResponseEntity<ProductDataResponseDTO> updateProductData(

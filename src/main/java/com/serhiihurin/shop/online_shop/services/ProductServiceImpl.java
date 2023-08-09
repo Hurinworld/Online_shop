@@ -23,7 +23,6 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.getProductsByProductDataId(id);
     }
 
-    //TODO refactor //done
     @Override
     public Product getProduct(Long id) {
         return productRepository.findById(id)

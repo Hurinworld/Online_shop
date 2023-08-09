@@ -19,7 +19,6 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService{
-    //TODO check is it correct //done
     private final UserService userService;
     private final JWTService jwtService;
     private final AuthenticationManager authenticationManager;
@@ -69,7 +68,6 @@ public class AuthenticationServiceImpl implements AuthenticationService{
             return;
         }
 
-        //TODO 'this' is redundant here //done
         User user = userService.getUserByEmail(clientEmail);
 
         String accessToken = jwtService.generateAccessToken(user);

@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(currentAuthenticatedUser);
     }
 
-    //TODO work only with username in args //done
+
     @Override
     public User updateUsername(User currenAuthenticatedUser, String email) {
         if (!currenAuthenticatedUser.getEmail().equals(email)) {
