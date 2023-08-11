@@ -14,3 +14,22 @@ application:
       expiration: 86400000 #day
       refresh-token:
         expiration: 604800000 # 7 days
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+    prometheus:
+      enabled: true
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+  metrics:
+    distribution:
+      percentiles-histogram:
+        "[http.server.request]": true

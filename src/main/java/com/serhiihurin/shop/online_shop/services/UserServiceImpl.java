@@ -5,6 +5,7 @@ import com.serhiihurin.shop.online_shop.dto.UserRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
 import com.serhiihurin.shop.online_shop.request.RegisterRequest;
+import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Timed("getting_user")
     public User getUser(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ApiRequestException("Could not find user"));

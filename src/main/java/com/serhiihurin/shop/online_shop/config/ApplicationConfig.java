@@ -1,6 +1,8 @@
 package com.serhiihurin.shop.online_shop.config;
 
 import com.serhiihurin.shop.online_shop.dao.UserRepository;
+import io.micrometer.core.aop.TimedAspect;
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -50,5 +52,10 @@ public class ApplicationConfig {
         modelMapper.getConfiguration()
                 .setMatchingStrategy(MatchingStrategies.LOOSE);
         return modelMapper;
+    }
+
+    @Bean
+    public TimedAspect timedAspect(MeterRegistry meterRegistry) {
+        return new TimedAspect(meterRegistry);
     }
 }

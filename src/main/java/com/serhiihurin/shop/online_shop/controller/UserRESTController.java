@@ -5,6 +5,7 @@ import com.serhiihurin.shop.online_shop.dto.UserRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
 import com.serhiihurin.shop.online_shop.facades.UserFacade;
+import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -34,12 +35,14 @@ public class UserRESTController {
         );
     }
 
+    @Timed("user_info_endpoint_admin")
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('admin view info')")
     public UserResponseDTO getUser(@PathVariable Long id) {
         return modelMapper.map(userFacade.getUser(id), UserResponseDTO.class);
     }
 
+    @Timed("user_info_endpoint")
     @GetMapping("/me")
     @PreAuthorize("hasAnyAuthority('admin view info', 'client view info', 'shop owner view info')")
     public UserResponseDTO getUser(User currentAuthenticatedUser) {
