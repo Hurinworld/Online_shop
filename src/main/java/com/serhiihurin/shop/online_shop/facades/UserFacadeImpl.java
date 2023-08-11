@@ -44,15 +44,12 @@ public class UserFacadeImpl implements UserFacade {
     }
 
 
-    //TODO change this update to patch format //done
-    //TODO reformat this method for facade style //done
     @Override
     public User updateUser(User currentAuthenticatedUser, UserRequestDTO userRequestDTO) {
         log.info("Updating client account information with id: {}", currentAuthenticatedUser.getId());
         return userService.updateUser(currentAuthenticatedUser, userRequestDTO);
     }
 
-    //TODO work only with username in args //done
     @Override
     public UserResponseDTO updateUsername(User currentAuthenticatedUser, String email) {
         currentAuthenticatedUser = userService.updateUsername(currentAuthenticatedUser, email);

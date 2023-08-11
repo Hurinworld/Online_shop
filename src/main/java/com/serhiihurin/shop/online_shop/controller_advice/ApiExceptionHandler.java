@@ -58,16 +58,17 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(apiException, HttpStatus.FORBIDDEN);
     }
 
-    @ExceptionHandler(value = Exception.class)
-    public ResponseEntity<ApiException> handleException(Exception exception) {
-        ApiException apiException = new ApiException(
-                exception.getMessage(),
-                HttpStatus.INTERNAL_SERVER_ERROR,
-                ZonedDateTime.now(ZoneId.of("Z"))
-        );
-        log.warn("Exception caught with HTTP status: {} and message: {}",
-                HttpStatus.INTERNAL_SERVER_ERROR,
-                exception.getMessage());
-        return new ResponseEntity<>(apiException, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    //TODO uncomment
+//    @ExceptionHandler(value = Exception.class)
+//    public ResponseEntity<ApiException> handleException(Exception exception) {
+//        ApiException apiException = new ApiException(
+//                exception.getMessage(),
+//                HttpStatus.INTERNAL_SERVER_ERROR,
+//                ZonedDateTime.now(ZoneId.of("Z"))
+//        );
+//        log.warn("Exception caught with HTTP status: {} and message: {}",
+//                HttpStatus.INTERNAL_SERVER_ERROR,
+//                exception.getMessage());
+//        return new ResponseEntity<>(apiException, HttpStatus.INTERNAL_SERVER_ERROR);
+//    }
 }

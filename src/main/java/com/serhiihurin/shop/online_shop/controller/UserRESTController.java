@@ -3,7 +3,6 @@ package com.serhiihurin.shop.online_shop.controller;
 import com.serhiihurin.shop.online_shop.dto.UserResponseDTO;
 import com.serhiihurin.shop.online_shop.dto.UserRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.User;
-import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
 import com.serhiihurin.shop.online_shop.facades.UserFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,8 +28,7 @@ public class UserRESTController {
     public List<UserResponseDTO> getAllUsers() {
         return modelMapper.map(
                 userFacade.getAllUsers(),
-                new TypeToken<List<UserResponseDTO>>() {
-                }.getType()
+                new TypeToken<List<UserResponseDTO>>(){}.getType()
         );
     }
 
@@ -72,10 +70,12 @@ public class UserRESTController {
     @DeleteMapping
     @PreAuthorize("hasAuthority('super admin info deletion')")
     public ResponseEntity<Void> deleteUser(@RequestParam(required = false) Long id) {
-        if (id == null) {
-            throw new ApiRequestException("Invalid URL. Parameter id must not be null");
-        }
-        //FIXME 401 exception //done
+        //TODO resolve
+//        if (id == null) {
+//            throw new ApiRequestException("Invalid URL");
+//        }
+//        User user = userFacade.getUser(id);
+        log.info("got here");
         userFacade.deleteUser(id);
         log.info("Super admin: deleted user with id: {}", id);
         return ResponseEntity.ok().build();
