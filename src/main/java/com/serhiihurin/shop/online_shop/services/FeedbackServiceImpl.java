@@ -13,7 +13,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class FeedbackServiceImpl implements FeedbackService {
-
     private final FeedbackRepository feedbackRepository;
 
     @Override
@@ -54,7 +53,6 @@ public class FeedbackServiceImpl implements FeedbackService {
 
         return feedbackRepository.save(feedback);
     }
-
 
     @Override
     public void deleteFeedback(Long id) {

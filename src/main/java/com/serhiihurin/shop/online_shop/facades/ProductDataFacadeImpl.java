@@ -38,7 +38,7 @@ public class ProductDataFacadeImpl implements ProductDataFacade {
 
     @Override
     public List<Product> getProductsByProductDataId(Long productDataId) {
-        if(productDataService.getProductData(productDataId) == null) {
+        if (productDataService.getProductData(productDataId) == null) {
             throw new ApiRequestException("Could not find the data");
         }
         return productService.getProductsByProductDataId(productDataId);

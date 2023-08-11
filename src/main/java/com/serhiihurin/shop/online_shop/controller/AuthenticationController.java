@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +19,6 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/online-shop/auth")
 @RequiredArgsConstructor
-@Slf4j
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
@@ -28,7 +26,6 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody RegisterRequest request
     ) {
-        log.info("Registering new client with email: {}", request.getEmail());
         return ResponseEntity.ok(authenticationService.register(request));
     }
 
@@ -37,7 +34,6 @@ public class AuthenticationController {
             @RequestBody AuthenticationRequest request
     ) {
         AuthenticationResponse response = authenticationService.authenticate(request);
-        log.info("Log in to system with account email: {}", request.getEmail());
         return ResponseEntity.ok(response);
     }
 

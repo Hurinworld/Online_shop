@@ -12,9 +12,8 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class ShopFacadeImpl implements ShopFacade{
+public class ShopFacadeImpl implements ShopFacade {
     private final ShopService shopService;
-
 
     @Override
     public List<Shop> getAllShops() {
@@ -45,6 +44,4 @@ public class ShopFacadeImpl implements ShopFacade{
         log.info("Deleting shop with id: {}", id);
         shopService.deleteShop(id);
     }
-
-
 }

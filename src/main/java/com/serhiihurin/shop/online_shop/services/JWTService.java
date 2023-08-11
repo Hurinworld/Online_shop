@@ -10,6 +10,7 @@ public interface JWTService {
 
     String generateAccessToken(Map<String, Object> extraClaims,
                                UserDetails userDetails);
+
     String generateAccessToken(UserDetails userDetails);
 
     String generateRefreshToken(UserDetails userDetails);

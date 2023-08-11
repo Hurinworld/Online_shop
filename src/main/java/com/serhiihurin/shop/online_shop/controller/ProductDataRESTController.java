@@ -26,17 +26,18 @@ public class ProductDataRESTController {
     public List<ProductDataResponseDTO> getAllProductData() {
         return modelMapper.map(
                 productDataFacade.getAllProductData(),
-                new TypeToken<List<ProductDataResponseDTO>>(){}.getType()
+                new TypeToken<List<ProductDataResponseDTO>>() {
+                }.getType()
         );
     }
 
-    //TODO refactor path //done
     @GetMapping("/shop")
     @PreAuthorize("hasAnyAuthority('shop owner view info', 'admin view info')")
     List<ProductDataResponseDTO> getAllProductDataByShopId(@RequestParam Long id) {
         return modelMapper.map(
                 productDataFacade.getAllProductDataByShopId(id),
-                new TypeToken<List<ProductDataResponseDTO>>(){}.getType()
+                new TypeToken<List<ProductDataResponseDTO>>() {
+                }.getType()
         );
     }
 
@@ -46,12 +47,13 @@ public class ProductDataRESTController {
         return modelMapper.map(productDataFacade.getProductData(id), ProductDataResponseDTO.class);
     }
 
-    @GetMapping ("/products")
+    @GetMapping("/products")
     @PreAuthorize("hasAnyAuthority('shop owner view info', 'admin view info')")
     public List<ProductResponseDTO> getProductsByProductDataId(@RequestParam Long productDataId) {
         return modelMapper.map(
                 productDataFacade.getProductsByProductDataId(productDataId),
-                new TypeToken<List<ProductResponseDTO>>(){}.getType()
+                new TypeToken<List<ProductResponseDTO>>() {
+                }.getType()
         );
     }
 

@@ -8,6 +8,7 @@ import com.serhiihurin.shop.online_shop.response.AuthenticationResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
@@ -18,14 +19,15 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Service
 @RequiredArgsConstructor
-public class AuthenticationServiceImpl implements AuthenticationService{
-    //TODO check is it correct //done
+@Slf4j
+public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserService userService;
     private final JWTService jwtService;
     private final AuthenticationManager authenticationManager;
 
     @Override
     public AuthenticationResponse register(RegisterRequest registerRequest) {
+        log.info("Registering new client with email: {}", registerRequest.getEmail());
         User user = userService.createUser(registerRequest);
         String jwtToken = jwtService.generateAccessToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
@@ -36,16 +38,17 @@ public class AuthenticationServiceImpl implements AuthenticationService{
     }
 
     @Override
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
+    public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
+                        authenticationRequest.getEmail(),
+                        authenticationRequest.getPassword()
                 )
         );
-        User user = userService.getUserByEmail(request.getEmail());
+        User user = userService.getUserByEmail(authenticationRequest.getEmail());
         String jwtToken = jwtService.generateAccessToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
+        log.info("Log in to system with account email: {}", authenticationRequest.getEmail());
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)

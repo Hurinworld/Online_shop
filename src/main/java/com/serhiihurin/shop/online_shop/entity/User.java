@@ -10,11 +10,10 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
-@Table(name = "clients")
+@Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 @ToString(exclude = {"shoppingCart", "purchasedProducts"})
 @Builder
 public class User implements UserDetails {
@@ -31,8 +30,8 @@ public class User implements UserDetails {
     private Role role;
 
     @ManyToMany
-    @JoinTable(name = "clients_products",
-            joinColumns = @JoinColumn(name = "client_id"),
+    @JoinTable(name = "users_products",
+            joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<ProductData> shoppingCart;
 

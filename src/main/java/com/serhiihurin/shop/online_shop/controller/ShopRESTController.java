@@ -25,7 +25,8 @@ public class ShopRESTController {
     public List<ShopResponseDTO> getAllShops() {
         return modelMapper.map(
                 shopFacade.getAllShops(),
-                new TypeToken<List<ShopResponseDTO>>(){}.getType()
+                new TypeToken<List<ShopResponseDTO>>() {
+                }.getType()
         );
     }
 

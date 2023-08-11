@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Builder
-@ToString(exclude = {"feedbacks","users"})
+@ToString(exclude = {"feedbacks", "users"})
 public class ProductData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,9 +29,9 @@ public class ProductData {
     private List<Feedback> feedbacks;
 
     @ManyToMany()
-    @JoinTable(name = "clients_products",
+    @JoinTable(name = "users_products",
             joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "client_id"))
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> users;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productData")

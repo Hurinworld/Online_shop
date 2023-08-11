@@ -24,7 +24,8 @@ public class PurchaseRESTController {
     public List<PurchaseDTO> getAllPurchases() {
         return modelMapper.map(
                 purchaseFacade.getAllPurchases(),
-                new TypeToken<List<PurchaseDTO>>(){}.getType()
+                new TypeToken<List<PurchaseDTO>>() {
+                }.getType()
         );
     }
 
@@ -33,7 +34,8 @@ public class PurchaseRESTController {
     public List<PurchaseDTO> getPurchasesByClientId(@RequestParam Long clientId) {
         return modelMapper.map(
                 purchaseFacade.getPurchasesByClientId(clientId),
-                new TypeToken<List<PurchaseDTO>>(){}.getType()
+                new TypeToken<List<PurchaseDTO>>() {
+                }.getType()
         );
     }
 
@@ -49,7 +51,7 @@ public class PurchaseRESTController {
     @PostMapping
     @PreAuthorize("hasAuthority('purchase creation')")
     public PurchaseDTO makePurchase(@RequestParam Long clientId,
-                                 @RequestParam(name = "productId") List<Long> productIds) {
+                                    @RequestParam(name = "productId") List<Long> productIds) {
         return modelMapper.map(
                 purchaseFacade.makePurchase(clientId, productIds),
                 PurchaseDTO.class

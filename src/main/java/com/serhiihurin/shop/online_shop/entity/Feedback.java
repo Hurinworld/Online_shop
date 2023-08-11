@@ -9,9 +9,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "feedbacks")
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 public class Feedback {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +20,7 @@ public class Feedback {
     private ProductRate rate;
 
     @ManyToOne
-    @JoinColumn(name = "client_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne

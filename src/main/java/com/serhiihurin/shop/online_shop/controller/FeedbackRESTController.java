@@ -25,7 +25,8 @@ public class FeedbackRESTController {
     public List<FeedbackDTO> getAllFeedbacks() {
         return modelMapper.map(
                 feedbackFacade.getAllFeedbacks(),
-                new TypeToken<List<FeedbackDTO>>(){}.getType()
+                new TypeToken<List<FeedbackDTO>>() {
+                }.getType()
         );
     }
 
@@ -35,29 +36,30 @@ public class FeedbackRESTController {
         return modelMapper.map(feedbackFacade.getFeedback(id), FeedbackDTO.class);
     }
 
-    // TODO: 14.07.2023 convert into request param //done
     @GetMapping("/product-data-feedbacks")
     @PreAuthorize("hasAnyAuthority('admin view info', 'client view info')")
     public List<FeedbackDTO> getAllFeedbacksByProductData(@RequestParam Long id) {
         return modelMapper.map(
                 feedbackFacade.getAllFeedbacksByProductData(id),
-                new TypeToken<List<FeedbackDTO>>(){}.getType()
+                new TypeToken<List<FeedbackDTO>>() {
+                }.getType()
         );
     }
-    // TODO: 14.07.2023 convert into request param //done
+
     @GetMapping("/client-feedbacks")
     @PreAuthorize("hasAnyAuthority('admin view info', 'client view info')")
     public List<FeedbackDTO> getAllFeedbacksByClient(@RequestParam Long id) {
         return modelMapper.map(
                 feedbackFacade.getAllFeedbacksByClient(id),
-                new TypeToken<List<FeedbackDTO>>(){}.getType()
+                new TypeToken<List<FeedbackDTO>>() {
+                }.getType()
         );
     }
 
     @PostMapping()
     @PreAuthorize("hasAuthority('feedback management')")
     public ResponseEntity<FeedbackDTO> addNewFeedback(@RequestParam Long clientId,
-                                   @RequestBody FeedbackRequestDTO feedbackRequestDto) {
+                                                      @RequestBody FeedbackRequestDTO feedbackRequestDto) {
         return ResponseEntity.ok(
                 modelMapper.map(
                         feedbackFacade.addFeedback(clientId, feedbackRequestDto),

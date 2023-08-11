@@ -17,7 +17,6 @@ public class ProductFacadeImpl implements ProductFacade {
     private final ProductService productService;
     private final ProductDataService productDataService;
 
-
     @Override
     public List<Product> getAllProducts() {
         return productService.getAllProducts();
@@ -58,7 +57,7 @@ public class ProductFacadeImpl implements ProductFacade {
     public void deleteProduct(Long id) {
         Product product = productService.getProduct(id);
         ProductData productData = product.getProductData();
-        productData.setCount(productData.getCount()-1);
+        productData.setCount(productData.getCount() - 1);
 
         productDataService.saveProductData(productData);
         productService.deleteProduct(id);

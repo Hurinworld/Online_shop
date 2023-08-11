@@ -25,7 +25,8 @@ public class ProductRESTController {
     public List<ProductResponseDTO> getAllProducts() {
         return modelMapper.map(
                 productFacade.getAllProducts(),
-                new TypeToken<List<ProductResponseDTO>>(){}.getType()
+                new TypeToken<List<ProductResponseDTO>>() {
+                }.getType()
         );
     }
 

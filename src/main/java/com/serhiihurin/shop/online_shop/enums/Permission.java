@@ -5,13 +5,12 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public enum Permission {
-    // TODO: 14.07.2023 permissions should not depend on roles //done
-    CLIENT_VIEW_INFO ("client view info"),
-    SHOP_OWNER_VIEW_INFO ("shop owner view info"),
-    ADMIN_VIEW_INFO ("admin view info"),
-    ACCOUNT_CREATION ("account creation"),
+    CLIENT_VIEW_INFO("client view info"),
+    SHOP_OWNER_VIEW_INFO("shop owner view info"),
+    ADMIN_VIEW_INFO("admin view info"),
+    ACCOUNT_CREATION("account creation"),
     ACCOUNT_MANAGEMENT("account management"),
-    ROLE_MANAGEMENT ("role management"),
+    ROLE_MANAGEMENT("role management"),
     SHOP_MANAGEMENT("shop management"),
     PRODUCT_DATA_MANAGEMENT("product data management"),
     PRODUCT_MANAGEMENT("product management"),

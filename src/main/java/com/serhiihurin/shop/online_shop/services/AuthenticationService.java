@@ -10,7 +10,9 @@ import java.io.IOException;
 
 public interface AuthenticationService {
     AuthenticationResponse register(RegisterRequest request);
+
     AuthenticationResponse authenticate(AuthenticationRequest request);
+
     void updateAccessToken(
             HttpServletRequest request,
             HttpServletResponse response

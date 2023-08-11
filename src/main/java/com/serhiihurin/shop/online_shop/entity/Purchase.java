@@ -9,9 +9,7 @@ import java.util.List;
 @Entity
 @Table(name = "purchases")
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 public class Purchase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,11 +17,10 @@ public class Purchase {
     private LocalDateTime time;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "purchase")
-//    @JoinColumn(name = "product_id")
     private List<Product> products;
 
     @ManyToOne
-    @JoinColumn(name = "client_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     public Purchase(LocalDateTime time) {

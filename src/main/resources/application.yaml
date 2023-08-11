@@ -14,12 +14,3 @@ application:
       expiration: 86400000 #day
       refresh-token:
         expiration: 604800000 # 7 days
-
-#logging:
-#  pattern:
-#    console: "%d %-5level %logger : %msg%n"
-#    file: "%d %-5level [%thread] %logger : %msg%n"
-#  logback:
-#    rollingpolicy:
-#      max-file-size:
-#      file-name-pattern: "logs/logfile-${date:yyyy-MM-dd-HH-mm-ss}.log"

@@ -6,8 +6,7 @@ import lombok.*;
 @Entity
 @Table(name = "products")
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface ProductFacade {
     List<Product> getAllProducts();
+
     Product getProduct(Long id);
 
     Product addProduct(ProductRequestDTO productRequestDTO);
