@@ -47,7 +47,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
-
     @Override
     public void saveUser(User user) {
         userRepository.save(user);
@@ -71,7 +70,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(currentAuthenticatedUser);
     }
 
-
     @Override
     public User updateUsername(User currenAuthenticatedUser, String email) {
         if (!currenAuthenticatedUser.getEmail().equals(email)) {
@@ -79,7 +77,6 @@ public class UserServiceImpl implements UserService {
         }
         return userRepository.save(currenAuthenticatedUser);
     }
-
 
     @Override
     public void deleteUser(Long id) {
