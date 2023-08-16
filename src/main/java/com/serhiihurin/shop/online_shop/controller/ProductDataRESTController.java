@@ -31,9 +31,9 @@ public class ProductDataRESTController {
         );
     }
 
-    @GetMapping("/shop")
+    @GetMapping("/shop/{id}")
     @PreAuthorize("hasAnyAuthority('shop owner view info', 'admin view info')")
-    List<ProductDataResponseDTO> getAllProductDataByShopId(@RequestParam Long id) {
+    List<ProductDataResponseDTO> getAllProductDataByShopId(@PathVariable Long id) {
         return modelMapper.map(
                 productDataFacade.getAllProductDataByShopId(id),
                 new TypeToken<List<ProductDataResponseDTO>>() {
