@@ -1,7 +1,7 @@
 package com.serhiihurin.shop.online_shop.controller;
 
-import com.serhiihurin.shop.online_shop.request.AuthenticationRequestDTO;
-import com.serhiihurin.shop.online_shop.request.RegisterRequestDTO;
+import com.serhiihurin.shop.online_shop.dto.AuthenticationRequestDTO;
+import com.serhiihurin.shop.online_shop.dto.RegisterRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.AuthenticationResponseDTO;
 import com.serhiihurin.shop.online_shop.services.AuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;

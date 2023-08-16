@@ -3,7 +3,7 @@ package com.serhiihurin.shop.online_shop.facades;
 import com.serhiihurin.shop.online_shop.dto.UserRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.UsernameUpdateResponseDTO;
 import com.serhiihurin.shop.online_shop.entity.User;
-import com.serhiihurin.shop.online_shop.request.RegisterRequestDTO;
+import com.serhiihurin.shop.online_shop.dto.RegisterRequestDTO;
 import com.serhiihurin.shop.online_shop.services.UserService;
 import com.serhiihurin.shop.online_shop.services.JWTService;
 import lombok.RequiredArgsConstructor;

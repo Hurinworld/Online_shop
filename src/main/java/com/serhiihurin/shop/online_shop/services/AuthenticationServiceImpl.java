@@ -2,8 +2,8 @@ package com.serhiihurin.shop.online_shop.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.serhiihurin.shop.online_shop.entity.User;
-import com.serhiihurin.shop.online_shop.request.AuthenticationRequestDTO;
-import com.serhiihurin.shop.online_shop.request.RegisterRequestDTO;
+import com.serhiihurin.shop.online_shop.dto.AuthenticationRequestDTO;
+import com.serhiihurin.shop.online_shop.dto.RegisterRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.AuthenticationResponseDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

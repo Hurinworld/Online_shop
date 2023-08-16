@@ -1,4 +1,4 @@
-package com.serhiihurin.shop.online_shop.request;
+package com.serhiihurin.shop.online_shop.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package com.serhiihurin.shop.online_shop.request;
+package com.serhiihurin.shop.online_shop.dto;
 
 import com.serhiihurin.shop.online_shop.enums.Role;
 import lombok.AllArgsConstructor;
