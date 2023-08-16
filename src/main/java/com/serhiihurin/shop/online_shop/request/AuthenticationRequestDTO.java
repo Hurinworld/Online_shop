@@ -1,4 +1,4 @@
-package com.serhiihurin.shop.online_shop.dto;
+package com.serhiihurin.shop.online_shop.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserResponseDTO {
-    private Long id;
-    private String firstName;
-    private String lastName;
+public class AuthenticationRequestDTO {
     private String email;
+    private String password;
 }

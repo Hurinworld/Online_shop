@@ -1,8 +1,8 @@
 package com.serhiihurin.shop.online_shop.controller;
 
-import com.serhiihurin.shop.online_shop.request.AuthenticationRequest;
-import com.serhiihurin.shop.online_shop.request.RegisterRequest;
-import com.serhiihurin.shop.online_shop.response.AuthenticationResponse;
+import com.serhiihurin.shop.online_shop.request.AuthenticationRequestDTO;
+import com.serhiihurin.shop.online_shop.request.RegisterRequestDTO;
+import com.serhiihurin.shop.online_shop.dto.AuthenticationResponseDTO;
 import com.serhiihurin.shop.online_shop.services.AuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,17 +23,17 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(
-            @RequestBody RegisterRequest request
+    public ResponseEntity<AuthenticationResponseDTO> register(
+            @RequestBody RegisterRequestDTO request
     ) {
         return ResponseEntity.ok(authenticationService.register(request));
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> authenticate(
-            @RequestBody AuthenticationRequest request
+    public ResponseEntity<AuthenticationResponseDTO> authenticate(
+            @RequestBody AuthenticationRequestDTO request
     ) {
-        AuthenticationResponse response = authenticationService.authenticate(request);
+        AuthenticationResponseDTO response = authenticationService.authenticate(request);
         return ResponseEntity.ok(response);
     }
 

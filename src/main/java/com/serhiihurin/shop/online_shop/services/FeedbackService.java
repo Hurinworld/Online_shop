@@ -1,6 +1,6 @@
 package com.serhiihurin.shop.online_shop.services;
 
-import com.serhiihurin.shop.online_shop.dto.FeedbackRequestDTO;
+import com.serhiihurin.shop.online_shop.dto.FeedbackUpdateRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.Feedback;
 
 import java.util.List;
@@ -16,7 +16,7 @@ public interface FeedbackService {
 
     Feedback saveFeedback(Feedback feedback);
 
-    Feedback updateFeedback(FeedbackRequestDTO feedbackRequestDTO, Feedback feedback);
+    Feedback updateFeedback(FeedbackUpdateRequestDTO feedbackUpdateRequestDTO, Feedback feedback);
 
     void deleteFeedback(Long id);
 }

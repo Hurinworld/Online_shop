@@ -80,8 +80,8 @@ public class ProductDataFacadeImpl implements ProductDataFacade {
     }
 
     @Override
-    public ProductDataResponseDTO updateProductData(ProductDataRequestDTO productDataRequestDTO) {
-        ProductData oldProductData = productDataService.getProductData(productDataRequestDTO.getId());
+    public ProductDataResponseDTO updateProductData(Long id, ProductDataRequestDTO productDataRequestDTO) {
+        ProductData oldProductData = productDataService.getProductData(id);
         Shop shop = null;
         if (productDataRequestDTO.getShopId() != null) {
             shop = shopService.getShop(productDataRequestDTO.getShopId());
@@ -100,7 +100,7 @@ public class ProductDataFacadeImpl implements ProductDataFacade {
 
         productDataResponseDTO.setShopId(productData.getShop().getId());
 
-        log.info("Updated product data with id: {}", productDataRequestDTO.getId());
+        log.info("Updated product data with id: {}", id);
         return productDataResponseDTO;
     }
 

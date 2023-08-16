@@ -1,5 +1,6 @@
 package com.serhiihurin.shop.online_shop.facades;
 
+import com.serhiihurin.shop.online_shop.dto.FeedbackUpdateRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.Feedback;
 import com.serhiihurin.shop.online_shop.entity.ProductData;
 import com.serhiihurin.shop.online_shop.dto.FeedbackRequestDTO;
@@ -61,9 +62,9 @@ public class FeedbackFacadeImpl implements FeedbackFacade {
     }
 
     @Override
-    public Feedback updateFeedback(FeedbackRequestDTO feedbackRequestDTO) {
-        Feedback oldFeedback = feedbackService.getFeedback(feedbackRequestDTO.getFeedbackId());
-        return feedbackService.updateFeedback(feedbackRequestDTO, oldFeedback);
+    public Feedback updateFeedback(Long id, FeedbackUpdateRequestDTO feedbackUpdateRequestDTO) {
+        Feedback oldFeedback = feedbackService.getFeedback(id);
+        return feedbackService.updateFeedback(feedbackUpdateRequestDTO, oldFeedback);
     }
 
     @Override

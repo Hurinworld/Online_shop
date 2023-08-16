@@ -2,7 +2,7 @@ package com.serhiihurin.shop.online_shop.services;
 
 import com.serhiihurin.shop.online_shop.dto.UserRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.User;
-import com.serhiihurin.shop.online_shop.request.RegisterRequest;
+import com.serhiihurin.shop.online_shop.request.RegisterRequestDTO;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public interface UserService {
 
     User getUserByEmail(String email);
 
-    User createUser(RegisterRequest registerRequest);
+    User createUser(RegisterRequestDTO registerRequestDTO);
 
     void saveUser(User user);
 

@@ -1,9 +1,9 @@
 package com.serhiihurin.shop.online_shop.facades;
 
 import com.serhiihurin.shop.online_shop.dto.UserRequestDTO;
-import com.serhiihurin.shop.online_shop.dto.UserResponseDTO;
+import com.serhiihurin.shop.online_shop.dto.UsernameUpdateResponseDTO;
 import com.serhiihurin.shop.online_shop.entity.User;
-import com.serhiihurin.shop.online_shop.request.RegisterRequest;
+import com.serhiihurin.shop.online_shop.request.RegisterRequestDTO;
 
 import java.util.List;
 
@@ -14,11 +14,11 @@ public interface UserFacade {
 
     User getUserByEmail(String email);
 
-    User createUser(RegisterRequest registerRequest);
+    User createUser(RegisterRequestDTO registerRequestDTO);
 
     User updateUser(User currentAuthenticatedUser, UserRequestDTO userRequestDTO);
 
-    UserResponseDTO updateUsername(User currentAuthenticatedUser, String email);
+    UsernameUpdateResponseDTO updateUsername(User currentAuthenticatedUser, String email);
 
     void deleteUser(Long id);
 }

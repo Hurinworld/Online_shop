@@ -2,9 +2,9 @@ package com.serhiihurin.shop.online_shop.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.serhiihurin.shop.online_shop.entity.User;
-import com.serhiihurin.shop.online_shop.request.AuthenticationRequest;
-import com.serhiihurin.shop.online_shop.request.RegisterRequest;
-import com.serhiihurin.shop.online_shop.response.AuthenticationResponse;
+import com.serhiihurin.shop.online_shop.request.AuthenticationRequestDTO;
+import com.serhiihurin.shop.online_shop.request.RegisterRequestDTO;
+import com.serhiihurin.shop.online_shop.dto.AuthenticationResponseDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -23,19 +23,24 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final JWTService jwtService;
     private final AuthenticationManager authenticationManager;
 
+    private final EmailService emailService;
+
     @Override
-    public AuthenticationResponse register(RegisterRequest registerRequest) {
-        User user = userService.createUser(registerRequest);
+    public AuthenticationResponseDTO register(RegisterRequestDTO registerRequestDTO) {
+        User user = userService.createUser(registerRequestDTO);
         String jwtToken = jwtService.generateAccessToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
-        return AuthenticationResponse.builder()
+        emailService.sendEmail(registerRequestDTO.getEmail(), "Welcome!", "Hi"
+                + registerRequestDTO.getFirstName()
+                + "! Welcome to the online-shop!");
+        return AuthenticationResponseDTO.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
                 .build();
     }
 
     @Override
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
+    public AuthenticationResponseDTO authenticate(AuthenticationRequestDTO request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
@@ -45,7 +50,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = userService.getUserByEmail(request.getEmail());
         String jwtToken = jwtService.generateAccessToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
-        return AuthenticationResponse.builder()
+        emailService.sendEmail(request.getEmail(), "Welcome!", "Hi! Welcome to the online-shop!");
+        return AuthenticationResponseDTO.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
                 .build();
@@ -71,11 +77,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = userService.getUserByEmail(clientEmail);
 
         String accessToken = jwtService.generateAccessToken(user);
-        AuthenticationResponse authenticationResponse = AuthenticationResponse.builder()
+        AuthenticationResponseDTO authenticationResponseDTO = AuthenticationResponseDTO.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
 
-        new ObjectMapper().writeValue(response.getOutputStream(), authenticationResponse);
+        new ObjectMapper().writeValue(response.getOutputStream(), authenticationResponseDTO);
     }
 }

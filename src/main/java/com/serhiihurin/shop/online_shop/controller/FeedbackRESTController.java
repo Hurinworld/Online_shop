@@ -1,6 +1,7 @@
 package com.serhiihurin.shop.online_shop.controller;
 
-import com.serhiihurin.shop.online_shop.dto.FeedbackDTO;
+import com.serhiihurin.shop.online_shop.dto.FeedbackResponseDTO;
+import com.serhiihurin.shop.online_shop.dto.FeedbackUpdateRequestDTO;
 import com.serhiihurin.shop.online_shop.facades.FeedbackFacade;
 import com.serhiihurin.shop.online_shop.dto.FeedbackRequestDTO;
 import lombok.RequiredArgsConstructor;
@@ -22,59 +23,62 @@ public class FeedbackRESTController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('admin view info')")
-    public List<FeedbackDTO> getAllFeedbacks() {
+    public List<FeedbackResponseDTO> getAllFeedbacks() {
         return modelMapper.map(
                 feedbackFacade.getAllFeedbacks(),
-                new TypeToken<List<FeedbackDTO>>() {
+                new TypeToken<List<FeedbackResponseDTO>>() {
                 }.getType()
         );
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('admin view info')")
-    public FeedbackDTO getFeedback(@PathVariable Long id) {
-        return modelMapper.map(feedbackFacade.getFeedback(id), FeedbackDTO.class);
+    public FeedbackResponseDTO getFeedback(@PathVariable Long id) {
+        return modelMapper.map(feedbackFacade.getFeedback(id), FeedbackResponseDTO.class);
     }
 
     @GetMapping("/product-data-feedbacks")
     @PreAuthorize("hasAnyAuthority('admin view info', 'client view info')")
-    public List<FeedbackDTO> getAllFeedbacksByProductData(@RequestParam Long id) {
+    public List<FeedbackResponseDTO> getAllFeedbacksByProductData(@RequestParam Long id) {
         return modelMapper.map(
                 feedbackFacade.getAllFeedbacksByProductData(id),
-                new TypeToken<List<FeedbackDTO>>() {
+                new TypeToken<List<FeedbackResponseDTO>>() {
                 }.getType()
         );
     }
 
     @GetMapping("/client-feedbacks")
     @PreAuthorize("hasAnyAuthority('admin view info', 'client view info')")
-    public List<FeedbackDTO> getAllFeedbacksByClient(@RequestParam Long id) {
+    public List<FeedbackResponseDTO> getAllFeedbacksByClient(@RequestParam Long id) {
         return modelMapper.map(
                 feedbackFacade.getAllFeedbacksByClient(id),
-                new TypeToken<List<FeedbackDTO>>() {
+                new TypeToken<List<FeedbackResponseDTO>>() {
                 }.getType()
         );
     }
 
     @PostMapping()
     @PreAuthorize("hasAuthority('feedback management')")
-    public ResponseEntity<FeedbackDTO> addNewFeedback(@RequestParam Long clientId,
-                                                      @RequestBody FeedbackRequestDTO feedbackRequestDto) {
+    public ResponseEntity<FeedbackResponseDTO> addNewFeedback(@RequestParam Long clientId,
+                                                              @RequestBody FeedbackRequestDTO feedbackRequestDto) {
         return ResponseEntity.ok(
                 modelMapper.map(
                         feedbackFacade.addFeedback(clientId, feedbackRequestDto),
-                        FeedbackDTO.class
+                        FeedbackResponseDTO.class
                 )
         );
     }
 
     @PatchMapping
     @PreAuthorize("hasAuthority('feedback management')")
-    public ResponseEntity<FeedbackDTO> updateFeedback(@RequestBody FeedbackRequestDTO feedbackRequestDTO) {
+    public ResponseEntity<FeedbackResponseDTO> updateFeedback(
+            @RequestParam Long id,
+            @RequestBody FeedbackUpdateRequestDTO feedbackUpdateRequestDTO
+    ) {
         return ResponseEntity.ok(
                 modelMapper.map(
-                        feedbackFacade.updateFeedback(feedbackRequestDTO),
-                        FeedbackDTO.class
+                        feedbackFacade.updateFeedback(id, feedbackUpdateRequestDTO),
+                        FeedbackResponseDTO.class
                 )
         );
     }

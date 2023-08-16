@@ -33,7 +33,7 @@ public class SecurityConfig {
             "/online-shop/auth/authenticate"
     };
 
-    private final String METRICS_WHITELIST = "/actuator/prometheus";
+    private final String METRICS_ENDPOINT = "/actuator/prometheus";
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -43,7 +43,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         auth -> auth
                                 .requestMatchers(AUTH_WHITElIST).permitAll()
-                                .requestMatchers(METRICS_WHITELIST).permitAll()
+                                .requestMatchers(METRICS_ENDPOINT).permitAll()
                                 .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())

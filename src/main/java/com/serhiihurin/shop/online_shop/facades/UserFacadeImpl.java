@@ -1,9 +1,9 @@
 package com.serhiihurin.shop.online_shop.facades;
 
 import com.serhiihurin.shop.online_shop.dto.UserRequestDTO;
-import com.serhiihurin.shop.online_shop.dto.UserResponseDTO;
+import com.serhiihurin.shop.online_shop.dto.UsernameUpdateResponseDTO;
 import com.serhiihurin.shop.online_shop.entity.User;
-import com.serhiihurin.shop.online_shop.request.RegisterRequest;
+import com.serhiihurin.shop.online_shop.request.RegisterRequestDTO;
 import com.serhiihurin.shop.online_shop.services.UserService;
 import com.serhiihurin.shop.online_shop.services.JWTService;
 import lombok.RequiredArgsConstructor;
@@ -39,8 +39,8 @@ public class UserFacadeImpl implements UserFacade {
     }
 
     @Override
-    public User createUser(RegisterRequest registerRequest) {
-        return userService.createUser(registerRequest);
+    public User createUser(RegisterRequestDTO registerRequestDTO) {
+        return userService.createUser(registerRequestDTO);
     }
 
 
@@ -51,18 +51,18 @@ public class UserFacadeImpl implements UserFacade {
     }
 
     @Override
-    public UserResponseDTO updateUsername(User currentAuthenticatedUser, String email) {
+    public UsernameUpdateResponseDTO updateUsername(User currentAuthenticatedUser, String email) {
         currentAuthenticatedUser = userService.updateUsername(currentAuthenticatedUser, email);
 
-        UserResponseDTO clientResponseDTO = modelMapper.map(
-                currentAuthenticatedUser, UserResponseDTO.class
+        UsernameUpdateResponseDTO usernameUpdateResponseDTO = modelMapper.map(
+                currentAuthenticatedUser, UsernameUpdateResponseDTO.class
         );
 
-        clientResponseDTO.setAccessToken(jwtService.generateAccessToken(currentAuthenticatedUser));
-        clientResponseDTO.setRefreshToken(jwtService.generateRefreshToken(currentAuthenticatedUser));
+        usernameUpdateResponseDTO.setAccessToken(jwtService.generateAccessToken(currentAuthenticatedUser));
+        usernameUpdateResponseDTO.setRefreshToken(jwtService.generateRefreshToken(currentAuthenticatedUser));
 
         log.info("Updating client account username with id: {}", currentAuthenticatedUser.getId());
-        return clientResponseDTO;
+        return usernameUpdateResponseDTO;
     }
 
     @Override

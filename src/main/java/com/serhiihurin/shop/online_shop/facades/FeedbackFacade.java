@@ -1,5 +1,6 @@
 package com.serhiihurin.shop.online_shop.facades;
 
+import com.serhiihurin.shop.online_shop.dto.FeedbackUpdateRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.Feedback;
 import com.serhiihurin.shop.online_shop.dto.FeedbackRequestDTO;
 
@@ -18,7 +19,7 @@ public interface FeedbackFacade {
     Feedback addFeedback(Long clientId,
                          FeedbackRequestDTO feedbackRequestDTO);
 
-    Feedback updateFeedback(FeedbackRequestDTO feedbackRequestDTO);
+    Feedback updateFeedback(Long id, FeedbackUpdateRequestDTO feedbackUpdateRequestDTO);
 
     void deleteFeedback(Long id);
 }

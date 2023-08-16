@@ -72,14 +72,15 @@ public class ProductDataRESTController {
         );
     }
 
-    //TODO add id to path!
-    @PatchMapping
+    //TODO add id to path! //done
+    @PatchMapping("/{id}")
     @PreAuthorize("hasAuthority('product data management')")
     public ResponseEntity<ProductDataResponseDTO> updateProductData(
+            @PathVariable Long id,
             @RequestBody ProductDataRequestDTO productDataRequestDTO
     ) {
         return ResponseEntity.ok(
-                productDataFacade.updateProductData(productDataRequestDTO)
+                productDataFacade.updateProductData(id, productDataRequestDTO)
         );
     }
 

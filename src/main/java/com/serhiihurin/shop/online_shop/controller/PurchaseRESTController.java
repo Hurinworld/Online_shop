@@ -1,6 +1,8 @@
 package com.serhiihurin.shop.online_shop.controller;
 
-import com.serhiihurin.shop.online_shop.dto.PurchaseDTO;
+import com.serhiihurin.shop.online_shop.dto.PurchaseAdminResponseDTO;
+import com.serhiihurin.shop.online_shop.dto.PurchaseResponseDTO;
+import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.facades.PurchaseFacadeImpl;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -21,40 +23,50 @@ public class PurchaseRESTController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('admin view info')")
-    public List<PurchaseDTO> getAllPurchases() {
+    public List<PurchaseAdminResponseDTO> getAllPurchases() {
         return modelMapper.map(
                 purchaseFacade.getAllPurchases(),
-                new TypeToken<List<PurchaseDTO>>() {
+                new TypeToken<List<PurchaseAdminResponseDTO>>() {
                 }.getType()
         );
     }
 
-    @GetMapping("/client-purchases")
+    @GetMapping("/client/{clientId}")
     @PreAuthorize("hasAnyAuthority('client view info', 'admin view info')")
-    public List<PurchaseDTO> getPurchasesByClientId(@RequestParam Long clientId) {
+    public List<PurchaseAdminResponseDTO> getPurchasesByClientId(@PathVariable Long clientId) {
         return modelMapper.map(
                 purchaseFacade.getPurchasesByClientId(clientId),
-                new TypeToken<List<PurchaseDTO>>() {
+                new TypeToken<List<PurchaseAdminResponseDTO>>() {
+                }.getType()
+        );
+    }
+
+    @GetMapping("/client/me")
+    @PreAuthorize("hasAnyAuthority('client view info', 'admin view info')")
+    public List<PurchaseResponseDTO> getPurchasesByClientId(User currentAuthenticatedUser) {
+        return modelMapper.map(
+                purchaseFacade.getPurchasesByClientId(currentAuthenticatedUser.getId()),
+                new TypeToken<List<PurchaseResponseDTO>>() {
                 }.getType()
         );
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('client view info', 'admin view info')")
-    public PurchaseDTO getPurchase(@PathVariable Long id) {
+    @PreAuthorize("hasAuthority('admin view info')")
+    public PurchaseAdminResponseDTO getPurchase(@PathVariable Long id) {
         return modelMapper.map(
                 purchaseFacade.getPurchase(id),
-                PurchaseDTO.class
+                PurchaseAdminResponseDTO.class
         );
     }
 
     @PostMapping
     @PreAuthorize("hasAuthority('purchase creation')")
-    public PurchaseDTO makePurchase(@RequestParam Long clientId,
-                                    @RequestParam(name = "productId") List<Long> productIds) {
+    public PurchaseResponseDTO makePurchase(@RequestParam Long clientId,
+                                            @RequestParam(name = "productId") List<Long> productIds) {
         return modelMapper.map(
                 purchaseFacade.makePurchase(clientId, productIds),
-                PurchaseDTO.class
+                PurchaseResponseDTO.class
         );
     }
 

@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class ProductDataRequestDTO {
-    private Long id;
     private Long shopId;
     private String name;
     private String description;

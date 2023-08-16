@@ -2,6 +2,8 @@ package com.serhiihurin.shop.online_shop.controller;
 
 import com.serhiihurin.shop.online_shop.dto.UserResponseDTO;
 import com.serhiihurin.shop.online_shop.dto.UserRequestDTO;
+import com.serhiihurin.shop.online_shop.dto.UserResponseForAdminDTO;
+import com.serhiihurin.shop.online_shop.dto.UsernameUpdateResponseDTO;
 import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
 import com.serhiihurin.shop.online_shop.facades.UserFacade;
@@ -27,10 +29,10 @@ public class UserRESTController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('admin view info')")
-    public List<UserResponseDTO> getAllUsers() {
+    public List<UserResponseForAdminDTO> getAllUsers() {
         return modelMapper.map(
                 userFacade.getAllUsers(),
-                new TypeToken<List<UserResponseDTO>>() {
+                new TypeToken<List<UserResponseForAdminDTO>>() {
                 }.getType()
         );
     }
@@ -38,8 +40,8 @@ public class UserRESTController {
     @Timed("user_info_endpoint_admin")
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('admin view info')")
-    public UserResponseDTO getUser(@PathVariable Long id) {
-        return modelMapper.map(userFacade.getUser(id), UserResponseDTO.class);
+    public UserResponseForAdminDTO getUser(@PathVariable Long id) {
+        return modelMapper.map(userFacade.getUser(id), UserResponseForAdminDTO.class);
     }
 
     @Timed("user_info_endpoint")
@@ -65,7 +67,7 @@ public class UserRESTController {
 
     @PutMapping("/info/username")
     @PreAuthorize("hasAuthority('account management')")
-    public ResponseEntity<UserResponseDTO> updateUsername(
+    public ResponseEntity<UsernameUpdateResponseDTO> updateUsername(
             User currentAuthenticatedUser,
             @RequestParam String email
     ) {
@@ -79,7 +81,6 @@ public class UserRESTController {
         if (id == null) {
             throw new ApiRequestException("Invalid URL. Parameter id must not be null");
         }
-        log.info("got here");
         userFacade.deleteUser(id);
         log.info("Super admin: deleted user with id: {}", id);
         return ResponseEntity.ok().build();

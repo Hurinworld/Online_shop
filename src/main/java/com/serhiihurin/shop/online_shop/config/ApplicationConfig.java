@@ -58,6 +58,4 @@ public class ApplicationConfig {
     public TimedAspect timedAspect(MeterRegistry meterRegistry) {
         return new TimedAspect(meterRegistry);
     }
-
-
 }

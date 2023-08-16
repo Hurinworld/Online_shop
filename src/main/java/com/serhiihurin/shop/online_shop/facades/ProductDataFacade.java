@@ -18,7 +18,7 @@ public interface ProductDataFacade {
 
     ProductData addProductData(Long shopId, ProductDataRequestDTO productDataRequestDTO);
 
-    ProductDataResponseDTO updateProductData(ProductDataRequestDTO productDataRequestDTO);
+    ProductDataResponseDTO updateProductData(Long id, ProductDataRequestDTO productDataRequestDTO);
 
     void deleteProductData(Long id);
 }

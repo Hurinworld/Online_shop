@@ -1,7 +1,7 @@
 package com.serhiihurin.shop.online_shop.services;
 
 import com.serhiihurin.shop.online_shop.dao.FeedbackRepository;
-import com.serhiihurin.shop.online_shop.dto.FeedbackRequestDTO;
+import com.serhiihurin.shop.online_shop.dto.FeedbackUpdateRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.Feedback;
 import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
 import lombok.RequiredArgsConstructor;
@@ -42,12 +42,12 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public Feedback updateFeedback(FeedbackRequestDTO feedbackRequestDTO, Feedback feedback) {
-        if (feedbackRequestDTO.getRate() != null) {
-            feedback.setRate(feedbackRequestDTO.getRate());
+    public Feedback updateFeedback(FeedbackUpdateRequestDTO feedbackUpdateRequestDTO, Feedback feedback) {
+        if (feedbackUpdateRequestDTO.getRate() != null) {
+            feedback.setRate(feedbackUpdateRequestDTO.getRate());
         }
-        if (feedbackRequestDTO.getText() != null) {
-            feedback.setText(feedbackRequestDTO.getText());
+        if (feedbackUpdateRequestDTO.getText() != null) {
+            feedback.setText(feedbackUpdateRequestDTO.getText());
         }
         feedback.setTime(LocalDateTime.now());
 

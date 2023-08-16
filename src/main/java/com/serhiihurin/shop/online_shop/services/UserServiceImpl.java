@@ -4,7 +4,7 @@ import com.serhiihurin.shop.online_shop.dao.UserRepository;
 import com.serhiihurin.shop.online_shop.dto.UserRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
-import com.serhiihurin.shop.online_shop.request.RegisterRequest;
+import com.serhiihurin.shop.online_shop.request.RegisterRequestDTO;
 import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,14 +37,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(RegisterRequest registerRequest) {
+    public User createUser(RegisterRequestDTO registerRequestDTO) {
         User user = User.builder()
-                .firstName(registerRequest.getFirstName())
-                .lastName(registerRequest.getLastName())
-                .cash(registerRequest.getCash())
-                .email(registerRequest.getEmail())
-                .password(passwordEncoder.encode(registerRequest.getPassword()))
-                .role(registerRequest.getRole())
+                .firstName(registerRequestDTO.getFirstName())
+                .lastName(registerRequestDTO.getLastName())
+                .cash(registerRequestDTO.getCash())
+                .email(registerRequestDTO.getEmail())
+                .password(passwordEncoder.encode(registerRequestDTO.getPassword()))
+                .role(registerRequestDTO.getRole())
                 .build();
         return userRepository.save(user);
     }
