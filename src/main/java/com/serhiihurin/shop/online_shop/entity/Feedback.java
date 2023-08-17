@@ -27,6 +27,7 @@ public class Feedback {
     @JoinColumn(name = "product_id")
     private ProductData productData;
 
+    //TODO check if it needed
     public Feedback(String text, ProductRate rate) {
         this.text = text;
         this.rate = rate;
