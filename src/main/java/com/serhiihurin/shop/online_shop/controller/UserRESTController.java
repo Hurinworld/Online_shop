@@ -1,12 +1,10 @@
 package com.serhiihurin.shop.online_shop.controller;
 
-import com.serhiihurin.shop.online_shop.dto.UserResponseDTO;
-import com.serhiihurin.shop.online_shop.dto.UserRequestDTO;
-import com.serhiihurin.shop.online_shop.dto.UserResponseForAdminDTO;
-import com.serhiihurin.shop.online_shop.dto.UsernameUpdateResponseDTO;
+import com.serhiihurin.shop.online_shop.dto.*;
 import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
 import com.serhiihurin.shop.online_shop.facades.UserFacade;
+import com.serhiihurin.shop.online_shop.services.EmailService;
 import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +24,7 @@ import java.util.List;
 public class UserRESTController {
     private final UserFacade userFacade;
     private final ModelMapper modelMapper;
+    private final EmailService emailService;
 
     @GetMapping
     @PreAuthorize("hasAuthority('admin view info')")
@@ -72,6 +71,28 @@ public class UserRESTController {
             @RequestParam String email
     ) {
         return ResponseEntity.ok(userFacade.updateUsername(currentAuthenticatedUser, email));
+    }
+    @GetMapping("/info/password")
+    @PreAuthorize("hasAuthority('account management')")
+    public ResponseEntity<Void> updatePasswordRequest(
+            User currentAuthenticatedUser
+    ) {
+        emailService.sendPasswordChangingVerificationCode(
+                currentAuthenticatedUser.getEmail(),
+                currentAuthenticatedUser.getFirstName()
+        );
+        log.info("Password changing request from account: {}", currentAuthenticatedUser.getEmail());
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/info/password/new")
+    @PreAuthorize("hasAuthority('account management')")
+    public ResponseEntity<Void> updatePasswordRequest(
+            User currentAuthenticatedUser,
+            @RequestBody PasswordUpdateRequestDTO passwordUpdateRequestDTO
+    ) {
+        userFacade.updatePassword(currentAuthenticatedUser, passwordUpdateRequestDTO);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping

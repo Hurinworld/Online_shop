@@ -1,12 +1,14 @@
 package com.serhiihurin.shop.online_shop.services;
 
 import com.serhiihurin.shop.online_shop.dao.UserRepository;
+import com.serhiihurin.shop.online_shop.dto.PasswordUpdateRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.UserRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
 import com.serhiihurin.shop.online_shop.dto.RegisterRequestDTO;
 import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -79,6 +82,20 @@ public class UserServiceImpl implements UserService {
         }
         return userRepository.save(currenAuthenticatedUser);
     }
+
+    @Override
+    public void updatePassword(User currentAuthenticatedUser, PasswordUpdateRequestDTO passwordUpdateRequestDTO) {
+        if (passwordUpdateRequestDTO.getPassword() == null) {
+            throw new ApiRequestException("New password cannot be empty");
+        }
+        if (currentAuthenticatedUser.getPassword().equals(passwordUpdateRequestDTO.getPassword())) {
+            throw new ApiRequestException("New password must differ from the old one");
+        }
+        currentAuthenticatedUser.setPassword(passwordEncoder.encode(passwordUpdateRequestDTO.getPassword()));
+        userRepository.save(currentAuthenticatedUser);
+        log.info("Changed password of account: {}", currentAuthenticatedUser.getEmail());
+    }
+
 
     @Override
     public void deleteUser(Long id) {

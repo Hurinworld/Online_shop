@@ -107,7 +107,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"firstName\": \"Admin\",\r\n    \"lastName\": \"Admin\",\r\n    \"cash\": 15468.411,\r\n    \"email\": \"Admin@gmail.com\",\r\n    \"password\": \"1234\",\r\n    \"role\": \"ADMIN\"\r\n}",
+							"raw": "{\r\n    \"firstName\": \"Super\",\r\n    \"lastName\": \"Puper\",\r\n    \"cash\": 30256.411,\r\n    \"email\": \"Super@gmail.com\",\r\n    \"password\": \"12345678\",\r\n    \"role\": \"SUPER_ADMIN\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -604,6 +604,80 @@
 								"online-shop",
 								"users",
 								"my-account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Password changing request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZG9zYXRhY2s4OEBnbWFpbC5jb20iLCJpYXQiOjE2OTI2MjI3NjgsImV4cCI6MTY5MjcwOTE2OH0.g33OZhzRKnyapwThlCgz6C20tCTPJtiKG6ZOEuzsClY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/online-shop/users/info/password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"online-shop",
+								"users",
+								"info",
+								"password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Password update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZG9zYXRhY2s4OEBnbWFpbC5jb20iLCJpYXQiOjE2OTI2MzY1NDMsImV4cCI6MTY5MjcyMjk0M30.1m0oW9c8pJuRBy-PLSkmPW9e9e8plpjNGqa7B1vMP74",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"verificationCode\": 121301,\r\n    \"password\": \"1111\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/online-shop/users/info/password/new",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"online-shop",
+								"users",
+								"info",
+								"password",
+								"new"
 							]
 						}
 					},

@@ -1,5 +1,7 @@
 package com.serhiihurin.shop.online_shop.services;
 
 public interface EmailService {
-    void sendEmail(String toEmail, String subject, String text);
+    void sendGreetingsEmail(String toEmail, String name);
+
+    void sendPasswordChangingVerificationCode(String toEmail, String name);
 }

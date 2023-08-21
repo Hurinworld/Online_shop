@@ -1,13 +1,17 @@
 package com.serhiihurin.shop.online_shop.exception;
 
-import lombok.Data;
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-import java.time.ZonedDateTime;
+@Getter
+public abstract class ApiException extends RuntimeException{
+    protected HttpStatus httpStatus;
 
-@Data
-public class ApiException {
-    private final String message;
-    private final HttpStatus httpStatus;
-    private final ZonedDateTime timestamp;
+    public ApiException(String message) {
+        super(message);
+    }
+
+    public ApiException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

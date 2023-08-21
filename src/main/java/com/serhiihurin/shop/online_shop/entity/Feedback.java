@@ -9,7 +9,9 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "feedbacks")
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
+@Builder
 public class Feedback {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,9 +29,9 @@ public class Feedback {
     @JoinColumn(name = "product_id")
     private ProductData productData;
 
-    //TODO check if it needed
-    public Feedback(String text, ProductRate rate) {
-        this.text = text;
-        this.rate = rate;
-    }
+    //TODO check if it needed //done
+//    public Feedback(String text, ProductRate rate) {
+//        this.text = text;
+//        this.rate = rate;
+//    }
 }

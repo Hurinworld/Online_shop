@@ -1,5 +1,6 @@
 package com.serhiihurin.shop.online_shop.services;
 
+import com.serhiihurin.shop.online_shop.dto.PasswordUpdateRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.UserRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.dto.RegisterRequestDTO;
@@ -20,6 +21,8 @@ public interface UserService {
     User updateUser(User currentAuthenticatedUser, UserRequestDTO userRequestDTO);
 
     User updateUsername(User currenAuthenticatedUser, String email);
+
+    void updatePassword(User currentAuthenticatedUser, PasswordUpdateRequestDTO passwordUpdateRequestDTO);
 
     void deleteUser(Long id);
 }

@@ -1,9 +1,7 @@
 package com.serhiihurin.shop.online_shop.controller_advice;
 
+import com.serhiihurin.shop.online_shop.dto.ApiExceptionDTO;
 import com.serhiihurin.shop.online_shop.exception.ApiException;
-import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
-import com.serhiihurin.shop.online_shop.exception.PurchaseException;
-import com.serhiihurin.shop.online_shop.exception.UnauthorizedAccessException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -18,49 +16,22 @@ import java.time.ZonedDateTime;
 @RequiredArgsConstructor
 @Slf4j
 public class ApiExceptionHandler {
-    @ExceptionHandler(value = ApiRequestException.class)
-    public ResponseEntity<ApiException> handleApiRequestException(ApiRequestException exception) {
-        ApiException apiException = new ApiException(
+    @ExceptionHandler(value = ApiException.class)
+    public ResponseEntity<ApiExceptionDTO> handleApiRequestException(ApiException exception) {
+        ApiExceptionDTO apiExceptionDTO = new ApiExceptionDTO(
                 exception.getMessage(),
-                HttpStatus.BAD_REQUEST,
+                exception.getHttpStatus(),
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
-        log.warn("ApiRequestException caught with HTTP status: {} and message: {}",
-                HttpStatus.BAD_REQUEST,
+        log.warn("ApiException caught with HTTP status: {} and message: {}",
+                exception.getHttpStatus(),
                 exception.getMessage());
-        return new ResponseEntity<>(apiException, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(apiExceptionDTO, exception.getHttpStatus());
     }
 
-    @ExceptionHandler(value = PurchaseException.class)
-    public ResponseEntity<ApiException> handlePurchaseException(PurchaseException exception) {
-        ApiException apiException = new ApiException(
-                exception.getMessage(),
-                HttpStatus.CONFLICT,
-                ZonedDateTime.now(ZoneId.of("Z"))
-        );
-        log.warn("PurchaseException caught with HTTP status: {} and message: {}",
-                HttpStatus.CONFLICT,
-                exception.getMessage());
-        return new ResponseEntity<>(apiException, HttpStatus.CONFLICT);
-    }
-
-    @ExceptionHandler(value = UnauthorizedAccessException.class)
-    public ResponseEntity<ApiException> handleUnauthorizedAccessException(UnauthorizedAccessException exception) {
-        ApiException apiException = new ApiException(
-                exception.getMessage(),
-                HttpStatus.FORBIDDEN,
-                ZonedDateTime.now(ZoneId.of("Z"))
-        );
-        log.warn("UnauthorizedAccessException caught with HTTP status: {} and message: {}",
-                HttpStatus.FORBIDDEN,
-                exception.getMessage());
-        return new ResponseEntity<>(apiException, HttpStatus.FORBIDDEN);
-    }
-
-    //TODO uncomment //done
     @ExceptionHandler(value = Exception.class)
-    public ResponseEntity<ApiException> handleException(Exception exception) {
-        ApiException apiException = new ApiException(
+    public ResponseEntity<ApiExceptionDTO> handleException(Exception exception) {
+        ApiExceptionDTO apiExceptionDTO = new ApiExceptionDTO(
                 exception.getMessage(),
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 ZonedDateTime.now(ZoneId.of("Z"))
@@ -68,6 +39,6 @@ public class ApiExceptionHandler {
         log.warn("Exception caught with HTTP status: {} and message: {}",
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 exception.getMessage());
-        return new ResponseEntity<>(apiException, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(apiExceptionDTO, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

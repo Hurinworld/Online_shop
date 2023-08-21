@@ -30,9 +30,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = userService.createUser(registerRequestDTO);
         String jwtToken = jwtService.generateAccessToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
-        emailService.sendEmail(registerRequestDTO.getEmail(), "Welcome!", "Hi"
-                + registerRequestDTO.getFirstName()
-                + "! Welcome to the online-shop!");
+        emailService.sendGreetingsEmail(registerRequestDTO.getEmail(), registerRequestDTO.getFirstName());
         return AuthenticationResponseDTO.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
@@ -50,7 +48,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = userService.getUserByEmail(request.getEmail());
         String jwtToken = jwtService.generateAccessToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
-        emailService.sendEmail(request.getEmail(), "Welcome!", "Hi! Welcome to the online-shop!");
         return AuthenticationResponseDTO.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)

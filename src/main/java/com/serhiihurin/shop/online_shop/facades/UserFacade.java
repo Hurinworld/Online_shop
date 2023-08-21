@@ -1,5 +1,6 @@
 package com.serhiihurin.shop.online_shop.facades;
 
+import com.serhiihurin.shop.online_shop.dto.PasswordUpdateRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.UserRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.UsernameUpdateResponseDTO;
 import com.serhiihurin.shop.online_shop.entity.User;
@@ -19,6 +20,8 @@ public interface UserFacade {
     User updateUser(User currentAuthenticatedUser, UserRequestDTO userRequestDTO);
 
     UsernameUpdateResponseDTO updateUsername(User currentAuthenticatedUser, String email);
+
+    void updatePassword(User currentAuthenticatedUser, PasswordUpdateRequestDTO passwordUpdateRequestDTO);
 
     void deleteUser(Long id);
 }
