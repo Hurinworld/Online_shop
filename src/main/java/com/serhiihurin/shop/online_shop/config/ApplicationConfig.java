@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.thymeleaf.context.Context;
 
 @Configuration
 @RequiredArgsConstructor
@@ -57,5 +58,10 @@ public class ApplicationConfig {
     @Bean
     public TimedAspect timedAspect(MeterRegistry meterRegistry) {
         return new TimedAspect(meterRegistry);
+    }
+
+    @Bean
+    public Context context() {
+        return new Context();
     }
 }

@@ -78,8 +78,7 @@ public class UserRESTController {
             User currentAuthenticatedUser
     ) {
         emailService.sendPasswordChangingVerificationCode(
-                currentAuthenticatedUser.getEmail(),
-                currentAuthenticatedUser.getFirstName()
+                currentAuthenticatedUser.getEmail()
         );
         log.info("Password changing request from account: {}", currentAuthenticatedUser.getEmail());
         return ResponseEntity.ok().build();
