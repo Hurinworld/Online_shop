@@ -5,6 +5,7 @@ import com.serhiihurin.shop.online_shop.dto.FeedbackUpdateRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.facades.FeedbackFacade;
 import com.serhiihurin.shop.online_shop.dto.FeedbackRequestDTO;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -17,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/online-shop/feedbacks")
 @PreAuthorize("hasAnyRole('CLIENT', 'ADMIN')")
+@Tag(name = "Feedback")
 @RequiredArgsConstructor
 public class FeedbackRESTController {
     private final FeedbackFacade feedbackFacade;

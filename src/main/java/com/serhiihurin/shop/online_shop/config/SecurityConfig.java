@@ -33,6 +33,18 @@ public class SecurityConfig {
             "/online-shop/auth/authenticate"
     };
 
+    private final String[] OPENAPI_WHITELIST = new String[] {
+            "/v3/api-docs",
+            "/v3/api-docs/**",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui/**",
+            "webjars/**",
+            "/swagger-ui.html"
+    };
+
     private final String METRICS_ENDPOINT = "/actuator/prometheus";
 
     @Bean
@@ -44,6 +56,7 @@ public class SecurityConfig {
                         auth -> auth
                                 .requestMatchers(AUTH_WHITElIST).permitAll()
                                 .requestMatchers(METRICS_ENDPOINT).permitAll()
+                                .requestMatchers(OPENAPI_WHITELIST).permitAll()
                                 .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())

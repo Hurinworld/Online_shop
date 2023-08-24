@@ -3,6 +3,7 @@ package com.serhiihurin.shop.online_shop.controller;
 import com.serhiihurin.shop.online_shop.dto.ShopRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.ShopResponseDTO;
 import com.serhiihurin.shop.online_shop.facades.ShopFacade;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -15,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/online-shop/shops")
 @PreAuthorize("hasAnyRole('SHOP_OWNER', 'ADMIN', 'SUPER_ADMIN')")
+@Tag(name = "Shop")
 @RequiredArgsConstructor
 public class ShopRESTController {
     private final ShopFacade shopFacade;

@@ -4,6 +4,7 @@ import com.serhiihurin.shop.online_shop.dto.PurchaseAdminResponseDTO;
 import com.serhiihurin.shop.online_shop.dto.PurchaseResponseDTO;
 import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.facades.PurchaseFacadeImpl;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -16,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/online-shop/purchases")
 @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'CLIENT')")
+@Tag(name = "Purchase")
 @RequiredArgsConstructor
 public class PurchaseRESTController {
     private final PurchaseFacadeImpl purchaseFacade;
