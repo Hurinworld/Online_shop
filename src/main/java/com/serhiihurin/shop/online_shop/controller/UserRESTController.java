@@ -41,8 +41,8 @@ public class UserRESTController {
                             responseCode = "200"
                     ),
                     @ApiResponse(
-                            description = "Invalid token",
-                            responseCode = "403"
+                            description = "Bad syntax",
+                            responseCode = "400"
                     ),
                     @ApiResponse(
                             description = "Unauthorized",
@@ -70,8 +70,8 @@ public class UserRESTController {
                             responseCode = "200"
                     ),
                     @ApiResponse(
-                            description = "Invalid token",
-                            responseCode = "403"
+                            description = "Bad syntax",
+                            responseCode = "400"
                     ),
                     @ApiResponse(
                             description = "Unauthorized",
@@ -103,8 +103,8 @@ public class UserRESTController {
                             responseCode = "200"
                     ),
                     @ApiResponse(
-                            description = "Invalid token",
-                            responseCode = "403"
+                            description = "Bad syntax",
+                            responseCode = "400"
                     ),
                     @ApiResponse(
                             description = "Unauthorized",
@@ -137,8 +137,8 @@ public class UserRESTController {
                             responseCode = "200"
                     ),
                     @ApiResponse(
-                            description = "Invalid token",
-                            responseCode = "403"
+                            description = "Bad syntax",
+                            responseCode = "400"
                     ),
                     @ApiResponse(
                             description = "Unauthorized",
@@ -180,8 +180,8 @@ public class UserRESTController {
                             responseCode = "200"
                     ),
                     @ApiResponse(
-                            description = "Invalid token",
-                            responseCode = "403"
+                            description = "Bad syntax",
+                            responseCode = "400"
                     ),
                     @ApiResponse(
                             description = "Unauthorized",
@@ -221,8 +221,8 @@ public class UserRESTController {
                             responseCode = "200"
                     ),
                     @ApiResponse(
-                            description = "Invalid token",
-                            responseCode = "403"
+                            description = "Bad syntax",
+                            responseCode = "400"
                     ),
                     @ApiResponse(
                             description = "Unauthorized",
@@ -259,8 +259,8 @@ public class UserRESTController {
                             responseCode = "200"
                     ),
                     @ApiResponse(
-                            description = "Invalid token",
-                            responseCode = "403"
+                            description = "Bad syntax",
+                            responseCode = "400"
                     ),
                     @ApiResponse(
                             description = "Unauthorized",
@@ -282,7 +282,7 @@ public class UserRESTController {
     )
     @PutMapping("/info/password/new")
     @PreAuthorize("hasAuthority('account management')")
-    public ResponseEntity<Void> updatePasswordRequest(
+    public ResponseEntity<Void> updatePassword(
             User currentAuthenticatedUser,
             @RequestBody PasswordUpdateRequestDTO passwordUpdateRequestDTO
     ) {
@@ -297,10 +297,6 @@ public class UserRESTController {
                     @ApiResponse(
                             description = "Success",
                             responseCode = "200"
-                    ),
-                    @ApiResponse(
-                            description = "Invalid token",
-                            responseCode = "403"
                     ),
                     @ApiResponse(
                             description = "Unauthorized",
@@ -339,10 +335,6 @@ public class UserRESTController {
                     @ApiResponse(
                             description = "Success",
                             responseCode = "200"
-                    ),
-                    @ApiResponse(
-                            description = "Invalid token",
-                            responseCode = "403"
                     ),
                     @ApiResponse(
                             description = "Unauthorized",

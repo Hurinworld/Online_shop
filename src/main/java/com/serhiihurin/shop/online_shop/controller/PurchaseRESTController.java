@@ -4,6 +4,10 @@ import com.serhiihurin.shop.online_shop.dto.PurchaseAdminResponseDTO;
 import com.serhiihurin.shop.online_shop.dto.PurchaseResponseDTO;
 import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.facades.PurchaseFacadeImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -23,6 +27,24 @@ public class PurchaseRESTController {
     private final PurchaseFacadeImpl purchaseFacade;
     private final ModelMapper modelMapper;
 
+    @Operation(
+            description = "GET all purchases endpoint for admin",
+            summary = "endpoint to retrieve all purchases",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Bad syntax",
+                            responseCode = "400"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized",
+                            responseCode = "401"
+                    )
+            }
+    )
     @GetMapping
     @PreAuthorize("hasAuthority('admin view info')")
     public List<PurchaseAdminResponseDTO> getAllPurchases() {
@@ -33,6 +55,32 @@ public class PurchaseRESTController {
         );
     }
 
+    @Operation(
+            description = "GET endpoint for admin",
+            summary = "endpoint to retrieve purchases by client ID",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Bad syntax",
+                            responseCode = "400"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized",
+                            responseCode = "401"
+                    )
+            },
+            parameters = {
+                    @Parameter(
+                            name = "clientId",
+                            description = "ID of client",
+                            in = ParameterIn.PATH,
+                            required = true
+                    )
+            }
+    )
     @GetMapping("/client/{clientId}")
     @PreAuthorize("hasAnyAuthority('client view info', 'admin view info')")
     public List<PurchaseAdminResponseDTO> getPurchasesByClientId(@PathVariable Long clientId) {
@@ -43,6 +91,32 @@ public class PurchaseRESTController {
         );
     }
 
+    @Operation(
+            description = "GET endpoint for client",
+            summary = "endpoint to retrieve yourself purchases",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Bad syntax",
+                            responseCode = "400"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized",
+                            responseCode = "401"
+                    )
+            },
+            parameters = {
+                    @Parameter(
+                            name = "currentAuthenticatedUser",
+                            description = "Current authenticated user object",
+                            in = ParameterIn.QUERY,
+                            required = true
+                    )
+            }
+    )
     @GetMapping("/client/me")
     @PreAuthorize("hasAnyAuthority('client view info', 'admin view info')")
     public List<PurchaseResponseDTO> getPurchasesByClientId(User currentAuthenticatedUser) {
@@ -53,6 +127,32 @@ public class PurchaseRESTController {
         );
     }
 
+    @Operation(
+            description = "GET purchase endpoint for admin",
+            summary = "endpoint to retrieve purchase by ID",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Bad syntax",
+                            responseCode = "400"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized",
+                            responseCode = "401"
+                    )
+            },
+            parameters = {
+                    @Parameter(
+                            name = "id",
+                            description = "ID value of purchase needed for getting info from database",
+                            in = ParameterIn.PATH,
+                            required = true
+                    )
+            }
+    )
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('admin view info')")
     public PurchaseAdminResponseDTO getPurchase(@PathVariable Long id) {
@@ -62,6 +162,36 @@ public class PurchaseRESTController {
         );
     }
 
+    @Operation(
+            description = "POST endpoint for client",
+            summary = "endpoint for making a purchase",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Bad request",
+                            responseCode = "400"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized",
+                            responseCode = "401"
+                    )
+            },
+            parameters = {
+                    @Parameter(
+                            name = "clientId",
+                            description = "The ID of client that makes a purchase",
+                            in = ParameterIn.QUERY,
+                            required = true
+                    ),
+                    @Parameter(
+                            name = "productId",
+                            description = "The ID's of products that are going to be purchased by client"
+                    )
+            }
+    )
     @PostMapping
     @PreAuthorize("hasAuthority('purchase creation')")
     public PurchaseResponseDTO makePurchase(@RequestParam Long clientId,
@@ -72,6 +202,32 @@ public class PurchaseRESTController {
         );
     }
 
+    @Operation(
+            description = "DELETE product data endpoint for admin",
+            summary = "endpoint for admin to delete purchase",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Bad syntax",
+                            responseCode = "400"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized",
+                            responseCode = "401"
+                    ),
+            },
+            parameters = {
+                    @Parameter(
+                            name = "id",
+                            description = "ID value of purchase to be deleted from database",
+                            in = ParameterIn.PATH,
+                            required = true
+                    )
+            }
+    )
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('purchase management')")
     public ResponseEntity<Void> deletePurchase(@PathVariable Long id) {
