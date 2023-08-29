@@ -18,4 +18,5 @@ public class VerificationCode {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+    //TODO add field createdDate + make new variable in application.yml for duration of this code
 }

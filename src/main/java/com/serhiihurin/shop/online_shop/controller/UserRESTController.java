@@ -280,6 +280,7 @@ public class UserRESTController {
                     required = true
             )
     )
+    //TODO verbs in path
     @PutMapping("/info/password/new")
     @PreAuthorize("hasAuthority('account management')")
     public ResponseEntity<Void> updatePassword(
@@ -319,7 +320,7 @@ public class UserRESTController {
     @DeleteMapping
     @PreAuthorize("hasAuthority('super admin info deletion')")
     public ResponseEntity<Void> deleteUser(@RequestParam(required = false) Long id) {
-        //TODO resolve //done
+       //TODO move it to facade
         if (id == null) {
             throw new ApiRequestException("Invalid URL. Parameter id must not be null");
         }

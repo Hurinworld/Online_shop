@@ -73,6 +73,7 @@ public class UserFacadeImpl implements UserFacade {
     @Transactional
     @Override
     public void updatePassword(User currentAuthenticatedUser, PasswordUpdateRequestDTO passwordUpdateRequestDTO) {
+        //TODO nullpointer?
         String verificationCode =
                 verificationCodeRepository.findByUserId(currentAuthenticatedUser.getId()).getVerificationCode();
         if (!verificationCode.equals(passwordUpdateRequestDTO.getVerificationCode())) {
