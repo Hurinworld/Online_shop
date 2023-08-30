@@ -2,7 +2,6 @@ package com.serhiihurin.shop.online_shop.controller;
 
 import com.serhiihurin.shop.online_shop.dto.*;
 import com.serhiihurin.shop.online_shop.entity.User;
-import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
 import com.serhiihurin.shop.online_shop.facades.UserFacade;
 import com.serhiihurin.shop.online_shop.services.EmailService;
 import io.micrometer.core.annotation.Timed;
@@ -238,7 +237,7 @@ public class UserRESTController {
                     )
             }
     )
-    @GetMapping("/info/password")
+    @GetMapping("/info/password/code")
     @PreAuthorize("hasAuthority('account management')")
     public ResponseEntity<Void> updatePasswordRequest(
             User currentAuthenticatedUser
@@ -280,8 +279,8 @@ public class UserRESTController {
                     required = true
             )
     )
-    //TODO verbs in path
-    @PutMapping("/info/password/new")
+    //TODO verbs in path //done
+    @PutMapping("/info/password")
     @PreAuthorize("hasAuthority('account management')")
     public ResponseEntity<Void> updatePassword(
             User currentAuthenticatedUser,
@@ -320,10 +319,10 @@ public class UserRESTController {
     @DeleteMapping
     @PreAuthorize("hasAuthority('super admin info deletion')")
     public ResponseEntity<Void> deleteUser(@RequestParam(required = false) Long id) {
-       //TODO move it to facade
-        if (id == null) {
-            throw new ApiRequestException("Invalid URL. Parameter id must not be null");
-        }
+       //TODO move it to facade //done
+//        if (id == null) {
+//            throw new ApiRequestException("Invalid URL. Parameter id must not be null");
+//        }
         userFacade.deleteUser(id);
         log.info("Super admin: deleted user with id: {}", id);
         return ResponseEntity.ok().build();

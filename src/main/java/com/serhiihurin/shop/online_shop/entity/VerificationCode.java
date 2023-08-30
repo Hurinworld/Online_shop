@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "verification_codes")
 @NoArgsConstructor
@@ -18,5 +20,6 @@ public class VerificationCode {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    //TODO add field createdDate + make new variable in application.yml for duration of this code
+    //TODO add field createdDate + make new variable in application.yml for duration of this code //done
+    private LocalDateTime creationTime;
 }

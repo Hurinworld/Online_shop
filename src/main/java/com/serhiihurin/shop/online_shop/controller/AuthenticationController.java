@@ -3,10 +3,8 @@ package com.serhiihurin.shop.online_shop.controller;
 import com.serhiihurin.shop.online_shop.dto.AuthenticationRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.RegisterRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.AuthenticationResponseDTO;
-import com.serhiihurin.shop.online_shop.services.AuthenticationService;
+import com.serhiihurin.shop.online_shop.facades.AuthenticationFacade;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,7 +24,7 @@ import java.io.IOException;
 @Tag(name = "Authentication")
 @RequiredArgsConstructor
 public class AuthenticationController {
-    private final AuthenticationService authenticationService;
+    private final AuthenticationFacade authenticationFacade;
 
     @Operation(
             description = "POST endpoint for new users",
@@ -50,7 +48,7 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponseDTO> register(
             @RequestBody RegisterRequestDTO request
     ) {
-        return ResponseEntity.ok(authenticationService.register(request));
+        return ResponseEntity.ok(authenticationFacade.register(request));
     }
 
     @Operation(
@@ -75,7 +73,7 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponseDTO> authenticate(
             @RequestBody AuthenticationRequestDTO request
     ) {
-        AuthenticationResponseDTO response = authenticationService.authenticate(request);
+        AuthenticationResponseDTO response = authenticationFacade.authenticate(request);
         return ResponseEntity.ok(response);
     }
 
@@ -98,6 +96,6 @@ public class AuthenticationController {
             HttpServletRequest request,
             HttpServletResponse response
     ) throws IOException {
-        authenticationService.updateAccessToken(request, response);
+        authenticationFacade.updateAccessToken(request, response);
     }
 }

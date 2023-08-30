@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import java.time.LocalDateTime;
 import java.util.Random;
 
 @Service
@@ -51,6 +52,7 @@ public class EmailServiceImpl implements EmailService{
         VerificationCode verificationCode = VerificationCode.builder()
                 .verificationCode(generateVerificationCode())
                 .user(userService.getUserByEmail(toEmail))
+                .creationTime(LocalDateTime.now())
                 .build();
         verificationCodeRepository.save(verificationCode);
 

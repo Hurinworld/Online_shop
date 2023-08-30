@@ -25,7 +25,6 @@ application:
       refresh-token:
         expiration: 604800000 # 7 days
 
-
 management:
   endpoints:
     web:
@@ -44,3 +43,6 @@ management:
     distribution:
       percentiles-histogram:
         "[http.server.request]": true
+
+custom:
+  verification-code-expiration: 10 #minutes
