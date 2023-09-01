@@ -28,6 +28,8 @@ public class PurchaseFacadeImpl implements PurchaseFacade{
 
     private final PurchaseService purchaseService;
 
+    private final PurchaseDetailsService purchaseDetailsService;
+
     private final ModelMapper modelMapper;
 
 
@@ -71,8 +73,17 @@ public class PurchaseFacadeImpl implements PurchaseFacade{
             purchase.setUser(currentAuthenticatedUser);
             purchase.setTime(LocalDateTime.now());
 
-            product.getPurchase().add(purchase);
-            purchase.getProducts().add(product);
+            purchase.getPurchaseDetails().add(
+                    purchaseDetailsService.savePurchaseDetails(
+                            PurchaseDetails.builder()
+                                    .purchase(purchase)
+                                    .product(product)
+                                    .amount(productsCount.get(productId))
+                                    .totalPrice(totalPrice)
+                                    .build()
+                    )
+            );
+
             productService.saveProduct(product);
             shopService.saveShop(modelMapper.map(shop, ShopRequestDTO.class));
         }

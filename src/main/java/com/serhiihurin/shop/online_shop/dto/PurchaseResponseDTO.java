@@ -9,5 +9,5 @@ import java.util.List;
 public class PurchaseResponseDTO {
     private Long id;
     private LocalDateTime time;
-    private List<ProductResponseDTO> products;
+    private List<PurchaseDetailsResponseDTO> details;
 }

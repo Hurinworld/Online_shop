@@ -21,7 +21,6 @@ public class Purchase {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany(mappedBy = "purchase")
-    private List<Product> products = new ArrayList<>();
-
+    @OneToMany(mappedBy = "purchase")
+    private List<PurchaseDetails> purchaseDetails = new ArrayList<>();
 }

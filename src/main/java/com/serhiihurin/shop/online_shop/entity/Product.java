@@ -3,7 +3,6 @@ package com.serhiihurin.shop.online_shop.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -25,12 +24,6 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "shop_id")
     private Shop shop;
-
-    @ManyToMany
-    @JoinTable(name = "purchases_products",
-        joinColumns = @JoinColumn(name = "product_id"),
-        inverseJoinColumns = @JoinColumn(name = "purchase_id"))
-    private List<Purchase> purchase = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
     private List<Feedback> feedbacks;
