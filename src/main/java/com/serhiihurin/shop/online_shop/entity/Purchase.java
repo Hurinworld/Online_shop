@@ -21,6 +21,6 @@ public class Purchase {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "purchase")
+    @OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL)
     private List<PurchaseDetails> purchaseDetails = new ArrayList<>();
 }
