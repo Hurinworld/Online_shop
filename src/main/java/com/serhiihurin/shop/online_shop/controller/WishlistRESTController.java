@@ -2,22 +2,19 @@ package com.serhiihurin.shop.online_shop.controller;
 
 import com.serhiihurin.shop.online_shop.dto.ProductResponseDTO;
 import com.serhiihurin.shop.online_shop.dto.WishlistResponseDTO;
-import com.serhiihurin.shop.online_shop.entity.Product;
 import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.entity.Wishlist;
-import com.serhiihurin.shop.online_shop.services.WishlistService;
+import com.serhiihurin.shop.online_shop.facades.WishlistFacade;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/online-shop/wishlist")
@@ -26,26 +23,34 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class WishlistRESTController {
-    private final WishlistService wishlistService;
+    private final WishlistFacade wishlistFacade;
     private final ModelMapper modelMapper;
 
     @GetMapping
     @PreAuthorize("hasAnyAuthority('client view info', 'shop owner view info')")
     public WishlistResponseDTO getUserWishlist(User currentAuthenticatedUser) {
-        List<Wishlist> wishlist = wishlistService.getUserWishlist(currentAuthenticatedUser.getId());
-        List<Product> wishlistProducts = new ArrayList<>();
-        for (Wishlist item : wishlist) {
-            wishlistProducts.add(item.getProduct());
-        }
+        List<Wishlist> wishlist = wishlistFacade.getUserWishlist(currentAuthenticatedUser.getId());
 
         return WishlistResponseDTO.builder()
                 .userId(currentAuthenticatedUser.getId())
                 .product(
-                        modelMapper.map(
-                                wishlistProducts,
-                                new TypeToken<List<ProductResponseDTO>>(){}.getType()
-                        )
+                        wishlist.stream()
+                        .map(item -> modelMapper.map(item.getProduct(), ProductResponseDTO.class))
+                        .collect(Collectors.toList())
                 )
                 .build();
+    }
+
+    @PostMapping
+    @PreAuthorize("hasAnyAuthority('client view info', 'shop owner view info')")
+    public ResponseEntity<Void> addProductToWishlist(User currentAuthenticatedUser, @RequestParam Long productId) {
+        wishlistFacade.addProductToWishlist(currentAuthenticatedUser,productId);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/product/{productId}")
+    public ResponseEntity<Void> deleteProductFromWishlist(@PathVariable Long productId) {
+        wishlistFacade.deleteProductFromWishlist(productId);
+        return ResponseEntity.ok().build();
     }
 }

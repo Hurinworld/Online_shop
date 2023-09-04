@@ -206,6 +206,8 @@ public class ProductRESTController {
         return ResponseEntity.ok().build();
     }
 
+
+
     @Operation(
             description = "PATCH endpoint for shop owner",
             summary = "endpoint to update product",
