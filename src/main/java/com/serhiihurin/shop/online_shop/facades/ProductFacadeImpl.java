@@ -72,6 +72,12 @@ public class ProductFacadeImpl implements ProductFacade {
     }
 
     @Override
+    public void putProductOnSale(Long productId, int discountPercent) {
+        productService.putProductOnSale(productId, discountPercent);
+        log.info("Put product with id: {} on sale", productId);
+    }
+
+    @Override
     public ProductResponseDTO updateProduct(Long id, ProductRequestDTO productRequestDTO) {
         Product oldProduct = productService.getProduct(id);
         Shop shop = null;

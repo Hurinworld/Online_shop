@@ -20,6 +20,7 @@ public class Product {
     private String description;
     private Double price;
     private int amount;
+    private boolean onSale;
 
     @ManyToOne
     @JoinColumn(name = "shop_id")

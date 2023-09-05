@@ -117,7 +117,7 @@ public class ProductRESTController {
             }
     )
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('shop owner view info', 'admin view info')")
+    @PreAuthorize("hasAnyAuthority('shop owner view info', 'admin view info', 'client view info')")
     public ProductResponseDTO getProduct(@PathVariable Long id) {
         return modelMapper.map(productFacade.getProduct(id), ProductResponseDTO.class);
     }
@@ -206,7 +206,12 @@ public class ProductRESTController {
         return ResponseEntity.ok().build();
     }
 
-
+    @PutMapping("/{productId}/sale/{discountPercent}")
+    @PreAuthorize("hasAuthority('product management')")
+    public ResponseEntity<Void> putProductOnSale(@PathVariable Long productId, @PathVariable int discountPercent) {
+        productFacade.putProductOnSale(productId, discountPercent);
+        return ResponseEntity.ok().build();
+    }
 
     @Operation(
             description = "PATCH endpoint for shop owner",

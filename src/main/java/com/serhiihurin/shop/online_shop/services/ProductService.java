@@ -23,5 +23,7 @@ public interface ProductService {
 
     void increaseProductAmount(Product product, Integer amount);
 
+    void putProductOnSale(Long productId, int discountPercent);
+
     void deleteProduct(Long id);
 }

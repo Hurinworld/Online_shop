@@ -1,7 +1,9 @@
 package com.serhiihurin.shop.online_shop.services;
 
 import com.serhiihurin.shop.online_shop.dao.VerificationCodeRepository;
+import com.serhiihurin.shop.online_shop.entity.Product;
 import com.serhiihurin.shop.online_shop.entity.VerificationCode;
+import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -75,6 +77,29 @@ public class EmailServiceImpl implements EmailService{
         javaMailSender.send(message);
 
         log.info("sent password changing verification code to {}", toEmail);
+    }
+
+    @Override
+    public void sendNotificationEmailABoutProductsOnSale(String toEmail, Product product) {
+        context.setVariable("name", userService.getUserByEmail(toEmail).getFirstName());
+        context.setVariable("productName", product.getName());
+        context.setVariable("productId", product.getId());
+
+        String emailContent = templateEngine.process("wishlist-products-on-sale-notification-email", context);
+
+        MimeMessage message = javaMailSender.createMimeMessage();
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setFrom("online.shop@gmail.com");
+            helper.setTo(toEmail);
+            helper.setSubject("Notification about discount on products from your wishlist");
+            helper.setText(emailContent, true);
+            context.clearVariables();
+        } catch (MessagingException messagingException) {
+            throw new RuntimeException(messagingException);
+        }
+
+        javaMailSender.send(message);
     }
 
     private String generateVerificationCode() {

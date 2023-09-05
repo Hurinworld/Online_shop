@@ -70,6 +70,26 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public void putProductOnSale(Long productId, int discountPercent) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ApiRequestException("Could not find product"));
+
+        if (product.isOnSale()) {
+            throw new ApiRequestException("The product is already on sale");
+        }
+
+        if (discountPercent > 100 || discountPercent < 1) {
+            throw new ApiRequestException("Invalid discount percent. " +
+                    "The value should be higher than 1 and lower than 100");
+        }
+
+        product.setOnSale(true);
+        product.setPrice(product.getPrice() - (product.getPrice() * discountPercent / 100));
+
+        productRepository.save(product);
+    }
+
+    @Override
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
     }

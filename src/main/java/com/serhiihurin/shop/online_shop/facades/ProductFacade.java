@@ -17,6 +17,8 @@ public interface ProductFacade {
 
     void increaseProductAmount(Long productId, Integer amount);
 
+    void putProductOnSale(Long productId, int discountPercent);
+
     ProductResponseDTO updateProduct(Long id, ProductRequestDTO productRequestDTO);
 
     void deleteProduct(Long id);
