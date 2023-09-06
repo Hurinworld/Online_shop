@@ -85,7 +85,8 @@ public class PurchaseFacadeImpl implements PurchaseFacade{
             );
 
             productService.saveProduct(product);
-            shopService.saveShop(modelMapper.map(shop, ShopRequestDTO.class));
+//            shopService.saveShop(modelMapper.map(shop, ShopRequestDTO.class));
+            shopService.updateShop(modelMapper.map(shop, ShopRequestDTO.class), shop);
         }
 
         purchaseService.savePurchase(purchase);

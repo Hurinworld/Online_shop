@@ -3,7 +3,6 @@ package com.serhiihurin.shop.online_shop.services;
 import com.serhiihurin.shop.online_shop.dao.VerificationCodeRepository;
 import com.serhiihurin.shop.online_shop.entity.Product;
 import com.serhiihurin.shop.online_shop.entity.VerificationCode;
-import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +14,8 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -26,6 +27,8 @@ public class EmailServiceImpl implements EmailService{
     private final VerificationCodeRepository verificationCodeRepository;
     private final TemplateEngine templateEngine;
     private final Context context;
+
+    private List<String> ignoreList = new ArrayList<>();
 
     @Override
     public void sendGreetingsEmail(String toEmail, String name) {
@@ -80,10 +83,9 @@ public class EmailServiceImpl implements EmailService{
     }
 
     @Override
-    public void sendNotificationEmailABoutProductsOnSale(String toEmail, Product product) {
+    public void sendNotificationEmailABoutProductsOnSale(String toEmail, List<Product> products) {
         context.setVariable("name", userService.getUserByEmail(toEmail).getFirstName());
-        context.setVariable("productName", product.getName());
-        context.setVariable("productId", product.getId());
+        context.setVariable("products", products);
 
         String emailContent = templateEngine.process("wishlist-products-on-sale-notification-email", context);
 
@@ -100,6 +102,16 @@ public class EmailServiceImpl implements EmailService{
         }
 
         javaMailSender.send(message);
+    }
+
+    @Override
+    public List<String> getIgnoreList () {
+        return this.ignoreList;
+    }
+
+    @Override
+    public void setIgnoreList(List<String> ignoreList) {
+        this.ignoreList = ignoreList;
     }
 
     private String generateVerificationCode() {

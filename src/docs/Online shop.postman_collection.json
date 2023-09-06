@@ -617,7 +617,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZG9zYXRhY2s4OEBnbWFpbC5jb20iLCJpYXQiOjE2OTI3MTQxNzUsImV4cCI6MTY5MjgwMDU3NX0.E4zzJsr-4_jBvdG2NoWm72z7F_7YJY1zumTkM7hyui0",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZXJnZXkuZ3VyaW4yMDE1QGdtYWlsLmNvbSIsImlhdCI6MTY5MzM5NzI0NywiZXhwIjoxNjkzNDgzNjQ3fQ.S0-butc0DevuUFiAdnLXIovkfarSe3aepxVQZwo64t0",
 									"type": "string"
 								}
 							]
@@ -790,7 +790,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZG9zYXRhY2s4OEBnbWFpbC5jb20iLCJpYXQiOjE2OTIxODc3MDEsImV4cCI6MTY5MjI3NDEwMX0.qJ-I1MlFFLH1fPO9X2s0lOQpghNkbudLybQ6J_4fjgs",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZG9zYXRhY2s4OEBnbWFpbC5jb20iLCJpYXQiOjE2OTQwMTQ2NjUsImV4cCI6MTY5NDEwMTA2NX0.51AS2f6XV_K_KkltPH6IxnhutaMCSKXW4OxCLJxztXw",
 									"type": "string"
 								}
 							]
@@ -799,7 +799,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"AMD Ryzen 7 5700X\",\r\n    \"description\": \"CPU\",\r\n    \"price\": 8421.45,\r\n    \"count\": 5\r\n}",
+							"raw": "{\r\n    \"name\": \"Asus TUF GeForce RTX 3060TI\",\r\n    \"description\": \"GPU\",\r\n    \"price\": 18421.45,\r\n    \"amount\": 10\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -859,6 +859,39 @@
 									"key": "amount",
 									"value": "3"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put product on sale",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGllbnRAZ21haWwuY29tIiwiaWF0IjoxNjkzNTczNDU2LCJleHAiOjE2OTM2NTk4NTZ9.QLh2jWV7v9JGWQR1ZUlyzsBZNqqzcijelqQiVz_4tto",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/online-shop/products/1/sale/20",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"online-shop",
+								"products",
+								"1",
+								"sale",
+								"20"
 							]
 						}
 					},
@@ -1283,7 +1316,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtaXN0ZXJodXJpbkBnbWFpbC5jb20iLCJpYXQiOjE2OTIxODk1NDMsImV4cCI6MTY5MjI3NTk0M30.FV1VFR6BYHNvo5IAhLmJUtFoRUHe0sO1KwYPODgaD_0",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGllbnRAZ21haWwuY29tIiwiaWF0IjoxNjkzNTczNDU2LCJleHAiOjE2OTM2NTk4NTZ9.QLh2jWV7v9JGWQR1ZUlyzsBZNqqzcijelqQiVz_4tto",
 									"type": "string"
 								}
 							]
@@ -1346,15 +1379,24 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtaXN0ZXJodXJpbkBnbWFpbC5jb20iLCJpYXQiOjE2OTIxODk1NDMsImV4cCI6MTY5MjI3NTk0M30.FV1VFR6BYHNvo5IAhLmJUtFoRUHe0sO1KwYPODgaD_0",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGllbnRAZ21haWwuY29tIiwiaWF0IjoxNjkzNTczNDU2LCJleHAiOjE2OTM2NTk4NTZ9.QLh2jWV7v9JGWQR1ZUlyzsBZNqqzcijelqQiVz_4tto",
 									"type": "string"
 								}
 							]
 						},
 						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"productsCount\": {\r\n        \"1\": 2\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://localhost:8080/online-shop/purchases?clientId=3&productId=2",
+							"raw": "http://localhost:8080/online-shop/purchases",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1363,16 +1405,6 @@
 							"path": [
 								"online-shop",
 								"purchases"
-							],
-							"query": [
-								{
-									"key": "clientId",
-									"value": "3"
-								},
-								{
-									"key": "productId",
-									"value": "2"
-								}
 							]
 						}
 					},
@@ -1411,6 +1443,109 @@
 				}
 			],
 			"description": "Endpoints for purchase operations"
+		},
+		{
+			"name": "Wishlist",
+			"item": [
+				{
+					"name": "Get yourself wishlist",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGllbnRAZ21haWwuY29tIiwiaWF0IjoxNjkzNTczNDU2LCJleHAiOjE2OTM2NTk4NTZ9.QLh2jWV7v9JGWQR1ZUlyzsBZNqqzcijelqQiVz_4tto",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/online-shop/wishlist",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"online-shop",
+								"wishlist"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add to wishlist",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZXJnZXkuZ3VyaW4yMDE1QGdtYWlsLmNvbSIsImlhdCI6MTY5MzkyMjQxNiwiZXhwIjoxNjk0MDA4ODE2fQ.xImJ6Z74but-5wzvBWsNqxh7uBnsXmJ5KYVhkJgRHPo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/online-shop/wishlist?productId=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"online-shop",
+								"wishlist"
+							],
+							"query": [
+								{
+									"key": "productId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete form wishlist",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGllbnRAZ21haWwuY29tIiwiaWF0IjoxNjkzNTczNDU2LCJleHAiOjE2OTM2NTk4NTZ9.QLh2jWV7v9JGWQR1ZUlyzsBZNqqzcijelqQiVz_4tto",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/online-shop/wishlist/product/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"online-shop",
+								"wishlist",
+								"product",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }

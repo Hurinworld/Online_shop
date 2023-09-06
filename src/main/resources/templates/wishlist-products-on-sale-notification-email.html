@@ -6,11 +6,13 @@
 </head>
 <body>
 <p>Hi <span th:text="${name}">User</span>!</p>
-<p>Some product from your wishlist is now on sale:</p>
-<p>
-    <a th:href="@{'http://localhost:8080/online-shop/products/' + ${productId}}">
-        <span th:text="${productName}">Product Name</span>
-    </a>
-</p>
+<p>Some products from your wishlist are now on sale:</p>
+<ul>
+    <li th:each="product, iterStat : ${products}">
+        <a th:href="@{'http://localhost:8080/online-shop/products/' + ${product.id}}">
+            <span th:text="${product.name}">Product Name</span>
+        </a>
+    </li>
+</ul>
 </body>
 </html>

@@ -33,7 +33,7 @@ public class ShopServiceImpl implements ShopService {
         if (shopRequestDTO.getIncome() != null) {
             shop.setIncome(shopRequestDTO.getIncome());
         }
-        return shop;
+        return shopRepository.save(shop);
     }
 
     @Override
