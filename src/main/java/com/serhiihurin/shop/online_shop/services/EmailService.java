@@ -9,6 +9,7 @@ public interface EmailService {
 
     void sendPasswordChangingVerificationCode(String toEmail);
 
+    //TODO mistake in case-naming
     void sendNotificationEmailABoutProductsOnSale(String toEmail, List<Product> products);
 
     List<String> getIgnoreList();

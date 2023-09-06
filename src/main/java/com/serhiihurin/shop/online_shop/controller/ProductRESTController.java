@@ -206,6 +206,8 @@ public class ProductRESTController {
         return ResponseEntity.ok().build();
     }
 
+    //TODO add logic to remove discount
+    //TODO make entity 'discount' + make entity sales for specified thematic, created by shop
     @PutMapping("/{productId}/sale/{discountPercent}")
     @PreAuthorize("hasAuthority('product management')")
     public ResponseEntity<Void> putProductOnSale(@PathVariable Long productId, @PathVariable int discountPercent) {
@@ -244,7 +246,6 @@ public class ProductRESTController {
                     required = true
             )
     )
-    //TODO add id to path! //done
     @PatchMapping("/{id}")
     @PreAuthorize("hasAuthority('product management')")
     public ResponseEntity<ProductResponseDTO> updateProduct(

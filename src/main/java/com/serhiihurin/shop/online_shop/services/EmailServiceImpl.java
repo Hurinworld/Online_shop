@@ -30,6 +30,7 @@ public class EmailServiceImpl implements EmailService{
 
     private List<String> ignoreList = new ArrayList<>();
 
+
     @Override
     public void sendGreetingsEmail(String toEmail, String name) {
         context.setVariable("name", userService.getUserByEmail(toEmail).getFirstName());
@@ -54,6 +55,8 @@ public class EmailServiceImpl implements EmailService{
 
     @Override
     public void sendPasswordChangingVerificationCode(String toEmail) {
+        //TODO move verificationCode creation to verificationCode service
+        //TODO add checking for an existing codes before creation a new one
         VerificationCode verificationCode = VerificationCode.builder()
                 .verificationCode(generateVerificationCode())
                 .user(userService.getUserByEmail(toEmail))
@@ -82,6 +85,7 @@ public class EmailServiceImpl implements EmailService{
         log.info("sent password changing verification code to {}", toEmail);
     }
 
+    //TODO I want only 1 email about discounts everyday
     @Override
     public void sendNotificationEmailABoutProductsOnSale(String toEmail, List<Product> products) {
         context.setVariable("name", userService.getUserByEmail(toEmail).getFirstName());

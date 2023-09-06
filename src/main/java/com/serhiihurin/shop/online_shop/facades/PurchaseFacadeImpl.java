@@ -73,6 +73,7 @@ public class PurchaseFacadeImpl implements PurchaseFacade{
             purchase.setUser(currentAuthenticatedUser);
             purchase.setTime(LocalDateTime.now());
 
+            //TODO check is it right
             purchase.getPurchaseDetails().add(
                     purchaseDetailsService.savePurchaseDetails(
                             PurchaseDetails.builder()

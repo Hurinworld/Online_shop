@@ -28,8 +28,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = userService.createUser(registerRequestDTO);
         String jwtToken = jwtService.generateAccessToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
-        //TODO this should be in facade, not auth service //done
-//        emailService.sendGreetingsEmail(registerRequestDTO.getEmail(), registerRequestDTO.getFirstName());
         return AuthenticationResponseDTO.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
