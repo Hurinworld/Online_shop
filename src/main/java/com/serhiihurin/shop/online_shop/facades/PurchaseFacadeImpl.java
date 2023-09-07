@@ -73,7 +73,7 @@ public class PurchaseFacadeImpl implements PurchaseFacade{
             purchase.setUser(currentAuthenticatedUser);
             purchase.setTime(LocalDateTime.now());
 
-            //TODO check is it right
+            //TODO check is it right //done
             purchase.getPurchaseDetails().add(
                     purchaseDetailsService.savePurchaseDetails(
                             PurchaseDetails.builder()
@@ -86,7 +86,6 @@ public class PurchaseFacadeImpl implements PurchaseFacade{
             );
 
             productService.saveProduct(product);
-//            shopService.saveShop(modelMapper.map(shop, ShopRequestDTO.class));
             shopService.updateShop(modelMapper.map(shop, ShopRequestDTO.class), shop);
         }
 

@@ -28,7 +28,6 @@ public class WishlistFacadeImpl implements WishlistFacade{
     public void notifyUsersAboutSales() {
         log.info("Started checking for sales process at: {}", LocalDateTime.now());
         List<Wishlist> wishlists = wishlistService.getWishlistsByProductsOnSale();
-        List<String> ignoreList = emailService.getIgnoreList();
 
         Map<User, List<Product>> sortedByUserWishlists = new HashMap<>();
 
@@ -40,16 +39,12 @@ public class WishlistFacadeImpl implements WishlistFacade{
                 sortedByUserWishlists.put(item.getUser(), productList);
             }
             for (User user : sortedByUserWishlists.keySet()) {
-                if (!ignoreList.contains(user.getEmail())) {
-                    emailService
-                            .sendNotificationEmailABoutProductsOnSale(
-                                    user.getEmail(),
-                                    sortedByUserWishlists.get(user)
-                            );
-                    ignoreList.add(user.getEmail());
-                }
+                emailService
+                        .sendNotificationEmailAboutProductsOnSale(
+                                user.getEmail(),
+                                sortedByUserWishlists.get(user)
+                        );
             }
-            emailService.setIgnoreList(ignoreList);
         }
     }
 
@@ -64,7 +59,7 @@ public class WishlistFacadeImpl implements WishlistFacade{
     }
 
     @Override
-    public void deleteProductFromWishlist(Long productId) {
-        wishlistService.deleteProductFromWishlist(productId);
+    public void deleteProductFromWishlist(Long userId, Long productId) {
+        wishlistService.deleteProductFromWishlist(userId, productId);
     }
 }

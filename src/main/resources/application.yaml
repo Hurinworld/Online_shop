@@ -46,3 +46,4 @@ management:
 
 custom:
   verification-code-expiration: 10 #minutes
+  password-changing-link: "http://localhost:8080/online-shop/info/password/new"

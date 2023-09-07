@@ -49,8 +49,8 @@ public class WishlistRESTController {
     }
 
     @DeleteMapping("/product/{productId}")
-    public ResponseEntity<Void> deleteProductFromWishlist(@PathVariable Long productId) {
-        wishlistFacade.deleteProductFromWishlist(productId);
+    public ResponseEntity<Void> deleteProductFromWishlist(User currentAuthenticatedUser, @PathVariable Long productId) {
+        wishlistFacade.deleteProductFromWishlist(currentAuthenticatedUser.getId(), productId);
         return ResponseEntity.ok().build();
     }
 }

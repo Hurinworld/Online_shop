@@ -1,4 +1,4 @@
-package com.serhiihurin.shop.online_shop.schedule;
+package com.serhiihurin.shop.online_shop.scheduler;
 
 import com.serhiihurin.shop.online_shop.facades.WishlistFacade;
 import lombok.RequiredArgsConstructor;
@@ -7,11 +7,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-//TODO rename it
-public class ScheduledTasks {
+//TODO rename it //done
+public class Scheduler {
     private final WishlistFacade wishlistFacade;
 
-    @Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "0 0 9 * * *")
     public void checkForSales() {
         wishlistFacade.notifyUsersAboutSales();
     }

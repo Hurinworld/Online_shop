@@ -13,5 +13,5 @@ public interface WishlistService {
 
     void addProductToWishlist(User currentAuthenticatedUser, Product product);
 
-    void deleteProductFromWishlist(Long productId);
+    void deleteProductFromWishlist(Long userId, Long productId);
 }

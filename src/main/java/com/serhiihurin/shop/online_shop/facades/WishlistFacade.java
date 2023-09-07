@@ -12,5 +12,5 @@ public interface WishlistFacade {
 
     void addProductToWishlist(User currentAuthenticatedUser, Long productId);
 
-    void deleteProductFromWishlist(Long productId);
+    void deleteProductFromWishlist(Long userId, Long productId);
 }
