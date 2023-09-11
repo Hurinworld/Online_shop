@@ -2,6 +2,7 @@ package com.serhiihurin.shop.online_shop.controller;
 
 import com.serhiihurin.shop.online_shop.dto.ProductRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.ProductResponseDTO;
+import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.facades.ProductFacade;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -154,14 +155,10 @@ public class ProductRESTController {
     )
     @PostMapping
     @PreAuthorize("hasAuthority('product management')")
-    public ResponseEntity<ProductResponseDTO> addNewProduct
-            (
-                    @RequestParam Long shopId,
-                    @RequestBody ProductRequestDTO productRequestDTO
-            ) {
+    public ResponseEntity<ProductResponseDTO> addNewProduct(User currentAuthenticatedUser, @RequestBody ProductRequestDTO productRequestDTO) {
         return ResponseEntity.ok(
                 modelMapper.map(
-                        productFacade.addProduct(shopId, productRequestDTO),
+                        productFacade.addProduct(currentAuthenticatedUser, productRequestDTO),
                         ProductResponseDTO.class
                 )
         );
@@ -201,17 +198,21 @@ public class ProductRESTController {
     )
     @PutMapping("/{productId}")
     @PreAuthorize("hasAuthority('product management')")
-    public ResponseEntity<Void> increaseProductAmount(@PathVariable Long productId, @RequestParam Integer amount) {
-        productFacade.increaseProductAmount(productId, amount);
+    public ResponseEntity<Void> increaseProductAmount(
+            User currentAuthenticatedUser,
+            @PathVariable Long productId,
+            @RequestParam Integer amount
+    ) {
+        productFacade.increaseProductAmount(currentAuthenticatedUser, productId, amount);
         return ResponseEntity.ok().build();
     }
 
-    //TODO add logic to remove discount
+    //TODO add logic to remove discount //done
     //TODO make entity 'discount' + make entity sales for specified thematic, created by shop
-    @PutMapping("/{productId}/sale/{discountPercent}")
+    @PostMapping("/{productId}/sale/{discountPercent}")
     @PreAuthorize("hasAuthority('product management')")
-    public ResponseEntity<Void> putProductOnSale(@PathVariable Long productId, @PathVariable int discountPercent) {
-        productFacade.putProductOnSale(productId, discountPercent);
+    public ResponseEntity<Void> putProductOnSale(User currentAuthenticatedUser, @PathVariable Long productId, @PathVariable int discountPercent) {
+        productFacade.putProductOnSale(currentAuthenticatedUser, productId, discountPercent);
         return ResponseEntity.ok().build();
     }
 
@@ -249,12 +250,23 @@ public class ProductRESTController {
     @PatchMapping("/{id}")
     @PreAuthorize("hasAuthority('product management')")
     public ResponseEntity<ProductResponseDTO> updateProduct(
+            User currentAuthenticatedUser,
             @PathVariable Long id,
             @RequestBody ProductRequestDTO productRequestDTO
     ) {
         return ResponseEntity.ok(
-                productFacade.updateProduct(id, productRequestDTO)
+                modelMapper.map(
+                        productFacade.updateProduct(currentAuthenticatedUser, id, productRequestDTO),
+                        ProductResponseDTO.class
+                )
         );
+    }
+
+    @DeleteMapping("/{productId}/sale")
+    @PreAuthorize("hasAuthority('product management')")
+    public ResponseEntity<Void> removeProductFromSale(User currentAuthenticatedUser, @PathVariable Long productId) {
+        productFacade.removeProductFromSale(currentAuthenticatedUser, productId);
+        return ResponseEntity.ok().build();
     }
 
     @Operation(
@@ -285,8 +297,8 @@ public class ProductRESTController {
     )
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('product management', 'super admin info deletion')")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
-        productFacade.deleteProduct(id);
+    public ResponseEntity<Void> deleteProduct(User currentAuthenticatedUser, @PathVariable Long id) {
+        productFacade.deleteProduct(currentAuthenticatedUser, id);
         return ResponseEntity.ok().build();
     }
 }

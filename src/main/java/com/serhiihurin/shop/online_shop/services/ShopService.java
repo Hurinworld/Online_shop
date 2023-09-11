@@ -12,6 +12,8 @@ public interface ShopService {
 
     Shop getShop(Long id);
 
+    Shop getShopByOwnerId(Long ownerId);
+
     Shop updateShop(ShopRequestDTO shopRequestDTO, Shop shop);
 
     void deleteShop(Long id);

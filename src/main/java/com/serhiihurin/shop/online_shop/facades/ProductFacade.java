@@ -1,8 +1,8 @@
 package com.serhiihurin.shop.online_shop.facades;
 
 import com.serhiihurin.shop.online_shop.dto.ProductRequestDTO;
-import com.serhiihurin.shop.online_shop.dto.ProductResponseDTO;
 import com.serhiihurin.shop.online_shop.entity.Product;
+import com.serhiihurin.shop.online_shop.entity.User;
 
 import java.util.List;
 
@@ -13,13 +13,15 @@ public interface ProductFacade {
 
     Product getProduct(Long id);
 
-    Product addProduct(Long shopId, ProductRequestDTO productRequestDTO);
+    Product addProduct(User currentAuthenticatedUser, ProductRequestDTO productRequestDTO);
 
-    void increaseProductAmount(Long productId, Integer amount);
+    void increaseProductAmount(User currentAuthenticatedUser, Long productId, Integer amount);
 
-    void putProductOnSale(Long productId, int discountPercent);
+    void putProductOnSale(User currentAuthenticatedUser, Long productId, int discountPercent);
 
-    ProductResponseDTO updateProduct(Long id, ProductRequestDTO productRequestDTO);
+    Product updateProduct(User currentAuthenticatedUser, Long id, ProductRequestDTO productRequestDTO);
 
-    void deleteProduct(Long id);
+    void removeProductFromSale(User currentAuthenticatedUser, Long productId);
+
+    void deleteProduct(User currentAuthenticatedUser, Long id);
 }

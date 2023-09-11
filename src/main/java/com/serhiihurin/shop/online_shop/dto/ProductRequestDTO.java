@@ -8,5 +8,5 @@ public class ProductRequestDTO {
     private String name;
     private String description;
     private Double price;
-    private int amount;
+    private Integer amount;
 }

@@ -2,7 +2,7 @@ package com.serhiihurin.shop.online_shop.services;
 
 import com.serhiihurin.shop.online_shop.dto.ProductRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.Product;
-import com.serhiihurin.shop.online_shop.entity.Shop;
+import com.serhiihurin.shop.online_shop.entity.User;
 
 import java.util.List;
 
@@ -16,14 +16,16 @@ public interface ProductService {
     Product saveProduct(Product product);
 
     Product updateProduct(
+            User currentAuthenticatedUser,
             ProductRequestDTO productRequestDTO,
-            Shop shop,
             Product product
     );
 
-    void increaseProductAmount(Product product, Integer amount);
+    void increaseProductAmount(User currentAuthenticatedUser, Product product, Integer amount);
 
-    void putProductOnSale(Long productId, int discountPercent);
+    void putProductOnSale(User currentAuthenticatedUser, Long productId, int discountPercent);
 
-    void deleteProduct(Long id);
+    void removeProductFromSale(User currentAuthenticatedUser, Long productId);
+
+    void deleteProduct(User currentAuthenticatedUser, Long id);
 }

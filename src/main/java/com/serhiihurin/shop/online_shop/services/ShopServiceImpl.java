@@ -22,8 +22,15 @@ public class ShopServiceImpl implements ShopService {
     @Override
     public Shop getShop(Long id) {
         return shopRepository.findById(id)
-                .orElseThrow(() -> new ApiRequestException("Could not find shop with id" + id));
+                .orElseThrow(() -> new ApiRequestException("Could not find shop with ID" + id));
     }
+
+    @Override
+    public Shop getShopByOwnerId(Long ownerId) {
+        return shopRepository.getShopByOwnerId(ownerId)
+                .orElseThrow(() -> new ApiRequestException("Could not find shop with owner ID" + ownerId));
+    }
+
 
     @Override
     public Shop updateShop(ShopRequestDTO shopRequestDTO, Shop shop) {

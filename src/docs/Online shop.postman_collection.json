@@ -799,7 +799,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Asus TUF GeForce RTX 3060TI\",\r\n    \"description\": \"GPU\",\r\n    \"price\": 18421.45,\r\n    \"amount\": 10\r\n}",
+							"raw": "{\r\n    \"shopId\": 1,\r\n    \"name\": \"Asus TUF GeForce RTX 3060TI\",\r\n    \"description\": \"GPU\",\r\n    \"price\": 18421.45,\r\n    \"amount\": 10\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -807,7 +807,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/online-shop/products?shopId=1",
+							"raw": "http://localhost:8080/online-shop/products",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -816,12 +816,39 @@
 							"path": [
 								"online-shop",
 								"products"
-							],
-							"query": [
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put product on sale",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
 								{
-									"key": "shopId",
-									"value": "1"
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGllbnRAZ21haWwuY29tIiwiaWF0IjoxNjkzNTczNDU2LCJleHAiOjE2OTM2NTk4NTZ9.QLh2jWV7v9JGWQR1ZUlyzsBZNqqzcijelqQiVz_4tto",
+									"type": "string"
 								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/online-shop/products/1/sale/20",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"online-shop",
+								"products",
+								"1",
+								"sale",
+								"20"
 							]
 						}
 					},
@@ -865,39 +892,6 @@
 					"response": []
 				},
 				{
-					"name": "Put product on sale",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGllbnRAZ21haWwuY29tIiwiaWF0IjoxNjkzNTczNDU2LCJleHAiOjE2OTM2NTk4NTZ9.QLh2jWV7v9JGWQR1ZUlyzsBZNqqzcijelqQiVz_4tto",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/online-shop/products/1/sale/20",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"online-shop",
-								"products",
-								"1",
-								"sale",
-								"20"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Update product",
 					"request": {
 						"auth": {
@@ -923,6 +917,38 @@
 								"online-shop",
 								"products",
 								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove product from sale",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtaXN0ZXJodXJpbkBnbWFpbC5jb20iLCJpYXQiOjE2OTIyNjY1MjQsImV4cCI6MTY5MjM1MjkyNH0.SArBFrrq3hrAAw-siGYnPV1rjVkqOZMLB9NHRR6OFGA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/online-shop/products/1/sale",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"online-shop",
+								"products",
+								"1",
+								"sale"
 							]
 						}
 					},

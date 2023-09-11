@@ -21,5 +21,9 @@ public class Shop {
 
     //TODO read more info about cascades
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "shop")
-    private List<Product> productData;
+    private List<Product> products;
+
+    @OneToOne
+    @JoinColumn(name = "owner_id")
+    private User owner;
 }
