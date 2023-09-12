@@ -13,7 +13,7 @@ public interface ProductService {
 
     Product getProduct(Long id);
 
-    Product saveProduct(Product product);
+    Product addProduct(Product product);
 
     Product updateProduct(
             User currentAuthenticatedUser,

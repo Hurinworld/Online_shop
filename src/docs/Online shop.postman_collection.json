@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "cf85afed-65ff-4a6b-ab2a-a05cdc4eadb1",
+		"_postman_id": "5320e6a9-a32e-4f88-8fbe-3d04228b0a9f",
 		"name": "Online shop",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "28276762"
@@ -790,7 +790,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZG9zYXRhY2s4OEBnbWFpbC5jb20iLCJpYXQiOjE2OTQwMTQ2NjUsImV4cCI6MTY5NDEwMTA2NX0.51AS2f6XV_K_KkltPH6IxnhutaMCSKXW4OxCLJxztXw",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlc3RldDEzNkBnbWFpbC5jb20iLCJpYXQiOjE2OTQ1MTY0NzIsImV4cCI6MTY5NDYwMjg3Mn0.fZEA5eeF3fYhxXjuACzL621fA9wo2WkYU3KSRZUAX_8",
 									"type": "string"
 								}
 							]
@@ -799,7 +799,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"shopId\": 1,\r\n    \"name\": \"Asus TUF GeForce RTX 3060TI\",\r\n    \"description\": \"GPU\",\r\n    \"price\": 18421.45,\r\n    \"amount\": 10\r\n}",
+							"raw": "{\r\n    \"name\": \"MSI GeForce RTX 3080TI\",\r\n    \"description\": \"GPU\",\r\n    \"price\": 30999.45,\r\n    \"amount\": 60\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -930,7 +930,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtaXN0ZXJodXJpbkBnbWFpbC5jb20iLCJpYXQiOjE2OTIyNjY1MjQsImV4cCI6MTY5MjM1MjkyNH0.SArBFrrq3hrAAw-siGYnPV1rjVkqOZMLB9NHRR6OFGA",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlc3RldDEzNkBnbWFpbC5jb20iLCJpYXQiOjE2OTQ1MTY0NzIsImV4cCI6MTY5NDYwMjg3Mn0.fZEA5eeF3fYhxXjuACzL621fA9wo2WkYU3KSRZUAX_8",
 									"type": "string"
 								}
 							]
@@ -938,7 +938,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/online-shop/products/1/sale",
+							"raw": "http://localhost:8080/online-shop/products/4/sale",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -947,7 +947,7 @@
 							"path": [
 								"online-shop",
 								"products",
-								"1",
+								"4",
 								"sale"
 							]
 						}

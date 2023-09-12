@@ -11,7 +11,6 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Builder
-@ToString
 public class Shop {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -14,7 +14,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@ToString(exclude = {"shoppingCart", "purchasedProducts"})
 @Builder
 public class User implements UserDetails {
     @Id

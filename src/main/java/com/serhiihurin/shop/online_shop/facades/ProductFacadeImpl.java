@@ -35,7 +35,7 @@ public class ProductFacadeImpl implements ProductFacade {
 
     @Override
     public Product addProduct(User currentAuthenticatedUser, ProductRequestDTO productRequestDTO) {
-        Product product = productService.saveProduct(
+        Product product = productService.addProduct(
                 Product.builder()
                 .name(productRequestDTO.getName())
                 .description(productRequestDTO.getDescription())

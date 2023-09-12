@@ -3,6 +3,7 @@ package com.serhiihurin.shop.online_shop.services;
 import com.serhiihurin.shop.online_shop.dao.ShopRepository;
 import com.serhiihurin.shop.online_shop.dto.ShopRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.Shop;
+import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -44,9 +45,10 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public Shop saveShop(ShopRequestDTO shopRequestDTO) {
+    public Shop createShop(User currentAuthenticatedUser, ShopRequestDTO shopRequestDTO) {
         Shop shop = Shop.builder()
                 .name(shopRequestDTO.getName())
+                .owner(currentAuthenticatedUser)
                 .build();
         shop.setIncome(shopRequestDTO.getIncome() != null ? shopRequestDTO.getIncome() : 0.0);
         return shopRepository.save(shop);

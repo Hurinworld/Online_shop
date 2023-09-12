@@ -11,7 +11,6 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Builder
-@ToString(exclude = {"feedbacks", "users"})
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

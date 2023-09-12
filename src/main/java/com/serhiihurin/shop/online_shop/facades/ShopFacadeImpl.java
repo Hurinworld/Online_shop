@@ -2,6 +2,7 @@ package com.serhiihurin.shop.online_shop.facades;
 
 import com.serhiihurin.shop.online_shop.dto.ShopRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.Shop;
+import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.services.ShopService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,9 +27,9 @@ public class ShopFacadeImpl implements ShopFacade {
     }
 
     @Override
-    public Shop saveShop(ShopRequestDTO shopRequestDTO) {
+    public Shop createShop(User currentAuthenticatedUser, ShopRequestDTO shopRequestDTO) {
         log.info("Adding new shop with name: {}", shopRequestDTO.getName());
-        return shopService.saveShop(shopRequestDTO);
+        return shopService.createShop(currentAuthenticatedUser, shopRequestDTO);
     }
 
 

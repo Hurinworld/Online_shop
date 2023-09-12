@@ -2,6 +2,7 @@ package com.serhiihurin.shop.online_shop.controller;
 
 import com.serhiihurin.shop.online_shop.dto.ShopRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.ShopResponseDTO;
+import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.facades.ShopFacade;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -113,10 +114,10 @@ public class ShopRESTController {
     )
     @PostMapping
     @PreAuthorize("hasAuthority('shop management')")
-    public ResponseEntity<ShopResponseDTO> addNewShop(@RequestBody ShopRequestDTO shopRequestDTO) {
+    public ResponseEntity<ShopResponseDTO> addNewShop(User currentAuthenticatedUser, @RequestBody ShopRequestDTO shopRequestDTO) {
         return ResponseEntity.ok(
                 modelMapper.map(
-                        shopFacade.saveShop(shopRequestDTO),
+                        shopFacade.createShop(currentAuthenticatedUser, shopRequestDTO),
                         ShopResponseDTO.class
                 )
         );

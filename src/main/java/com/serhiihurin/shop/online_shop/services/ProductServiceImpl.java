@@ -39,7 +39,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product saveProduct(Product product) {
+    public Product addProduct(Product product) {
+
         return productRepository.save(product);
     }
 
@@ -127,13 +128,13 @@ public class ProductServiceImpl implements ProductService {
             throw new UnauthorizedAccessException("Access denied. Wrong product ID");
         }
 
-        Discount discount = discountRepository.findById(productId)
+        Discount discount = discountRepository.findByProductId(productId)
                 .orElseThrow(() -> new ApiRequestException("The product has no discount"));
 
         product.setOnSale(false);
-        product.setPrice(product.getPrice() + (product.getPrice() * discount.getDiscountPercent() / 100));
+        product.setPrice(product.getPrice() / (1.0 - (discount.getDiscountPercent() / 100.0)));
 
-        discountRepository.deleteById(productId);
+        discountRepository.deleteById(discount.getId());
         productRepository.save(product);
     }
 
