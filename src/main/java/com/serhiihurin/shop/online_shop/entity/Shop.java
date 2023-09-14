@@ -18,7 +18,7 @@ public class Shop {
     private String name;
     private Double income;
 
-    //TODO read more info about cascades
+    //TODO read more info about cascades //done
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "shop")
     private List<Product> products;
 

@@ -6,24 +6,25 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
-@Table(name = "discounts")
+@Table(name = "events")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Builder
-public class Discount {
+public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
-
-    private int discountPercent;
+    private String title;
+    private String description;
+    private LocalDateTime startDateTime;
+    private LocalDateTime endDateTime;
 
     @ManyToOne
-    @JoinColumn(name = "event_id")
-    private Event event;
+    @JoinColumn(name = "event_creator_id")
+    private User eventCreator;
 }

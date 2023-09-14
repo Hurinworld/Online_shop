@@ -1,5 +1,6 @@
 package com.serhiihurin.shop.online_shop.services;
 
+import com.serhiihurin.shop.online_shop.entity.Event;
 import com.serhiihurin.shop.online_shop.entity.Product;
 import com.serhiihurin.shop.online_shop.entity.VerificationCode;
 import jakarta.mail.MessagingException;
@@ -9,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -28,6 +30,7 @@ public class EmailServiceImpl implements EmailService{
     @Value("${custom.password-changing-link}")
     private String passwordChangingLink;
 
+    @Async
     @Override
     public void sendGreetingsEmail(String toEmail, String name) {
         context.setVariable("name", userService.getUserByEmail(toEmail).getFirstName());
@@ -50,6 +53,7 @@ public class EmailServiceImpl implements EmailService{
         log.info("sent email to {}", toEmail);
     }
 
+    @Async
     @Override
     public void sendPasswordChangingVerificationCode(String toEmail) {
         //TODO move verificationCode creation to verificationCode service //done
@@ -81,6 +85,7 @@ public class EmailServiceImpl implements EmailService{
     }
 
     //TODO I want only 1 email about discounts everyday //done
+    @Async
     @Override
     public void sendNotificationEmailAboutProductsOnSale(String toEmail, List<Product> products) {
         context.setVariable("name", userService.getUserByEmail(toEmail).getFirstName());
@@ -94,6 +99,31 @@ public class EmailServiceImpl implements EmailService{
             helper.setFrom("online.shop@gmail.com");
             helper.setTo(toEmail);
             helper.setSubject("Notification about discount on products from your wishlist");
+            helper.setText(emailContent, true);
+            context.clearVariables();
+        } catch (MessagingException messagingException) {
+            throw new RuntimeException(messagingException);
+        }
+
+        javaMailSender.send(message);
+    }
+
+    @Async
+    @Override
+    public void sendNotificationAboutEventStart(String toEmail, Event event) {
+        context.setVariable("eventTitle", event.getTitle());
+        context.setVariable("startDateTime", event.getStartDateTime());
+        context.setVariable("endDateTime", event.getEndDateTime());
+
+        String emailContent = templateEngine.process("event-starting-notification", context);
+
+        MimeMessage message = javaMailSender.createMimeMessage();
+
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setFrom("online.shop@gmail.com");
+            helper.setTo(toEmail);
+            helper.setSubject("Notification about event start");
             helper.setText(emailContent, true);
             context.clearVariables();
         } catch (MessagingException messagingException) {

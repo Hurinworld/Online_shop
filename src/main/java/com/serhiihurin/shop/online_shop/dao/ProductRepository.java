@@ -8,4 +8,6 @@ import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
     Optional<List<Product>> getProductsByShopId(Long id);
+
+    Optional<Product> getProductByName(String name);
 }

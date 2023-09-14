@@ -1,6 +1,7 @@
 package com.serhiihurin.shop.online_shop.services;
 
 import com.serhiihurin.shop.online_shop.dto.ProductRequestDTO;
+import com.serhiihurin.shop.online_shop.entity.Event;
 import com.serhiihurin.shop.online_shop.entity.Product;
 import com.serhiihurin.shop.online_shop.entity.User;
 
@@ -23,9 +24,11 @@ public interface ProductService {
 
     void increaseProductAmount(User currentAuthenticatedUser, Product product, Integer amount);
 
-    void putProductOnSale(User currentAuthenticatedUser, Long productId, int discountPercent);
+    <T> void putProductOnSale(User currentAuthenticatedUser, T productSearchValue, int discountPercent);
 
     void removeProductFromSale(User currentAuthenticatedUser, Long productId);
+
+    void removeEventProductsFromSale(Long eventId);
 
     void deleteProduct(User currentAuthenticatedUser, Long id);
 }

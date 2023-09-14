@@ -465,6 +465,39 @@
 					"response": []
 				},
 				{
+					"name": "Password changing request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZXJnZXkuZ3VyaW4yMDE1QGdtYWlsLmNvbSIsImlhdCI6MTY5NDY5Mjc3MywiZXhwIjoxNjk0Nzc5MTczfQ.5n7SjVaoadow6OJaKIQ5_gDjdyqO_kVCBP8-ydwhiyk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/online-shop/users/info/password/code",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"online-shop",
+								"users",
+								"info",
+								"password",
+								"code"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "User info update",
 					"request": {
 						"auth": {
@@ -604,39 +637,6 @@
 								"online-shop",
 								"users",
 								"my-account"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Password changing request",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZXJnZXkuZ3VyaW4yMDE1QGdtYWlsLmNvbSIsImlhdCI6MTY5MzM5NzI0NywiZXhwIjoxNjkzNDgzNjQ3fQ.S0-butc0DevuUFiAdnLXIovkfarSe3aepxVQZwo64t0",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/online-shop/users/info/password/code",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"online-shop",
-								"users",
-								"info",
-								"password",
-								"code"
 							]
 						}
 					},
@@ -1572,6 +1572,82 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Event",
+			"item": [
+				{
+					"name": "Create event",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZG9zYXRhY2s4OEBnbWFpbC5jb20iLCJpYXQiOjE2OTQ3MDI0NDQsImV4cCI6MTY5NDc4ODg0NH0.J-wiDyFaKy22xuDIAINSpvhyjbL7DV5ofYs1qCTu7ZY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Autumn sale\",\r\n    \"description\": \"Checkout big autumn sale for PC parts in Online Shop!\",\r\n    \"endDateTime\": \"2023-09-30T18:00:00\",\r\n    \"productsForSale\": {\r\n        \"Asus TUF GeForce RTX 3060TI\": 15,\r\n        \"AMD Ryzen 7 5700X\": 20\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/online-shop/events",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"online-shop",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete event",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZG9zYXRhY2s4OEBnbWFpbC5jb20iLCJpYXQiOjE2OTQ3MDI0NDQsImV4cCI6MTY5NDc4ODg0NH0.J-wiDyFaKy22xuDIAINSpvhyjbL7DV5ofYs1qCTu7ZY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/online-shop/events/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"online-shop",
+								"events",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints for event operations"
 		}
 	]
 }

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Event Notification</title>
+</head>
+<body>
+<p>Hi <span th:text="${name}">User</span>!</p>
+<p th:text="'The event ' + ${eventTitle} + ' begins.'"></p>
+<p>Visit Online Shop and checkout new discounts!</p>
+<p th:text="'Discount will be valid from ' + ${startDateTime} + ' to ' + ${endDateTime}"></p>
+<p>Don't miss the opportunity to get products for nice prices!</p>
+</body>
+</html>
