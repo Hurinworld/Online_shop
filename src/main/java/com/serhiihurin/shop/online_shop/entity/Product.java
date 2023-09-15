@@ -9,7 +9,8 @@ import java.util.List;
 @Table(name = "products")
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 @Builder
 public class Product {
     @Id

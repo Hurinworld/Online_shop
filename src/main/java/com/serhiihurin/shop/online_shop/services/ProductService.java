@@ -24,7 +24,7 @@ public interface ProductService {
 
     void increaseProductAmount(User currentAuthenticatedUser, Product product, Integer amount);
 
-    <T> void putProductOnSale(User currentAuthenticatedUser, T productSearchValue, int discountPercent);
+    <T> void putProductOnSale(User currentAuthenticatedUser, T productSearchValue, int discountPercent, Event event);
 
     void removeProductFromSale(User currentAuthenticatedUser, Long productId);
 

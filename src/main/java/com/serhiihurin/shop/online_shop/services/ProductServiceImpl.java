@@ -5,6 +5,7 @@ import com.serhiihurin.shop.online_shop.dao.ProductRepository;
 import com.serhiihurin.shop.online_shop.dao.ShopRepository;
 import com.serhiihurin.shop.online_shop.dto.ProductRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.Discount;
+import com.serhiihurin.shop.online_shop.entity.Event;
 import com.serhiihurin.shop.online_shop.entity.Product;
 import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.enums.Role;
@@ -93,7 +94,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public <T> void putProductOnSale(User currentAuthenticatedUser, T productSearchValue, int discountPercent) {
+    public <T> void putProductOnSale(User currentAuthenticatedUser, T productSearchValue,
+                                     int discountPercent, Event event) {
         Product product;
 
         if (productSearchValue.getClass()==Long.class) {
@@ -129,9 +131,10 @@ public class ProductServiceImpl implements ProductService {
 
         discountRepository.save(
                 Discount.builder()
-                .product(product)
-                .discountPercent(discountPercent)
-                .build()
+                        .product(product)
+                        .event(event)
+                        .discountPercent(discountPercent)
+                        .build()
         );
         productRepository.save(product);
     }
@@ -163,10 +166,7 @@ public class ProductServiceImpl implements ProductService {
 
         eventProductsDiscounts.forEach(
                 discount -> eventProducts.put(
-                        productRepository
-                                .findById(discount.getProduct().getId())
-                                .orElseThrow(() -> new ApiRequestException("Could not find product with ID: "
-                                        + discount.getProduct().getId())),
+                        discount.getProduct(),
                         discount.getDiscountPercent()
                 )
         );

@@ -10,12 +10,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class EventServiceImpl implements EventService{
     private final EventRepository eventRepository;
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     @Override
     public List<Event> getEventsByEventCreatorId(Long eventsCreatorId) {
@@ -29,8 +31,12 @@ public class EventServiceImpl implements EventService{
                 Event.builder()
                         .title(eventRequestDTO.getTitle())
                         .description(eventRequestDTO.getDescription())
-                        .startDateTime(LocalDateTime.now())
-                        .endDateTime(eventRequestDTO.getEndDateTime())
+                        .startDateTime(LocalDateTime.parse(
+                                LocalDateTime.now().format(formatter), formatter
+                        ))
+                        .endDateTime(LocalDateTime.parse(
+                                eventRequestDTO.getEndDateTime().format(formatter), formatter
+                        ))
                         .eventCreator(currentAuthenticatedUser)
                         .build()
         );
