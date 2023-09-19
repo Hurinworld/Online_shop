@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 //TODO update postman collection //done
 //TODO spring mail + thymeleaf //done
 //TODO check cascades in entire project
+//TODO add search for products by params with sort
 //TODO add notifications
 //TODO add saving state of email sending queue
 //TODO add work with files
