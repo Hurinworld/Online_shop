@@ -196,6 +196,7 @@ public class ProductRESTController {
                     )
             }
     )
+    //TODO this is redundant
     @PutMapping("/{productId}")
     @PreAuthorize("hasAuthority('product management')")
     public ResponseEntity<Void> increaseProductAmount(
@@ -207,8 +208,7 @@ public class ProductRESTController {
         return ResponseEntity.ok().build();
     }
 
-    //TODO add logic to remove discount //done
-    //TODO make entity 'discount' + make entity sales for specified thematic, created by shop
+    //TODO make discountPercent a param in path
     @PostMapping("/{productId}/sale/{discountPercent}")
     @PreAuthorize("hasAuthority('product management')")
     public ResponseEntity<Void> putProductOnSale(User currentAuthenticatedUser, @PathVariable Long productId, @PathVariable int discountPercent) {

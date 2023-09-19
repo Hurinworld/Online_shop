@@ -32,11 +32,4 @@ public class Product {
     @ManyToMany(mappedBy = "shoppingCart")
     private List<User> users;
 
-    //TODO check is it needed //done
-//    public Product(String name, String description, Double price, int amount) {
-//        this.name = name;
-//        this.description = description;
-//        this.price = price;
-//        this.amount = amount;
-//    }
 }

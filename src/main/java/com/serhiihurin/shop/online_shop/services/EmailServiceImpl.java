@@ -56,8 +56,6 @@ public class EmailServiceImpl implements EmailService{
     @Async
     @Override
     public void sendPasswordChangingVerificationCode(String toEmail) {
-        //TODO move verificationCode creation to verificationCode service //done
-        //TODO add checking for an existing codes before creation a new one //done
         VerificationCode verificationCode = verificationCodeService.createVerificationCode(
                 userService.getUserByEmail(toEmail)
         );
@@ -67,6 +65,7 @@ public class EmailServiceImpl implements EmailService{
         context.setVariable("passwordChangingLink", passwordChangingLink);
         String emailContent = templateEngine.process("password-changing-verification-email", context);
 
+        //TODO extract this code to another method
         MimeMessage message = javaMailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
@@ -84,7 +83,6 @@ public class EmailServiceImpl implements EmailService{
         log.info("sent password changing verification code to {}", toEmail);
     }
 
-    //TODO I want only 1 email about discounts everyday //done
     @Async
     @Override
     public void sendNotificationEmailAboutProductsOnSale(String toEmail, List<Product> products) {

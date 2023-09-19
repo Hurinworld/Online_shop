@@ -41,7 +41,6 @@ public class WishlistServiceImpl implements WishlistService{
         );
     }
 
-    //TODO wrong logic, fix it! //done
     @Override
     public void deleteProductFromWishlist(Long userId, Long productId) {
         wishlistRepository.deleteByProductIdAndUserId(userId, productId);

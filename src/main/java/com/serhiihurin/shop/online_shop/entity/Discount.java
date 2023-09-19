@@ -21,6 +21,8 @@ public class Discount {
 
     private int discountPercent;
 
+    //TODO check this annotation
+//    @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "event_id")
     private Event event;

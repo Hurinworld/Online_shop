@@ -10,7 +10,6 @@ public interface EmailService {
 
     void sendPasswordChangingVerificationCode(String toEmail);
 
-    //TODO mistake in case-naming //done
     void sendNotificationEmailAboutProductsOnSale(String toEmail, List<Product> products);
 
     void sendNotificationAboutEventStart(String toEmail, Event event);

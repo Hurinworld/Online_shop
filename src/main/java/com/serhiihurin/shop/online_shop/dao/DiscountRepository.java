@@ -9,5 +9,6 @@ import java.util.Optional;
 public interface DiscountRepository extends JpaRepository<Discount, Long> {
     Optional<Discount> findByProductId(Long productId);
 
+    //TODO dont use optional for lists
     Optional<List<Discount>> findDiscountsByEventId(Long eventId);
 }

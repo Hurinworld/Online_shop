@@ -32,6 +32,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getProductsByShopId(Long id) {
+        //TODO add check if shop exist
         return productRepository.getProductsByShopId(id)
                 .orElseThrow(() -> new ApiRequestException("Could not find products from shop with ID: " + id));
     }
@@ -58,6 +59,7 @@ public class ProductServiceImpl implements ProductService {
             throw new UnauthorizedAccessException("Access denied. Wrong product ID");
         }
 
+        //TODO wrong logic
         if (productRequestDTO.getShopId() != null) {
             product.setShop(
                     shopRepository.findById(productRequestDTO.getShopId())
@@ -98,7 +100,7 @@ public class ProductServiceImpl implements ProductService {
                                      int discountPercent, Event event) {
         Product product;
 
-        if (productSearchValue.getClass()==Long.class) {
+        if (productSearchValue instanceof Long) {
             product = productRepository.findById((Long) productSearchValue)
                     .orElseThrow(() -> new ApiRequestException("Could not find product with ID: "
                             + productSearchValue));
@@ -160,6 +162,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void removeEventProductsFromSale(Long eventId) {
+        //TODO remove this map
         Map<Product, Integer> eventProducts = new HashMap<>();
         List<Discount> eventProductsDiscounts = discountRepository.findDiscountsByEventId(eventId)
                 .orElseThrow(() -> new ApiRequestException("Could not find event with ID: " + eventId));

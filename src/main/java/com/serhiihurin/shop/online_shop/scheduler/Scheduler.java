@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-//TODO rename it //done
 public class Scheduler {
     private final WishlistFacade wishlistFacade;
 
