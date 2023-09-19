@@ -196,22 +196,14 @@ public class ProductRESTController {
                     )
             }
     )
-    //TODO this is redundant
-    @PutMapping("/{productId}")
-    @PreAuthorize("hasAuthority('product management')")
-    public ResponseEntity<Void> increaseProductAmount(
-            User currentAuthenticatedUser,
-            @PathVariable Long productId,
-            @RequestParam Integer amount
-    ) {
-        productFacade.increaseProductAmount(currentAuthenticatedUser, productId, amount);
-        return ResponseEntity.ok().build();
-    }
+    //TODO this is redundant // public ResponseEntity<Void> increaseProductAmount // done
 
-    //TODO make discountPercent a param in path
-    @PostMapping("/{productId}/sale/{discountPercent}")
+    //TODO make discountPercent a param in path //done
+    @PostMapping("/{productId}/sale")
     @PreAuthorize("hasAuthority('product management')")
-    public ResponseEntity<Void> putProductOnSale(User currentAuthenticatedUser, @PathVariable Long productId, @PathVariable int discountPercent) {
+    public ResponseEntity<Void> putProductOnSale(
+            User currentAuthenticatedUser, @PathVariable Long productId, @RequestParam int discountPercent
+    ) {
         productFacade.putProductOnSale(currentAuthenticatedUser, productId, discountPercent);
         return ResponseEntity.ok().build();
     }

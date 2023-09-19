@@ -1,6 +1,7 @@
 package com.serhiihurin.shop.online_shop.services;
 
 import com.serhiihurin.shop.online_shop.dao.DiscountRepository;
+import com.serhiihurin.shop.online_shop.dao.EventRepository;
 import com.serhiihurin.shop.online_shop.dao.ProductRepository;
 import com.serhiihurin.shop.online_shop.dao.ShopRepository;
 import com.serhiihurin.shop.online_shop.dto.ProductRequestDTO;
@@ -14,9 +15,7 @@ import com.serhiihurin.shop.online_shop.exception.UnauthorizedAccessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +23,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final ShopRepository shopRepository;
     private final DiscountRepository discountRepository;
+    private final EventRepository eventRepository;
 
     @Override
     public List<Product> getAllProducts() {
@@ -32,9 +32,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getProductsByShopId(Long id) {
-        //TODO add check if shop exist
-        return productRepository.getProductsByShopId(id)
-                .orElseThrow(() -> new ApiRequestException("Could not find products from shop with ID: " + id));
+        shopRepository.findById(id)
+                .orElseThrow(() -> new ApiRequestException("Could not find shop with ID: " + id));
+        //TODO add check if shop exist //done
+        return productRepository.getProductsByShopId(id);
     }
 
     @Override
@@ -59,14 +60,8 @@ public class ProductServiceImpl implements ProductService {
             throw new UnauthorizedAccessException("Access denied. Wrong product ID");
         }
 
-        //TODO wrong logic
-        if (productRequestDTO.getShopId() != null) {
-            product.setShop(
-                    shopRepository.findById(productRequestDTO.getShopId())
-                            .orElseThrow(() -> new ApiRequestException("Could not find shop with ID: " +
-                                    productRequestDTO.getShopId()))
-            );
-        }
+        //TODO wrong logic //done //removed setting a shop to product
+
         if (productRequestDTO.getName() != null) {
             product.setName(productRequestDTO.getName());
         }
@@ -84,34 +79,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void increaseProductAmount(User currentAuthenticatedUser, Product product, Integer amount) {
-        if (amount == null || amount < 0){
-            throw new ApiRequestException("Wrong amount parameter");
-        }
-        if (!product.getShop().getOwner().getId().equals(currentAuthenticatedUser.getId())) {
-            throw new UnauthorizedAccessException("Access denied. Wrong product ID");
-        }
-        product.setAmount(product.getAmount() + amount);
-        productRepository.save(product);
-    }
-
-    @Override
-    public <T> void putProductOnSale(User currentAuthenticatedUser, T productSearchValue,
+    public void putProductOnSale(User currentAuthenticatedUser, Object productSearchValue,
                                      int discountPercent, Event event) {
-        Product product;
-
-        if (productSearchValue instanceof Long) {
-            product = productRepository.findById((Long) productSearchValue)
-                    .orElseThrow(() -> new ApiRequestException("Could not find product with ID: "
-                            + productSearchValue));
-        } else if (productSearchValue instanceof String) {
-            product = productRepository.getProductByName((String) productSearchValue)
-                    .orElseThrow(() -> new ApiRequestException("Could not find product with name: "
-                            + productSearchValue));
-        } else {
-            throw new ApiRequestException("Wrong parameter value "
-                    + productSearchValue + ". The value should be of type Long or String");
-        }
+        Product product = getProductByProductSearchValue(productSearchValue);
 
         if(currentAuthenticatedUser.getRole().equals(Role.SHOP_OWNER)) {
             if (!product.getShop().getOwner().getId().equals(currentAuthenticatedUser.getId())) {
@@ -141,6 +111,21 @@ public class ProductServiceImpl implements ProductService {
         productRepository.save(product);
     }
 
+    private Product getProductByProductSearchValue(Object productSearchValue) {
+        if (productSearchValue instanceof Long) {
+            return productRepository.findById((Long) productSearchValue)
+                    .orElseThrow(() -> new ApiRequestException("Could not find product with ID: "
+                            + productSearchValue));
+        } else if (productSearchValue instanceof String) {
+            return productRepository.getProductByName((String) productSearchValue)
+                    .orElseThrow(() -> new ApiRequestException("Could not find product with name: "
+                            + productSearchValue));
+        } else {
+            throw new ApiRequestException("Wrong parameter value "
+                    + productSearchValue + ". The value should be of type Long or String");
+        }
+    }
+
     @Override
     public void removeProductFromSale(User currentAuthenticatedUser, Long productId) {
         Product product = productRepository.findById(productId)
@@ -162,23 +147,19 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void removeEventProductsFromSale(Long eventId) {
-        //TODO remove this map
-        Map<Product, Integer> eventProducts = new HashMap<>();
-        List<Discount> eventProductsDiscounts = discountRepository.findDiscountsByEventId(eventId)
+        //TODO remove this map //done
+        eventRepository.findById(eventId)
                 .orElseThrow(() -> new ApiRequestException("Could not find event with ID: " + eventId));
+        List<Discount> eventProductsDiscounts = discountRepository.findDiscountsByEventId(eventId);
 
         eventProductsDiscounts.forEach(
-                discount -> eventProducts.put(
-                        discount.getProduct(),
-                        discount.getDiscountPercent()
-                )
+                discount -> {
+                    Product product = discount.getProduct();
+                    product.setOnSale(false);
+                    product.setPrice(product.getPrice() / (1.0 - (discount.getDiscountPercent() / 100.0)));
+                    productRepository.save(product);
+                }
         );
-
-        for (Product product : eventProducts.keySet()) {
-            product.setOnSale(false);
-            product.setPrice(product.getPrice() / (1.0 - (eventProducts.get(product) / 100.0)));
-            productRepository.save(product);
-        }
 
         discountRepository.deleteAll(eventProductsDiscounts);
     }

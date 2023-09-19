@@ -9,8 +9,8 @@
 <p>Some products from your wishlist are now on sale:</p>
 <ul>
     <li th:each="product, iterStat : ${products}">
-        <!--    todo move this to external variable -->
-        <a th:href="@{'http://localhost:8080/online-shop/products/' + ${product.id}}">
+        <!--    todo move this to external variable //done-->
+        <a th:href="@{wishlistProductsOnSaleNotificationLink + ${product.id}}">
             <span th:text="${product.name}">Product Name</span>
         </a>
     </li>

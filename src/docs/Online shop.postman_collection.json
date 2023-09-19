@@ -829,7 +829,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGllbnRAZ21haWwuY29tIiwiaWF0IjoxNjkzNTczNDU2LCJleHAiOjE2OTM2NTk4NTZ9.QLh2jWV7v9JGWQR1ZUlyzsBZNqqzcijelqQiVz_4tto",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlc3RldDEzNkBnbWFpbC5jb20iLCJpYXQiOjE2OTQ1MTY0NzIsImV4cCI6MTY5NDYwMjg3Mn0.fZEA5eeF3fYhxXjuACzL621fA9wo2WkYU3KSRZUAX_8",
 									"type": "string"
 								}
 							]
@@ -837,7 +837,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/online-shop/products/1/sale/20",
+							"raw": "http://localhost:8080/online-shop/products/4/sale?discount_percent=15",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -846,45 +846,13 @@
 							"path": [
 								"online-shop",
 								"products",
-								"1",
-								"sale",
-								"20"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Increase product amount",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZG9zYXRhY2s4OEBnbWFpbC5jb20iLCJpYXQiOjE2OTM0ODU4MTUsImV4cCI6MTY5MzU3MjIxNX0.sME5f4A0f58R0a9-d_e3eUEFTfHRWEzwd0wiIaIU92E",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/online-shop/products/1?amount=3",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"online-shop",
-								"products",
-								"1"
+								"4",
+								"sale"
 							],
 							"query": [
 								{
-									"key": "amount",
-									"value": "3"
+									"key": "discount_percent",
+									"value": "15"
 								}
 							]
 						}

@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 @Service
@@ -29,26 +31,17 @@ public class EmailServiceImpl implements EmailService{
 
     @Value("${custom.password-changing-link}")
     private String passwordChangingLink;
+    @Value("${custom.wishlist-products-on-sale-notification-link}")
+    private String wishlistProductsOnSaleNotificationLink;
+    @Value("${custom.sender-email}")
+    private String fromEmail;
 
     @Async
     @Override
     public void sendGreetingsEmail(String toEmail, String name) {
         context.setVariable("name", userService.getUserByEmail(toEmail).getFirstName());
-        String emailContent = templateEngine.process("greetings-email", context);
 
-        MimeMessage message = javaMailSender.createMimeMessage();
-        try {
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            helper.setFrom("online.shop@gmail.com");
-            helper.setTo(toEmail);
-            helper.setSubject("Welcome!");
-            helper.setText(emailContent, true);
-            context.clearVariables();
-        } catch (MessagingException messagingException) {
-            throw new RuntimeException(messagingException);
-        }
-
-        javaMailSender.send(message);
+        buildAndSendMessage("greetings-email", fromEmail, toEmail, "Welcome!");
 
         log.info("sent email to {}", toEmail);
     }
@@ -63,22 +56,10 @@ public class EmailServiceImpl implements EmailService{
         context.setVariable("name", userService.getUserByEmail(toEmail).getFirstName());
         context.setVariable("verificationCode", verificationCode.getVerificationCode());
         context.setVariable("passwordChangingLink", passwordChangingLink);
-        String emailContent = templateEngine.process("password-changing-verification-email", context);
 
-        //TODO extract this code to another method
-        MimeMessage message = javaMailSender.createMimeMessage();
-        try {
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            helper.setFrom("online.shop@gmail.com");
-            helper.setTo(toEmail);
-            helper.setSubject("Password changing verification");
-            helper.setText(emailContent, true);
-            context.clearVariables();
-        } catch (MessagingException messagingException) {
-            throw new RuntimeException(messagingException);
-        }
-
-        javaMailSender.send(message);
+        //TODO extract this code to another method //done
+        buildAndSendMessage("password-changing-verification-email", fromEmail,
+                toEmail, "Password changing verification");
 
         log.info("sent password changing verification code to {}", toEmail);
     }
@@ -88,22 +69,12 @@ public class EmailServiceImpl implements EmailService{
     public void sendNotificationEmailAboutProductsOnSale(String toEmail, List<Product> products) {
         context.setVariable("name", userService.getUserByEmail(toEmail).getFirstName());
         context.setVariable("products", products);
+        context.setVariable("wishlistProductsOnSaleNotificationLink", wishlistProductsOnSaleNotificationLink);
 
-        String emailContent = templateEngine.process("wishlist-products-on-sale-notification-email", context);
-
-        MimeMessage message = javaMailSender.createMimeMessage();
-        try {
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            helper.setFrom("online.shop@gmail.com");
-            helper.setTo(toEmail);
-            helper.setSubject("Notification about discount on products from your wishlist");
-            helper.setText(emailContent, true);
-            context.clearVariables();
-        } catch (MessagingException messagingException) {
-            throw new RuntimeException(messagingException);
-        }
-
-        javaMailSender.send(message);
+        buildAndSendMessage(
+                "wishlist-products-on-sale-notification-email", fromEmail,
+                toEmail, "Notification about discount on products from your wishlist"
+        );
     }
 
     @Async
@@ -113,15 +84,27 @@ public class EmailServiceImpl implements EmailService{
         context.setVariable("startDateTime", event.getStartDateTime());
         context.setVariable("endDateTime", event.getEndDateTime());
 
-        String emailContent = templateEngine.process("event-starting-notification", context);
+        buildAndSendMessage("event-starting-notification", fromEmail,
+                toEmail, "Notification about event start");
 
+        log.info("Sent notification about starting event with id {} at {}",
+                event.getId(), LocalDateTime.now().atZone(ZoneId.of("Z")));
+    }
+
+    private void buildAndSendMessage(
+            String templateName,
+            String fromEmail,
+            String toEmail,
+            String subject
+    ) {
+        String emailContent = templateEngine.process(templateName, context);
         MimeMessage message = javaMailSender.createMimeMessage();
 
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            helper.setFrom("online.shop@gmail.com");
+            helper.setFrom(fromEmail);
             helper.setTo(toEmail);
-            helper.setSubject("Notification about event start");
+            helper.setSubject(subject);
             helper.setText(emailContent, true);
             context.clearVariables();
         } catch (MessagingException messagingException) {

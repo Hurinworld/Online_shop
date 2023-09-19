@@ -50,12 +50,6 @@ public class ProductFacadeImpl implements ProductFacade {
     }
 
     @Override
-    public void increaseProductAmount(User currentAuthenticatedUser, Long productId, Integer amount) {
-        productService.increaseProductAmount(currentAuthenticatedUser, productService.getProduct(productId), amount);
-        log.info("Increased amount of product with ID: {} by {} units", productId, amount);
-    }
-
-    @Override
     public void putProductOnSale(User currentAuthenticatedUser, Long productId, int discountPercent) {
         productService.putProductOnSale(currentAuthenticatedUser, productId, discountPercent, null);
         log.info("Put product with id: {} on sale", productId);

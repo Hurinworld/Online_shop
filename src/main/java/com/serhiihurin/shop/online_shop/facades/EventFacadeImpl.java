@@ -36,8 +36,8 @@ public class EventFacadeImpl implements EventFacade{
         for (String name : productsForSale.keySet()) {
             productService.putProductOnSale(currentAuthenticatedUser, name, productsForSale.get(name), event);
         }
-        List<User> userList = List.of(userService.getUserByEmail("sergey.gurin2015@gmail.com"));
-        userList.add(userService.getUserByEmail("sergey.gurin2015@gmaiffffl.com"));
+        List<User> userList = userService.getAllUsers();
+//        userList.add(userService.getUserByEmail("sergey.gurin2015@gmaiffffl.com"));
         userList.forEach(user -> emailService.sendNotificationAboutEventStart(user.getEmail(), event));
         log.info("Sent notification about {} event start at {}", eventRequestDTO.getTitle(), LocalDateTime.now());
         return event;
