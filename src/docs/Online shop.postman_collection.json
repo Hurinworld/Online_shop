@@ -1616,6 +1616,60 @@
 				}
 			],
 			"description": "Endpoints for event operations"
+		},
+		{
+			"name": "Search and filters",
+			"item": [
+				{
+					"name": "Search sort and filter products",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZG9zYXRhY2s4OEBnbWFpbC5jb20iLCJpYXQiOjE2OTUyOTU0MTIsImV4cCI6MTY5NTM4MTgxMn0.4z4bPDBznn4-CTMbhHQKaGAcOr-gdGyIlUR-Q4NY6Sg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/online-shop/search/product?productName=0&sortingType=ascending&minimalPrice=7000&maximalPrice=20000",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"online-shop",
+								"search",
+								"product"
+							],
+							"query": [
+								{
+									"key": "productName",
+									"value": "0"
+								},
+								{
+									"key": "sortingType",
+									"value": "ascending"
+								},
+								{
+									"key": "minimalPrice",
+									"value": "7000"
+								},
+								{
+									"key": "maximalPrice",
+									"value": "20000"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }

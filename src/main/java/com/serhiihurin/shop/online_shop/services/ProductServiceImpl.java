@@ -10,6 +10,7 @@ import com.serhiihurin.shop.online_shop.entity.Event;
 import com.serhiihurin.shop.online_shop.entity.Product;
 import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.enums.Role;
+import com.serhiihurin.shop.online_shop.enums.SortingType;
 import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
 import com.serhiihurin.shop.online_shop.exception.UnauthorizedAccessException;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,21 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new ApiRequestException("Could not find shop with ID: " + id));
         //TODO add check if shop exist //done
         return productRepository.getProductsByShopId(id);
+    }
+
+    @Override
+    public List<Product> searchProducts(
+            String productName, SortingType sortingType, Double minimalPrice, Double maximalPrice
+    ) {
+        if (sortingType == null) {
+            return searchProductsWithNoSearchingType(productName, minimalPrice, maximalPrice);
+        } else if (sortingType.equals(SortingType.ASCENDING)) {
+            return searchProductsWithAscendingSearchingType(productName, minimalPrice, maximalPrice);
+        } else if (sortingType.equals(SortingType.DESCENDING)) {
+            return searchProductsWithDescendingSearchingType(productName, minimalPrice, maximalPrice);
+        } else {
+           throw new ApiRequestException("Wrong sorting type parameter value");
+        }
     }
 
     @Override
@@ -172,5 +188,58 @@ public class ProductServiceImpl implements ProductService {
             throw new UnauthorizedAccessException("Access denied.");
         }
         productRepository.deleteById(id);
+    }
+
+    private List<Product> searchProductsWithNoSearchingType(
+            String productName, Double minimalPrice, Double maximalPrice
+    ) {
+        if (minimalPrice != null && maximalPrice != null) {
+            return productRepository
+                    .getProductsByNameContainsAndPriceBetween(productName, minimalPrice, maximalPrice);
+        } else if(minimalPrice != null) {
+            return productRepository.getProductsByNameContainsAndPriceGreaterThan(productName, minimalPrice);
+        } else if(maximalPrice != null) {
+            return productRepository.getProductsByNameContainsAndPriceLessThan(productName, maximalPrice);
+        } else {
+            return productRepository.getProductsByNameContains(productName);
+        }
+    }
+
+    private List<Product> searchProductsWithAscendingSearchingType(
+            String productName, Double minimalPrice, Double maximalPrice
+    ){
+        if (minimalPrice != null && maximalPrice != null) {
+            return productRepository
+                    .getProductsByNameContainsAndPriceBetweenOrderByPriceAsc(
+                            productName, minimalPrice, maximalPrice
+                    );
+        } else if(minimalPrice != null) {
+            return productRepository
+                    .getProductsByNameContainsAndPriceGreaterThanOrderByPriceAsc(productName, minimalPrice);
+        } else if(maximalPrice != null) {
+            return productRepository
+                    .getProductsByNameContainsAndPriceLessThanOrderByPriceAsc(productName, maximalPrice);
+        } else {
+            return productRepository.getProductsByNameContainsOrderByPriceAsc(productName);
+        }
+    }
+
+    private List<Product> searchProductsWithDescendingSearchingType(
+            String productName, Double minimalPrice, Double maximalPrice
+    ) {
+        if (minimalPrice != null && maximalPrice != null) {
+            return productRepository
+                    .getProductsByNameContainsAndPriceBetweenOrderByPriceDesc(
+                            productName, minimalPrice, maximalPrice
+                    );
+        } else if(minimalPrice != null) {
+            return productRepository
+                    .getProductsByNameContainsAndPriceGreaterThanOrderByPriceDesc(productName, minimalPrice);
+        } else if(maximalPrice != null) {
+            return productRepository
+                    .getProductsByNameContainsAndPriceLessThanOrderByPriceDesc(productName, maximalPrice);
+        } else {
+            return productRepository.getProductsByNameContainsOrderByPriceDesc(productName);
+        }
     }
 }

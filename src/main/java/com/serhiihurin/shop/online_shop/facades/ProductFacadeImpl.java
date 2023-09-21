@@ -3,6 +3,8 @@ package com.serhiihurin.shop.online_shop.facades;
 import com.serhiihurin.shop.online_shop.dto.ProductRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.Product;
 import com.serhiihurin.shop.online_shop.entity.User;
+import com.serhiihurin.shop.online_shop.enums.SortingType;
+import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
 import com.serhiihurin.shop.online_shop.services.ProductService;
 import com.serhiihurin.shop.online_shop.services.ShopService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,17 @@ public class ProductFacadeImpl implements ProductFacade {
     @Override
     public List<Product> getAllProductsByShopId(Long id) {
         return productService.getProductsByShopId(id);
+    }
+
+    @Override
+    public List<Product> searchProducts(
+            String productName, SortingType sortingType,
+            Double minimalPrice, Double maximalPrice
+    ) {
+        if (minimalPrice != null && maximalPrice != null && maximalPrice < minimalPrice) {
+            throw new ApiRequestException("Wrong price parameters values");
+        }
+        return productService.searchProducts(productName, sortingType, minimalPrice, maximalPrice);
     }
 
     @Override

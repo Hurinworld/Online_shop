@@ -4,6 +4,7 @@ import com.serhiihurin.shop.online_shop.dto.ProductRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.Event;
 import com.serhiihurin.shop.online_shop.entity.Product;
 import com.serhiihurin.shop.online_shop.entity.User;
+import com.serhiihurin.shop.online_shop.enums.SortingType;
 
 import java.util.List;
 
@@ -11,6 +12,8 @@ public interface ProductService {
     List<Product> getAllProducts();
 
     List<Product> getProductsByShopId(Long id);
+
+    List<Product> searchProducts(String productName, SortingType sortingType, Double minimalPrice, Double maximalPrice);
 
     Product getProduct(Long id);
 
