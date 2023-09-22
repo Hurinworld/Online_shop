@@ -1,9 +1,11 @@
 package com.serhiihurin.shop.online_shop.facades;
 
+import com.serhiihurin.shop.online_shop.entity.Notification;
 import com.serhiihurin.shop.online_shop.entity.Product;
 import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.entity.Wishlist;
 import com.serhiihurin.shop.online_shop.services.EmailService;
+import com.serhiihurin.shop.online_shop.services.NotificationService;
 import com.serhiihurin.shop.online_shop.services.ProductService;
 import com.serhiihurin.shop.online_shop.services.WishlistService;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +27,9 @@ public class WishlistFacadeImpl implements WishlistFacade{
     private final WishlistService wishlistService;
     private final ProductService productService;
     private final EmailService emailService;
+    private final NotificationService notificationService;
+
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     @Override
     public void notifyUsersAboutSales() {
@@ -44,6 +51,19 @@ public class WishlistFacadeImpl implements WishlistFacade{
                                 user.getEmail(),
                                 sortedByUserWishlists.get(user)
                         );
+                notificationService.addNotification(
+                        Notification.builder()
+                                .title("Notification about products form wishlist on sale")
+                                .text("Hi " + user.getFirstName() + "! "
+                                        + "\n\nSome products from your wishlist are now on sale: \n"
+                                        + sortedByUserWishlists.get(user))
+                                .sendDateTime(
+                                        LocalDateTime.parse(
+                                                LocalDateTime.now().atZone(ZoneId.of("Z")).format(formatter)
+                                        )
+                                )
+                                .build()
+                );
             }
         }
     }
