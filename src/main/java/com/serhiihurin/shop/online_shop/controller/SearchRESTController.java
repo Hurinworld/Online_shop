@@ -5,8 +5,6 @@ import com.serhiihurin.shop.online_shop.enums.SortingType;
 import com.serhiihurin.shop.online_shop.facades.ProductFacade;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +19,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SearchRESTController {
     private final ProductFacade productFacade;
-    private final ModelMapper modelMapper;
 
     @GetMapping("/product")
     public List<ProductResponseDTO> searchProduct(
@@ -34,10 +31,6 @@ public class SearchRESTController {
         if (sortingTypeValue != null) {
             sortingType = SortingType.valueOf(sortingTypeValue.toUpperCase());
         }
-        return modelMapper.map(
-                productFacade.searchProducts(productName, sortingType, minimalPrice, maximalPrice),
-                new TypeToken<List<ProductResponseDTO>>() {
-                }.getType()
-        );
+        return productFacade.searchProducts(productName, sortingType, minimalPrice, maximalPrice);
     }
 }

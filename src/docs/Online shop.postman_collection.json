@@ -790,7 +790,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlc3RldDEzNkBnbWFpbC5jb20iLCJpYXQiOjE2OTQ1MTY0NzIsImV4cCI6MTY5NDYwMjg3Mn0.fZEA5eeF3fYhxXjuACzL621fA9wo2WkYU3KSRZUAX_8",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZG9zYXRhY2s4OEBnbWFpbC5jb20iLCJpYXQiOjE2OTU2NTA1NzIsImV4cCI6MTY5NTczNjk3Mn0.PuXNxlm21yD2ol2ztOzXsiW3uLFbCLKRtEwQuZEg1_k",
 									"type": "string"
 								}
 							]
@@ -798,13 +798,24 @@
 						"method": "POST",
 						"header": [],
 						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"MSI GeForce RTX 3080TI\",\r\n    \"description\": \"GPU\",\r\n    \"price\": 30999.45,\r\n    \"amount\": 60\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "product-request-dto",
+									"value": "{\n    \"name\": \"AMD Ryzen 7 5700X3D_test\",\n    \"description\": \"CPU\",\n    \"price\": 1254.45,\n    \"amount\": 30\n}",
+									"contentType": "application/json",
+									"type": "text"
+								},
+								{
+									"key": "files",
+									"type": "file",
+									"src": [
+										"/C:/Users/serge/Downloads/Stalker 2 screenshot.jpg",
+										"/C:/Users/serge/Downloads/Ryan stalker Gosling.jpg",
+										"/C:/Users/serge/Downloads/Ryan Clear Sky Gosling.jpg"
+									]
 								}
-							}
+							]
 						},
 						"url": {
 							"raw": "http://localhost:8080/online-shop/products",
@@ -816,6 +827,13 @@
 							"path": [
 								"online-shop",
 								"products"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
 							]
 						}
 					},

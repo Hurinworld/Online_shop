@@ -15,6 +15,7 @@ import org.modelmapper.TypeToken;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -48,11 +49,7 @@ public class ProductRESTController {
     @GetMapping
     @PreAuthorize("hasAuthority('admin view info')")
     public List<ProductResponseDTO> getAllProducts() {
-        return modelMapper.map(
-                productFacade.getAllProducts(),
-                new TypeToken<List<ProductResponseDTO>>() {
-                }.getType()
-        );
+        return productFacade.getAllProducts();
     }
 
     @Operation(
@@ -84,11 +81,7 @@ public class ProductRESTController {
     @GetMapping("/shop/{id}")
     @PreAuthorize("hasAnyAuthority('shop owner view info', 'admin view info')")
     List<ProductResponseDTO> getAllProductsByShopId(@PathVariable Long id) {
-        return modelMapper.map(
-                productFacade.getAllProductsByShopId(id),
-                new TypeToken<List<ProductResponseDTO>>() {
-                }.getType()
-        );
+        return productFacade.getAllProductsByShopId(id);
     }
 
     @Operation(
@@ -120,7 +113,7 @@ public class ProductRESTController {
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('shop owner view info', 'admin view info', 'client view info')")
     public ProductResponseDTO getProduct(@PathVariable Long id) {
-        return modelMapper.map(productFacade.getProduct(id), ProductResponseDTO.class);
+        return productFacade.getProduct(id);
     }
 
     @Operation(
@@ -155,12 +148,14 @@ public class ProductRESTController {
     )
     @PostMapping
     @PreAuthorize("hasAuthority('product management')")
-    public ResponseEntity<ProductResponseDTO> addNewProduct(User currentAuthenticatedUser, @RequestBody ProductRequestDTO productRequestDTO) {
+    public ResponseEntity<ProductResponseDTO> addNewProduct(
+            User currentAuthenticatedUser,
+            @RequestPart("product-request-dto") ProductRequestDTO productRequestDTO,
+            @RequestPart("files")MultipartFile[] files
+            ) {
+
         return ResponseEntity.ok(
-                modelMapper.map(
-                        productFacade.addProduct(currentAuthenticatedUser, productRequestDTO),
-                        ProductResponseDTO.class
-                )
+                productFacade.addProduct(currentAuthenticatedUser, productRequestDTO, files)
         );
     }
 

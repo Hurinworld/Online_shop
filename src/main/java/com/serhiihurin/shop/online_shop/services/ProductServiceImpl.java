@@ -1,20 +1,15 @@
 package com.serhiihurin.shop.online_shop.services;
 
-import com.serhiihurin.shop.online_shop.dao.DiscountRepository;
-import com.serhiihurin.shop.online_shop.dao.EventRepository;
-import com.serhiihurin.shop.online_shop.dao.ProductRepository;
-import com.serhiihurin.shop.online_shop.dao.ShopRepository;
+import com.serhiihurin.shop.online_shop.dao.*;
 import com.serhiihurin.shop.online_shop.dto.ProductRequestDTO;
-import com.serhiihurin.shop.online_shop.entity.Discount;
-import com.serhiihurin.shop.online_shop.entity.Event;
-import com.serhiihurin.shop.online_shop.entity.Product;
-import com.serhiihurin.shop.online_shop.entity.User;
+import com.serhiihurin.shop.online_shop.entity.*;
 import com.serhiihurin.shop.online_shop.enums.Role;
 import com.serhiihurin.shop.online_shop.enums.SortingType;
 import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
 import com.serhiihurin.shop.online_shop.exception.UnauthorizedAccessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
+    private final ProductImageRepository productImageRepository;
     private final ShopRepository shopRepository;
     private final DiscountRepository discountRepository;
     private final EventRepository eventRepository;
@@ -180,6 +176,7 @@ public class ProductServiceImpl implements ProductService {
         discountRepository.deleteAll(eventProductsDiscounts);
     }
 
+    @Transactional
     @Override
     public void deleteProduct(User currentAuthenticatedUser, Long id) {
         Product product = productRepository.findById(id)
@@ -187,6 +184,8 @@ public class ProductServiceImpl implements ProductService {
         if (!product.getShop().getOwner().getId().equals(currentAuthenticatedUser.getId())) {
             throw new UnauthorizedAccessException("Access denied.");
         }
+        List<ProductImage> productImages = productImageRepository.getProductImagesByProductId(id);
+        productImages.forEach(productImage -> productImageRepository.deleteById(productImage.getId()));
         productRepository.deleteById(id);
     }
 

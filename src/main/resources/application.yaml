@@ -13,6 +13,10 @@ spring:
         auth: true
         starttls.enable: true
         ssl.trust: smtp.gmail.com
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
 
 spring.jpa:
   hibernate.ddl-auto: update
@@ -49,3 +53,4 @@ custom:
   password-changing-link: "http://localhost:8080/online-shop/info/password/new"
   wishlist-products-on-sale-notification-link: "http://localhost:8080/online-shop/products/"
   sender-email: "online.shop.gmail.com"
+  files-saving-path: "F://Work/ITworks/Java projects/Online_shop/src/docs/"
