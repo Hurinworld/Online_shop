@@ -42,6 +42,7 @@ public class EventFacadeImpl implements EventFacade{
         List<User> userList = userService.getAllUsers();
         userList.forEach(user -> {
             emailService.sendNotificationAboutEventStart(user.getEmail(), event);
+            //TODO extract this logic to the notificationService
             notificationService.addNotification(
                     Notification.builder()
                             .title("Notification about " + event.getTitle() + " event start")

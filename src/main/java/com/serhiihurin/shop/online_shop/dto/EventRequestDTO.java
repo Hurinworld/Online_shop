@@ -10,5 +10,7 @@ public class EventRequestDTO {
     private String title;
     private String description;
     private LocalDateTime endDateTime;
+    //TODO use id while creating entity instead of names
+    //TODO use dtos instead of map
     private Map<String, Integer> productsForSale;
 }

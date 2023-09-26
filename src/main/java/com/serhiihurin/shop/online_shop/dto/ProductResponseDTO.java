@@ -12,4 +12,5 @@ public class ProductResponseDTO {
     private String description;
     private Double price;
     private Long ShopId;
+    //TODO add average rating for this products by feedbacks
 }

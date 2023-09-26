@@ -191,9 +191,7 @@ public class ProductRESTController {
                     )
             }
     )
-    //TODO this is redundant // public ResponseEntity<Void> increaseProductAmount // done
 
-    //TODO make discountPercent a param in path //done
     @PostMapping("/{productId}/sale")
     @PreAuthorize("hasAuthority('product management')")
     public ResponseEntity<Void> putProductOnSale(

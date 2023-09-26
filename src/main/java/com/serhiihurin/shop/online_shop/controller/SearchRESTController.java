@@ -20,8 +20,10 @@ import java.util.List;
 public class SearchRESTController {
     private final ProductFacade productFacade;
 
+    //TODO 'products'
     @GetMapping("/product")
     public List<ProductResponseDTO> searchProduct(
+            //TODO can be nullable
             @RequestParam String productName,
             @RequestParam(required = false) @Nullable String sortingTypeValue,
             @RequestParam(required = false) @Nullable Double minimalPrice,
@@ -33,4 +35,6 @@ public class SearchRESTController {
         }
         return productFacade.searchProducts(productName, sortingType, minimalPrice, maximalPrice);
     }
+
+    //TODO add endpoint for shop-owners
 }

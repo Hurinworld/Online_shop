@@ -4,7 +4,7 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
+//TODO check is it seems correct in postman response
 @Data
 public class PurchaseAdminResponseDTO {
     private Long id;

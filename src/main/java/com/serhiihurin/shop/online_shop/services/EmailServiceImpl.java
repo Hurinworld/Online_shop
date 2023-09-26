@@ -57,7 +57,6 @@ public class EmailServiceImpl implements EmailService{
         context.setVariable("verificationCode", verificationCode.getVerificationCode());
         context.setVariable("passwordChangingLink", passwordChangingLink);
 
-        //TODO extract this code to another method //done
         buildAndSendMessage("password-changing-verification-email", fromEmail,
                 toEmail, "Password changing verification");
 

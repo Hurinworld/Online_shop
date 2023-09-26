@@ -29,9 +29,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getProductsByShopId(Long id) {
+        //TODO double request to repo
         shopRepository.findById(id)
                 .orElseThrow(() -> new ApiRequestException("Could not find shop with ID: " + id));
-        //TODO add check if shop exist //done
         return productRepository.getProductsByShopId(id);
     }
 
@@ -39,16 +39,18 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> searchProducts(
             String productName, SortingType sortingType, Double minimalPrice, Double maximalPrice
     ) {
+        //todo refactor to switch-case style
+        //TODO add sorting by rating of feedbacks(asc, desc)
         if (sortingType == null) {
-            return searchProductsWithNoSearchingType(productName, minimalPrice, maximalPrice);
-        } else if (sortingType.equals(SortingType.ASCENDING)) {
-            return searchProductsWithAscendingSearchingType(productName, minimalPrice, maximalPrice);
-        } else if (sortingType.equals(SortingType.DESCENDING)) {
-            return searchProductsWithDescendingSearchingType(productName, minimalPrice, maximalPrice);
-        } else {
-           throw new ApiRequestException("Wrong sorting type parameter value");
-        }
+        return searchProductsWithNoSearchingType(productName, minimalPrice, maximalPrice);
+    } else if (sortingType.equals(SortingType.ASCENDING)) {
+        return searchProductsWithAscendingSearchingType(productName, minimalPrice, maximalPrice);
+    } else if (sortingType.equals(SortingType.DESCENDING)) {
+        return searchProductsWithDescendingSearchingType(productName, minimalPrice, maximalPrice);
+    } else {
+        throw new ApiRequestException("Wrong sorting type parameter value");
     }
+}
 
     @Override
     public Product getProduct(Long id) {
@@ -159,7 +161,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void removeEventProductsFromSale(Long eventId) {
-        //TODO remove this map //done
         eventRepository.findById(eventId)
                 .orElseThrow(() -> new ApiRequestException("Could not find event with ID: " + eventId));
         List<Discount> eventProductsDiscounts = discountRepository.findDiscountsByEventId(eventId);

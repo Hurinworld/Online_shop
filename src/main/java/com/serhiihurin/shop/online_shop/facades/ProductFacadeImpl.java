@@ -108,6 +108,7 @@ public class ProductFacadeImpl implements ProductFacade {
             ProductRequestDTO productRequestDTO,
             MultipartFile[] files
     ) {
+        //TODO better use dto to transfer data between layers
         Product product = productService.addProduct(
                 Product.builder()
                 .name(productRequestDTO.getName())
@@ -122,6 +123,7 @@ public class ProductFacadeImpl implements ProductFacade {
 
         List<String> filePaths = new ArrayList<>();
 
+        //TODO extract this logic to the file-service
         for (MultipartFile file : files) {
             if (!file.isEmpty()) {
                 try {
