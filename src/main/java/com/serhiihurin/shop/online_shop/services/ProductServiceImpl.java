@@ -2,15 +2,19 @@ package com.serhiihurin.shop.online_shop.services;
 
 import com.serhiihurin.shop.online_shop.dao.*;
 import com.serhiihurin.shop.online_shop.dto.ProductRequestDTO;
+import com.serhiihurin.shop.online_shop.dto.ProductResponseDTO;
 import com.serhiihurin.shop.online_shop.entity.*;
 import com.serhiihurin.shop.online_shop.enums.Role;
 import com.serhiihurin.shop.online_shop.enums.SortingType;
 import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
 import com.serhiihurin.shop.online_shop.exception.UnauthorizedAccessException;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -21,6 +25,8 @@ public class ProductServiceImpl implements ProductService {
     private final ShopRepository shopRepository;
     private final DiscountRepository discountRepository;
     private final EventRepository eventRepository;
+    private final FeedbackRepository feedbackRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     public List<Product> getAllProducts() {
@@ -29,27 +35,37 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getProductsByShopId(Long id) {
-        //TODO double request to repo
-        shopRepository.findById(id)
-                .orElseThrow(() -> new ApiRequestException("Could not find shop with ID: " + id));
-        return productRepository.getProductsByShopId(id);
+        //TODO double request to repo //done
+        return shopRepository.findById(id)
+                .orElseThrow(() -> new ApiRequestException("Could not find shop with ID: " + id))
+                .getProducts();
     }
 
     @Override
-    public List<Product> searchProducts(
+    public List<ProductResponseDTO> searchProducts(
             String productName, SortingType sortingType, Double minimalPrice, Double maximalPrice
     ) {
-        //todo refactor to switch-case style
-        //TODO add sorting by rating of feedbacks(asc, desc)
-        if (sortingType == null) {
-        return searchProductsWithNoSearchingType(productName, minimalPrice, maximalPrice);
-    } else if (sortingType.equals(SortingType.ASCENDING)) {
-        return searchProductsWithAscendingSearchingType(productName, minimalPrice, maximalPrice);
-    } else if (sortingType.equals(SortingType.DESCENDING)) {
-        return searchProductsWithDescendingSearchingType(productName, minimalPrice, maximalPrice);
-    } else {
-        throw new ApiRequestException("Wrong sorting type parameter value");
-    }
+        //todo refactor to switch-case style //done
+        //TODO add sorting by rating of feedbacks(asc, desc) //done
+        if(sortingType != null) {
+            return searchProductsWithSorting(productName, minimalPrice, maximalPrice, sortingType);
+        } else {
+            return modelMapper.map(
+                    searchProductsWithNoSortingType(productName, minimalPrice, maximalPrice),
+                    new TypeToken<List<ProductResponseDTO>>(){
+                    }.getType()
+            );
+        }
+
+//        if (sortingType == null) {
+//        return searchProductsWithNoSearchingType(productName, minimalPrice, maximalPrice);
+//    } else if (sortingType.equals(SortingType.PRICE_ASCENDING)) {
+//        return searchProductsWithAscendingSearchingType(productName, minimalPrice, maximalPrice);
+//    } else if (sortingType.equals(SortingType.PRICE_DESCENDING)) {
+//        return searchProductsWithDescendingSearchingType(productName, minimalPrice, maximalPrice);
+//    } else {
+//        throw new ApiRequestException("Wrong sorting type parameter value");
+//    }
 }
 
     @Override
@@ -59,9 +75,21 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product addProduct(Product product) {
-
-        return productRepository.save(product);
+    public Product addProduct(ProductRequestDTO productRequestDTO) {
+        return productRepository.save(
+                Product.builder()
+                        .name(productRequestDTO.getName())
+                        .description(productRequestDTO.getDescription())
+                        .price(productRequestDTO.getPrice())
+                        .amount(productRequestDTO.getAmount())
+                        .shop(
+                                shopRepository.findById(productRequestDTO.getShopId())
+                                        .orElseThrow(() -> new ApiRequestException(
+                                                "Could not find shop with ID: " + productRequestDTO.getShopId()
+                                        ))
+                        )
+                        .build()
+        );
     }
 
     @Override
@@ -73,9 +101,6 @@ public class ProductServiceImpl implements ProductService {
         if (!product.getShop().getOwner().getId().equals(currentAuthenticatedUser.getId())) {
             throw new UnauthorizedAccessException("Access denied. Wrong product ID");
         }
-
-        //TODO wrong logic //done //removed setting a shop to product
-
         if (productRequestDTO.getName() != null) {
             product.setName(productRequestDTO.getName());
         }
@@ -190,56 +215,91 @@ public class ProductServiceImpl implements ProductService {
         productRepository.deleteById(id);
     }
 
-    private List<Product> searchProductsWithNoSearchingType(
+    private List<Product> searchProductsWithNoSortingType(
             String productName, Double minimalPrice, Double maximalPrice
     ) {
         if (minimalPrice != null && maximalPrice != null) {
             return productRepository
-                    .getProductsByNameContainsAndPriceBetween(productName, minimalPrice, maximalPrice);
+                    .getProductsByNameContains(productName)
+                    .stream()
+                    .filter(product -> product.getPrice() > minimalPrice && product.getPrice() < maximalPrice)
+                    .toList();
         } else if(minimalPrice != null) {
-            return productRepository.getProductsByNameContainsAndPriceGreaterThan(productName, minimalPrice);
+            return productRepository.getProductsByNameContains(productName)
+                    .stream()
+                    .filter(product -> product.getPrice() > minimalPrice)
+                    .toList();
         } else if(maximalPrice != null) {
-            return productRepository.getProductsByNameContainsAndPriceLessThan(productName, maximalPrice);
+            return productRepository.getProductsByNameContains(productName)
+                    .stream()
+                    .filter(product -> product.getPrice() < maximalPrice)
+                    .toList();
         } else {
             return productRepository.getProductsByNameContains(productName);
         }
     }
 
-    private List<Product> searchProductsWithAscendingSearchingType(
-            String productName, Double minimalPrice, Double maximalPrice
+    private List<ProductResponseDTO> searchProductsWithSorting(
+            String productName, Double minimalPrice, Double maximalPrice, SortingType sortingType
     ){
         if (minimalPrice != null && maximalPrice != null) {
-            return productRepository
-                    .getProductsByNameContainsAndPriceBetweenOrderByPriceAsc(
+            return sortProducts(
+                    productRepository.getProductsByNameContainsAndPriceBetween(
                             productName, minimalPrice, maximalPrice
-                    );
+                    ),
+                    sortingType
+            );
         } else if(minimalPrice != null) {
-            return productRepository
-                    .getProductsByNameContainsAndPriceGreaterThanOrderByPriceAsc(productName, minimalPrice);
+            return sortProducts(
+                    productRepository.getProductsByNameContainsAndPriceGreaterThan(productName, minimalPrice),
+                    sortingType
+            );
         } else if(maximalPrice != null) {
-            return productRepository
-                    .getProductsByNameContainsAndPriceLessThanOrderByPriceAsc(productName, maximalPrice);
+            return sortProducts(
+                    productRepository.getProductsByNameContainsAndPriceLessThan(productName, maximalPrice),
+                    sortingType
+            );
         } else {
-            return productRepository.getProductsByNameContainsOrderByPriceAsc(productName);
+            return sortProducts(
+                    productRepository.getProductsByNameContains(productName),
+                    sortingType
+            );
         }
     }
 
-    private List<Product> searchProductsWithDescendingSearchingType(
-            String productName, Double minimalPrice, Double maximalPrice
-    ) {
-        if (minimalPrice != null && maximalPrice != null) {
-            return productRepository
-                    .getProductsByNameContainsAndPriceBetweenOrderByPriceDesc(
-                            productName, minimalPrice, maximalPrice
-                    );
-        } else if(minimalPrice != null) {
-            return productRepository
-                    .getProductsByNameContainsAndPriceGreaterThanOrderByPriceDesc(productName, minimalPrice);
-        } else if(maximalPrice != null) {
-            return productRepository
-                    .getProductsByNameContainsAndPriceLessThanOrderByPriceDesc(productName, maximalPrice);
-        } else {
-            return productRepository.getProductsByNameContainsOrderByPriceDesc(productName);
+    private List<ProductResponseDTO> sortProducts(List<Product> productList, SortingType sortingType) {
+//        productList = productList.stream().filter(product -> product.getPrice() > 12000).toList();
+        List<ProductResponseDTO> productResponseDTOS = modelMapper.map(
+                productList,
+                new TypeToken<List<ProductResponseDTO>>(){
+                }.getType()
+        );
+
+        switch (sortingType) {
+            case PRICE_ASCENDING -> productResponseDTOS.sort(Comparator.comparing(ProductResponseDTO::getPrice));
+            case PRICE_DESCENDING -> productResponseDTOS.sort(Comparator.comparing(ProductResponseDTO::getPrice)
+                    .reversed());
+            case RATE_ASCENDING ->
+                calculateProductsRate(productResponseDTOS).sort(Comparator.comparing(ProductResponseDTO::getRate));
+            case RATE_DESCENDING ->
+                    calculateProductsRate(productResponseDTOS).sort(Comparator.comparing(ProductResponseDTO::getRate)
+                        .reversed());
+            default -> throw new ApiRequestException("Wrong sorting type parameter value");
         }
+
+        return productResponseDTOS;
+    }
+
+    private List<ProductResponseDTO> calculateProductsRate(List<ProductResponseDTO> productResponseDTOS) {
+        for (ProductResponseDTO productResponseDTO : productResponseDTOS) {
+            double productRate = 0.0;
+            List<Feedback> feedbacks = feedbackRepository.getFeedbacksByProductId(productResponseDTO.getId());
+            for (Feedback feedback : feedbacks) {
+                productRate += feedback.getRate().getRateValue();
+            }
+            productResponseDTO.setRate(productRate/feedbacks.size());
+        }
+
+        return productResponseDTOS;
     }
 }

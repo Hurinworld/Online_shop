@@ -1,6 +1,7 @@
 package com.serhiihurin.shop.online_shop.controller;
 
 import com.serhiihurin.shop.online_shop.dto.ProductResponseDTO;
+import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.enums.SortingType;
 import com.serhiihurin.shop.online_shop.facades.ProductFacade;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -20,11 +21,11 @@ import java.util.List;
 public class SearchRESTController {
     private final ProductFacade productFacade;
 
-    //TODO 'products'
-    @GetMapping("/product")
-    public List<ProductResponseDTO> searchProduct(
-            //TODO can be nullable
-            @RequestParam String productName,
+    //TODO 'products' //done
+    @GetMapping("/products")
+    public List<ProductResponseDTO> searchProductsGlobally(
+            //TODO can be nullable //done
+            @RequestParam(required = false) @Nullable String productName,
             @RequestParam(required = false) @Nullable String sortingTypeValue,
             @RequestParam(required = false) @Nullable Double minimalPrice,
             @RequestParam(required = false) @Nullable Double maximalPrice
@@ -33,8 +34,29 @@ public class SearchRESTController {
         if (sortingTypeValue != null) {
             sortingType = SortingType.valueOf(sortingTypeValue.toUpperCase());
         }
-        return productFacade.searchProducts(productName, sortingType, minimalPrice, maximalPrice);
+        return productFacade.searchProductsGlobally(productName, sortingType, minimalPrice, maximalPrice);
     }
 
     //TODO add endpoint for shop-owners
+
+    @GetMapping("/shop/products")
+    public List<ProductResponseDTO> searchProductsInShop(
+            User currentAuthenticatedUser,
+            @RequestParam(required = false) @Nullable String productName,
+            @RequestParam(required = false) @Nullable String sortingTypeValue,
+            @RequestParam(required = false) @Nullable Double minimalPrice,
+            @RequestParam(required = false) @Nullable Double maximalPrice
+    ) {
+        SortingType sortingType = null;
+        if (sortingTypeValue != null) {
+            sortingType = SortingType.valueOf(sortingTypeValue.toUpperCase());
+        }
+        return productFacade.searchProductsInShop(
+                currentAuthenticatedUser,
+                productName,
+                sortingType,
+                minimalPrice,
+                maximalPrice
+        );
+    }
 }

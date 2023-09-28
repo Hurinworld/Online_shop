@@ -6,7 +6,8 @@ import java.time.LocalDateTime;
 
 @Data
 public class NotificationPreviewResponseDTO {
-    //TODO add id
+    //TODO add id //done
+    private Long id;
     private String title;
     private LocalDateTime sendDateTime;
 }

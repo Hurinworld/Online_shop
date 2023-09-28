@@ -727,7 +727,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtaXN0ZXJodXJpbkBnbWFpbC5jb20iLCJpYXQiOjE2OTIxODk1NDMsImV4cCI6MTY5MjI3NTk0M30.FV1VFR6BYHNvo5IAhLmJUtFoRUHe0sO1KwYPODgaD_0",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZG9zYXRhY2s4OEBnbWFpbC5jb20iLCJpYXQiOjE2OTU4MTIwNTAsImV4cCI6MTY5NTg5ODQ1MH0.LRyUIxXRwoMk7hU1vib7AyycSGfO1d16ngBRkL2s_mQ",
 									"type": "string"
 								}
 							]
@@ -916,7 +916,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlc3RldDEzNkBnbWFpbC5jb20iLCJpYXQiOjE2OTQ1MTY0NzIsImV4cCI6MTY5NDYwMjg3Mn0.fZEA5eeF3fYhxXjuACzL621fA9wo2WkYU3KSRZUAX_8",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZG9zYXRhY2s4OEBnbWFpbC5jb20iLCJpYXQiOjE2OTQ3MDI0NDQsImV4cCI6MTY5NDc4ODg0NH0.J-wiDyFaKy22xuDIAINSpvhyjbL7DV5ofYs1qCTu7ZY",
 									"type": "string"
 								}
 							]
@@ -924,7 +924,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/online-shop/products/4/sale",
+							"raw": "http://localhost:8080/online-shop/products/3/sale",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -933,7 +933,7 @@
 							"path": [
 								"online-shop",
 								"products",
-								"4",
+								"3",
 								"sale"
 							]
 						}
@@ -1266,7 +1266,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtaXN0ZXJodXJpbkBnbWFpbC5jb20iLCJpYXQiOjE2OTIxODk1NDMsImV4cCI6MTY5MjI3NTk0M30.FV1VFR6BYHNvo5IAhLmJUtFoRUHe0sO1KwYPODgaD_0",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTdXBlckBnbWFpbC5jb20iLCJpYXQiOjE2OTU4MTIzMTYsImV4cCI6MTY5NTg5ODcxNn0.SDybhF5RrZlVNKtX5RWBpdAU5aLeKHatRPt01E3DPsg",
 									"type": "string"
 								}
 							]
@@ -1579,7 +1579,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\": \"Autumn sale\",\r\n    \"description\": \"Checkout big autumn sale for PC parts in Online Shop!\",\r\n    \"endDateTime\": \"2023-09-30T18:00:00\",\r\n    \"productsForSale\": {\r\n        \"Asus TUF GeForce RTX 3060TI\": 15,\r\n        \"AMD Ryzen 7 5700X\": 20\r\n    }\r\n}",
+							"raw": "{\r\n    \"title\": \"Autumn sale\",\r\n    \"description\": \"Checkout big autumn sale for PC parts in Online Shop!\",\r\n    \"endDateTime\": \"2023-09-30T18:00:00\",\r\n    \"productsForSale\": [\r\n        {\r\n            \"productId\": 3,\r\n            \"discountPercent\": 15\r\n        },\r\n        {\r\n            \"productId\": 1,\r\n            \"discountPercent\": 20\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1646,7 +1646,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZG9zYXRhY2s4OEBnbWFpbC5jb20iLCJpYXQiOjE2OTUyOTU0MTIsImV4cCI6MTY5NTM4MTgxMn0.4z4bPDBznn4-CTMbhHQKaGAcOr-gdGyIlUR-Q4NY6Sg",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZG9zYXRhY2s4OEBnbWFpbC5jb20iLCJpYXQiOjE2OTU5MTM1NzksImV4cCI6MTY5NTk5OTk3OX0.XF56BbJrLGzyGBF5YL6dmhXi5SIFwmphYh_P89NNE0I",
 									"type": "string"
 								}
 							]
@@ -1654,7 +1654,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/online-shop/search/product?productName=0&sortingType=ascending&minimalPrice=7000&maximalPrice=20000",
+							"raw": "http://localhost:8080/online-shop/search/products?productName=0&minimalPrice=12000&maximalPrice=22000&sortingTypeValue=price_descending",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1663,7 +1663,7 @@
 							"path": [
 								"online-shop",
 								"search",
-								"product"
+								"products"
 							],
 							"query": [
 								{
@@ -1671,16 +1671,16 @@
 									"value": "0"
 								},
 								{
-									"key": "sortingType",
-									"value": "ascending"
-								},
-								{
 									"key": "minimalPrice",
-									"value": "7000"
+									"value": "12000"
 								},
 								{
 									"key": "maximalPrice",
-									"value": "20000"
+									"value": "22000"
+								},
+								{
+									"key": "sortingTypeValue",
+									"value": "price_descending"
 								}
 							]
 						}

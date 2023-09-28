@@ -9,7 +9,7 @@ public interface NotificationService {
 
     Notification getNotification(Long notificationId);
 
-    void addNotification(Notification notification);
+    void addNotification(String title, String text);
 
     void deleteNotification(Long notificationId);
 }

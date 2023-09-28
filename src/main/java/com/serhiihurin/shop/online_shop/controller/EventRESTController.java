@@ -37,7 +37,10 @@ public class EventRESTController {
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('product management', 'service information management')")
-    public ResponseEntity<EventResponseDTO> createEvent(User currentAuthenticatedUser, @RequestBody EventRequestDTO eventRequestDTO) {
+    public ResponseEntity<EventResponseDTO> createEvent(
+            User currentAuthenticatedUser,
+            @RequestBody EventRequestDTO eventRequestDTO
+    ) {
         return ResponseEntity.ok(
                 modelMapper.map(
                         eventFacade.createEvent(currentAuthenticatedUser, eventRequestDTO),

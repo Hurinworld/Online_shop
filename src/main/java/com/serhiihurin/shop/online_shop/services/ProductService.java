@@ -1,6 +1,7 @@
 package com.serhiihurin.shop.online_shop.services;
 
 import com.serhiihurin.shop.online_shop.dto.ProductRequestDTO;
+import com.serhiihurin.shop.online_shop.dto.ProductResponseDTO;
 import com.serhiihurin.shop.online_shop.entity.Event;
 import com.serhiihurin.shop.online_shop.entity.Product;
 import com.serhiihurin.shop.online_shop.entity.User;
@@ -13,11 +14,14 @@ public interface ProductService {
 
     List<Product> getProductsByShopId(Long id);
 
-    List<Product> searchProducts(String productName, SortingType sortingType, Double minimalPrice, Double maximalPrice);
+    List<ProductResponseDTO> searchProducts(
+            String productName, SortingType sortingType,
+            Double minimalPrice, Double maximalPrice
+    );
 
     Product getProduct(Long id);
 
-    Product addProduct(Product product);
+    Product addProduct(ProductRequestDTO productRequestDTO);
 
     Product updateProduct(
             User currentAuthenticatedUser,

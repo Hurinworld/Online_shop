@@ -6,12 +6,16 @@ import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class NotificationServiceImpl implements NotificationService{
     private final NotificationRepository notificationRepository;
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     @Override
     public List<Notification> getAllNotificationsByUserId(Long userId) {
@@ -27,8 +31,18 @@ public class NotificationServiceImpl implements NotificationService{
     }
 
     @Override
-    public void addNotification(Notification notification) {
-        notificationRepository.save(notification);
+    public void addNotification(String title, String text) {
+        notificationRepository.save(
+                Notification.builder()
+                        .title(title)
+                        .text(text)
+                        .sendDateTime(
+                                LocalDateTime.parse(
+                                        LocalDateTime.now().atZone(ZoneId.of("Z")).format(formatter)
+                                )
+                        )
+                        .build()
+        );
     }
 
     @Override

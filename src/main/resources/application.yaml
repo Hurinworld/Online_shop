@@ -53,5 +53,5 @@ custom:
   password-changing-link: "http://localhost:8080/online-shop/info/password/new"
   wishlist-products-on-sale-notification-link: "http://localhost:8080/online-shop/products/"
   sender-email: "online.shop.gmail.com"
-#  change to non-project dir
-  files-saving-path: "F://Work/ITworks/Java projects/Online_shop/src/docs/"
+#  change to non-project dir //done
+  files-saving-path: "F://Work/ITworks/Java projects/Local file folder/"

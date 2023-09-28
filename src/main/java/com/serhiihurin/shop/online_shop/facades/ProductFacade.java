@@ -14,9 +14,17 @@ public interface ProductFacade {
 
     List<ProductResponseDTO> getAllProductsByShopId(Long id);
 
-    List<ProductResponseDTO> searchProducts(
+    List<ProductResponseDTO> searchProductsGlobally(
             String productName, SortingType sortingType,
             Double minimalPrice, Double maximalPrice
+    );
+
+    List<ProductResponseDTO> searchProductsInShop(
+            User currentAuthenticatedUser,
+            String productName,
+            SortingType sortingType,
+            Double minimalPrice,
+            Double maximalPrice
     );
 
     ProductResponseDTO getProduct(Long id);

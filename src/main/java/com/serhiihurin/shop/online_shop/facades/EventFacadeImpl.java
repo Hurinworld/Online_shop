@@ -1,6 +1,7 @@
 package com.serhiihurin.shop.online_shop.facades;
 
 import com.serhiihurin.shop.online_shop.dto.EventRequestDTO;
+import com.serhiihurin.shop.online_shop.dto.ProductForSaleRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.Event;
 import com.serhiihurin.shop.online_shop.entity.Notification;
 import com.serhiihurin.shop.online_shop.entity.User;
@@ -13,7 +14,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -25,8 +25,6 @@ public class EventFacadeImpl implements EventFacade{
     private final ProductService productService;
     private final NotificationService notificationService;
 
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
     @Override
     public List<Event> getEventsByEventCreatorId(Long eventsCreatorId) {
         return eventService.getEventsByEventCreatorId(eventsCreatorId);
@@ -35,29 +33,17 @@ public class EventFacadeImpl implements EventFacade{
     @Override
     public Event createEvent(User currentAuthenticatedUser, EventRequestDTO eventRequestDTO) {
         Event event = eventService.createEvent(currentAuthenticatedUser, eventRequestDTO);
-        Map<String, Integer> productsForSale = eventRequestDTO.getProductsForSale();
-        for (String name : productsForSale.keySet()) {
-            productService.putProductOnSale(currentAuthenticatedUser, name, productsForSale.get(name), event);
+        for (ProductForSaleRequestDTO product : eventRequestDTO.getProductsForSale()) {
+            productService.putProductOnSale(
+                    currentAuthenticatedUser, product.getProductId(),
+                    product.getDiscountPercent(), event
+            );
         }
         List<User> userList = userService.getAllUsers();
         userList.forEach(user -> {
             emailService.sendNotificationAboutEventStart(user.getEmail(), event);
-            //TODO extract this logic to the notificationService
-            notificationService.addNotification(
-                    Notification.builder()
-                            .title("Notification about " + event.getTitle() + " event start")
-                            .text("Hi " + currentAuthenticatedUser.getFirstName() + "! \n\n"
-                                    + "Visit Online Shop and checkout new discounts!\n"
-                                    + " Discount will be valid from " + event.getStartDateTime()
-                                    + " to " + event.getEndDateTime()
-                                    + "\n\nDon't miss the opportunity to get products for nice prices!")
-                            .sendDateTime(
-                                    LocalDateTime.parse(
-                                            LocalDateTime.now().atZone(ZoneId.of("Z")).format(formatter)
-                                    )
-                            )
-                            .build()
-            );
+            //TODO extract this logic to the notificationService //done
+            notificationService.addNotification(event.getTitle(), event.getDescription());
         });
         log.info("Sent notification about {} event start at {}", eventRequestDTO.getTitle(), LocalDateTime.now());
         return event;

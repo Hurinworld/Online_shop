@@ -1,6 +1,5 @@
 package com.serhiihurin.shop.online_shop.facades;
 
-import com.serhiihurin.shop.online_shop.entity.Notification;
 import com.serhiihurin.shop.online_shop.entity.Product;
 import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.entity.Wishlist;
@@ -13,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,17 +50,10 @@ public class WishlistFacadeImpl implements WishlistFacade{
                                 sortedByUserWishlists.get(user)
                         );
                 notificationService.addNotification(
-                        Notification.builder()
-                                .title("Notification about products form wishlist on sale")
-                                .text("Hi " + user.getFirstName() + "! "
-                                        + "\n\nSome products from your wishlist are now on sale: \n"
-                                        + sortedByUserWishlists.get(user))
-                                .sendDateTime(
-                                        LocalDateTime.parse(
-                                                LocalDateTime.now().atZone(ZoneId.of("Z")).format(formatter)
-                                        )
-                                )
-                                .build()
+                        "Notification about products form wishlist on sale",
+                        "Hi " + user.getFirstName() + "! "
+                                + "\n\nSome products from your wishlist are now on sale: \n"
+                                + sortedByUserWishlists.get(user)
                 );
             }
         }

@@ -1,5 +1,6 @@
 package com.serhiihurin.shop.online_shop.facades;
 
+import com.serhiihurin.shop.online_shop.dto.ProductRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.PurchaseRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.ShopRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.*;
@@ -59,15 +60,18 @@ public class PurchaseFacadeImpl implements PurchaseFacade{
         Map<Long, Integer> productsCount = purchaseRequestDTO.getProductsCount();
 
         for(Long productId : productsCount.keySet()) {
-            Product product = productService.getProduct(productId);
-            Double totalPrice = product.getPrice() * productsCount.get(productId);
-            Shop shop = product.getShop();
+            ProductRequestDTO productRequestDTO = modelMapper.map(
+                    productService.getProduct(productId),
+                    ProductRequestDTO.class
+            );
+            Double totalPrice = productRequestDTO.getPrice() * productsCount.get(productId);
+            Shop shop = shopService.getShop(productRequestDTO.getShopId());
 
             if (currentAuthenticatedUser.getCash() < totalPrice) {
                 throw new PurchaseException("Purchase failed. Not enough money in wallet");
             }
 
-            product.setAmount(product.getAmount() - productsCount.get(productId));
+            productRequestDTO.setAmount(productRequestDTO.getAmount() - productsCount.get(productId));
             currentAuthenticatedUser.setCash(currentAuthenticatedUser.getCash() - totalPrice);
             shop.setIncome(shop.getIncome() + totalPrice);
             purchase.setUser(currentAuthenticatedUser);
@@ -77,14 +81,13 @@ public class PurchaseFacadeImpl implements PurchaseFacade{
                     purchaseDetailsService.savePurchaseDetails(
                             PurchaseDetails.builder()
                                     .purchase(purchase)
-                                    .product(product)
+                                    .product(productService.addProduct(productRequestDTO))
                                     .amount(productsCount.get(productId))
                                     .totalPrice(totalPrice)
                                     .build()
                     )
             );
 
-            productService.addProduct(product);
             shopService.updateShop(modelMapper.map(shop, ShopRequestDTO.class), shop);
         }
 
