@@ -42,30 +42,23 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductResponseDTO> searchProducts(
+    public List<ProductResponseDTO> searchProducts(List<Product> productList,
             String productName, SortingType sortingType, Double minimalPrice, Double maximalPrice
     ) {
         //todo refactor to switch-case style //done
         //TODO add sorting by rating of feedbacks(asc, desc) //done
         if(sortingType != null) {
-            return searchProductsWithSorting(productName, minimalPrice, maximalPrice, sortingType);
+            return sortProducts(
+                    filterProducts(productList, productName, minimalPrice, maximalPrice),
+                    sortingType
+            );
         } else {
             return modelMapper.map(
-                    searchProductsWithNoSortingType(productName, minimalPrice, maximalPrice),
+                    filterProducts(productList, productName, minimalPrice, maximalPrice),
                     new TypeToken<List<ProductResponseDTO>>(){
                     }.getType()
             );
         }
-
-//        if (sortingType == null) {
-//        return searchProductsWithNoSearchingType(productName, minimalPrice, maximalPrice);
-//    } else if (sortingType.equals(SortingType.PRICE_ASCENDING)) {
-//        return searchProductsWithAscendingSearchingType(productName, minimalPrice, maximalPrice);
-//    } else if (sortingType.equals(SortingType.PRICE_DESCENDING)) {
-//        return searchProductsWithDescendingSearchingType(productName, minimalPrice, maximalPrice);
-//    } else {
-//        throw new ApiRequestException("Wrong sorting type parameter value");
-//    }
 }
 
     @Override
@@ -215,60 +208,40 @@ public class ProductServiceImpl implements ProductService {
         productRepository.deleteById(id);
     }
 
-    private List<Product> searchProductsWithNoSortingType(
-            String productName, Double minimalPrice, Double maximalPrice
+    private List<Product> filterProducts(
+            List<Product> productList,
+            String productName,
+            Double minimalPrice,
+            Double maximalPrice
     ) {
         if (minimalPrice != null && maximalPrice != null) {
-            return productRepository
-                    .getProductsByNameContains(productName)
+            return productList
                     .stream()
-                    .filter(product -> product.getPrice() > minimalPrice && product.getPrice() < maximalPrice)
+                    .filter(
+                            product -> product.getPrice() > minimalPrice
+                                    && product.getPrice() < maximalPrice
+                                    && product.getName().contains(productName)
+                    )
                     .toList();
         } else if(minimalPrice != null) {
-            return productRepository.getProductsByNameContains(productName)
+            return productList
                     .stream()
-                    .filter(product -> product.getPrice() > minimalPrice)
+                    .filter(product -> product.getPrice() > minimalPrice && product.getName().contains(productName))
                     .toList();
         } else if(maximalPrice != null) {
-            return productRepository.getProductsByNameContains(productName)
+            return productList
                     .stream()
-                    .filter(product -> product.getPrice() < maximalPrice)
+                    .filter(product -> product.getPrice() < maximalPrice && product.getName().contains(productName))
                     .toList();
         } else {
-            return productRepository.getProductsByNameContains(productName);
-        }
-    }
-
-    private List<ProductResponseDTO> searchProductsWithSorting(
-            String productName, Double minimalPrice, Double maximalPrice, SortingType sortingType
-    ){
-        if (minimalPrice != null && maximalPrice != null) {
-            return sortProducts(
-                    productRepository.getProductsByNameContainsAndPriceBetween(
-                            productName, minimalPrice, maximalPrice
-                    ),
-                    sortingType
-            );
-        } else if(minimalPrice != null) {
-            return sortProducts(
-                    productRepository.getProductsByNameContainsAndPriceGreaterThan(productName, minimalPrice),
-                    sortingType
-            );
-        } else if(maximalPrice != null) {
-            return sortProducts(
-                    productRepository.getProductsByNameContainsAndPriceLessThan(productName, maximalPrice),
-                    sortingType
-            );
-        } else {
-            return sortProducts(
-                    productRepository.getProductsByNameContains(productName),
-                    sortingType
-            );
+            return productList
+                    .stream()
+                    .filter(product -> product.getName().contains(productName))
+                    .toList();
         }
     }
 
     private List<ProductResponseDTO> sortProducts(List<Product> productList, SortingType sortingType) {
-//        productList = productList.stream().filter(product -> product.getPrice() > 12000).toList();
         List<ProductResponseDTO> productResponseDTOS = modelMapper.map(
                 productList,
                 new TypeToken<List<ProductResponseDTO>>(){

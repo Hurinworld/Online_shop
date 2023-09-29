@@ -15,6 +15,7 @@ public interface ProductService {
     List<Product> getProductsByShopId(Long id);
 
     List<ProductResponseDTO> searchProducts(
+            List<Product> productList,
             String productName, SortingType sortingType,
             Double minimalPrice, Double maximalPrice
     );

@@ -5,8 +5,10 @@ import com.serhiihurin.shop.online_shop.dto.ProductResponseDTO;
 import com.serhiihurin.shop.online_shop.entity.Product;
 import com.serhiihurin.shop.online_shop.entity.ProductImage;
 import com.serhiihurin.shop.online_shop.entity.User;
+import com.serhiihurin.shop.online_shop.enums.Role;
 import com.serhiihurin.shop.online_shop.enums.SortingType;
 import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
+import com.serhiihurin.shop.online_shop.exception.UnauthorizedAccessException;
 import com.serhiihurin.shop.online_shop.services.FileService;
 import com.serhiihurin.shop.online_shop.services.ProductImageService;
 import com.serhiihurin.shop.online_shop.services.ProductService;
@@ -72,28 +74,9 @@ public class ProductFacadeImpl implements ProductFacade {
             String productName, SortingType sortingType,
             Double minimalPrice, Double maximalPrice
     ) {
-        if (productName == null) {
-            return modelMapper.map(
-                    productService.getAllProducts(),
-                    new TypeToken<List<ProductResponseDTO>>() {
-                    }.getType()
-            );
-        }
+        List<Product> productList = productService.getAllProducts();
 
-        if (minimalPrice != null && maximalPrice != null && maximalPrice < minimalPrice) {
-            throw new ApiRequestException("Wrong price parameters values");
-        }
-
-        List<ProductResponseDTO> productResponseDTOS =
-                productService.searchProducts(productName, sortingType, minimalPrice, maximalPrice);
-
-        productResponseDTOS
-                .forEach(
-                        productResponseDTO -> productResponseDTO
-                                .setImagesPaths(getProductImagesPaths(productResponseDTO.getId()))
-                );
-
-        return productResponseDTOS;
+        return performSearch(productList, productName,sortingType, minimalPrice, maximalPrice);
     }
 
     @Override
@@ -104,7 +87,13 @@ public class ProductFacadeImpl implements ProductFacade {
             Double minimalPrice,
             Double maximalPrice
     ) {
-        return null;
+        if (!Role.SHOP_OWNER.equals(currentAuthenticatedUser.getRole())) {
+            throw new UnauthorizedAccessException("Access denied");
+        }
+        List<Product> productList = productService.getProductsByShopId(
+                shopService.getShopByOwnerId(currentAuthenticatedUser.getId()).getId()
+        );
+        return performSearch(productList, productName,sortingType, minimalPrice, maximalPrice);
     }
 
     @Override
@@ -189,5 +178,36 @@ public class ProductFacadeImpl implements ProductFacade {
                         throw new RuntimeException(e);
                     }
                 }).toList();
+    }
+
+    private List<ProductResponseDTO> performSearch(
+            List<Product> productList,
+            String productName,
+            SortingType sortingType,
+            Double minimalPrice,
+            Double maximalPrice
+    ) {
+        if (productName == null) {
+            return modelMapper.map(
+                    productList,
+                    new TypeToken<List<ProductResponseDTO>>() {
+                    }.getType()
+            );
+        }
+
+        if (minimalPrice != null && maximalPrice != null && maximalPrice < minimalPrice) {
+            throw new ApiRequestException("Wrong price parameters values");
+        }
+
+        List<ProductResponseDTO> productResponseDTOS =
+                productService.searchProducts(productList, productName, sortingType, minimalPrice, maximalPrice);
+
+        productResponseDTOS
+                .forEach(
+                        productResponseDTO -> productResponseDTO
+                                .setImagesPaths(getProductImagesPaths(productResponseDTO.getId()))
+                );
+
+        return productResponseDTOS;
     }
 }
