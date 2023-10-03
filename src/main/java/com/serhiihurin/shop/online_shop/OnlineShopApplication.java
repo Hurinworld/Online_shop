@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 //TODO add notifications //done
 //TODO add saving state of email sending queue
 //TODO add work with files //done
+//TODO move search to db
 @SpringBootApplication
 public class OnlineShopApplication {
 

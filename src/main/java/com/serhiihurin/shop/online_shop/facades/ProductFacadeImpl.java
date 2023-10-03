@@ -187,6 +187,7 @@ public class ProductFacadeImpl implements ProductFacade {
             Double minimalPrice,
             Double maximalPrice
     ) {
+        //TODO wrong check
         if (productName == null) {
             return modelMapper.map(
                     productList,

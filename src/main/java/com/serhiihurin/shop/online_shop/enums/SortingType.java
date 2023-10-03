@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public enum SortingType {
+    //TODO divide for sorting directions and sort-by
+
     PRICE_ASCENDING("price_ascending"),
     PRICE_DESCENDING("price_descending"),
     RATE_ASCENDING("rate_ascending"),

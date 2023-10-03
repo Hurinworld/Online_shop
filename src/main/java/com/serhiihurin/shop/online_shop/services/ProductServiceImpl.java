@@ -48,6 +48,7 @@ public class ProductServiceImpl implements ProductService {
         //todo refactor to switch-case style //done
         //TODO add sorting by rating of feedbacks(asc, desc) //done
         if(sortingType != null) {
+            //TODO check is it correct
             return sortProducts(
                     filterProducts(productList, productName, minimalPrice, maximalPrice),
                     sortingType
