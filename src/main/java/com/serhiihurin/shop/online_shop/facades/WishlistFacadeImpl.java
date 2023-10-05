@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,8 +25,6 @@ public class WishlistFacadeImpl implements WishlistFacade{
     private final ProductService productService;
     private final EmailService emailService;
     private final NotificationService notificationService;
-
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     @Override
     public void notifyUsersAboutSales() {
@@ -49,12 +46,7 @@ public class WishlistFacadeImpl implements WishlistFacade{
                                 user.getEmail(),
                                 sortedByUserWishlists.get(user)
                         );
-                notificationService.addNotification(
-                        "Notification about products form wishlist on sale",
-                        "Hi " + user.getFirstName() + "! "
-                                + "\n\nSome products from your wishlist are now on sale: \n"
-                                + sortedByUserWishlists.get(user)
-                );
+                notificationService.addWishlistNotification(user.getFirstName(), sortedByUserWishlists.get(user));
             }
         }
     }

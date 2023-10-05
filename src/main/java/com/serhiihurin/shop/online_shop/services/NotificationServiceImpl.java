@@ -1,7 +1,9 @@
 package com.serhiihurin.shop.online_shop.services;
 
 import com.serhiihurin.shop.online_shop.dao.NotificationRepository;
+import com.serhiihurin.shop.online_shop.entity.Event;
 import com.serhiihurin.shop.online_shop.entity.Notification;
+import com.serhiihurin.shop.online_shop.entity.Product;
 import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,7 +33,25 @@ public class NotificationServiceImpl implements NotificationService{
     }
 
     @Override
-    public void addNotification(String title, String text) {
+    public void addWishlistNotification(String userFirstName, List<Product> productList) {
+        String title = "Notification about products form wishlist on sale";
+        String text = "Hi " + userFirstName + "! "
+                + "\n\nSome products from your wishlist are now on sale: \n"
+                + productList;
+        addNotification(title, text);
+    }
+
+    @Override
+    public void addEventStartNotification(String userFirstName, Event event) {
+        String title = "Notification about " + event.getTitle() + " event start";
+        String text = "Hi " + userFirstName + "! \n\n"
+                + "Visit Online Shop and checkout new discounts!\n"
+                + " Discount will be valid from " + event.getStartDateTime() + " to " + event.getEndDateTime()
+                + "\n\nDon't miss the opportunity to get products for nice prices!";
+        addNotification(title, text);
+    }
+
+    private void addNotification(String title, String text) {
         notificationRepository.save(
                 Notification.builder()
                         .title(title)

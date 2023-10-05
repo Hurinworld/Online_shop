@@ -2,19 +2,14 @@ package com.serhiihurin.shop.online_shop.services;
 
 import com.serhiihurin.shop.online_shop.dao.*;
 import com.serhiihurin.shop.online_shop.dto.ProductRequestDTO;
-import com.serhiihurin.shop.online_shop.dto.ProductResponseDTO;
 import com.serhiihurin.shop.online_shop.entity.*;
 import com.serhiihurin.shop.online_shop.enums.Role;
-import com.serhiihurin.shop.online_shop.enums.SortingType;
 import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
 import com.serhiihurin.shop.online_shop.exception.UnauthorizedAccessException;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -25,8 +20,6 @@ public class ProductServiceImpl implements ProductService {
     private final ShopRepository shopRepository;
     private final DiscountRepository discountRepository;
     private final EventRepository eventRepository;
-    private final FeedbackRepository feedbackRepository;
-    private final ModelMapper modelMapper;
 
     @Override
     public List<Product> getAllProducts() {
@@ -40,27 +33,6 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new ApiRequestException("Could not find shop with ID: " + id))
                 .getProducts();
     }
-
-    @Override
-    public List<ProductResponseDTO> searchProducts(List<Product> productList,
-            String productName, SortingType sortingType, Double minimalPrice, Double maximalPrice
-    ) {
-        //todo refactor to switch-case style //done
-        //TODO add sorting by rating of feedbacks(asc, desc) //done
-        if(sortingType != null) {
-            //TODO check is it correct
-            return sortProducts(
-                    filterProducts(productList, productName, minimalPrice, maximalPrice),
-                    sortingType
-            );
-        } else {
-            return modelMapper.map(
-                    filterProducts(productList, productName, minimalPrice, maximalPrice),
-                    new TypeToken<List<ProductResponseDTO>>(){
-                    }.getType()
-            );
-        }
-}
 
     @Override
     public Product getProduct(Long id) {
@@ -207,73 +179,5 @@ public class ProductServiceImpl implements ProductService {
         List<ProductImage> productImages = productImageRepository.getProductImagesByProductId(id);
         productImages.forEach(productImage -> productImageRepository.deleteById(productImage.getId()));
         productRepository.deleteById(id);
-    }
-
-    private List<Product> filterProducts(
-            List<Product> productList,
-            String productName,
-            Double minimalPrice,
-            Double maximalPrice
-    ) {
-        if (minimalPrice != null && maximalPrice != null) {
-            return productList
-                    .stream()
-                    .filter(
-                            product -> product.getPrice() > minimalPrice
-                                    && product.getPrice() < maximalPrice
-                                    && product.getName().contains(productName)
-                    )
-                    .toList();
-        } else if(minimalPrice != null) {
-            return productList
-                    .stream()
-                    .filter(product -> product.getPrice() > minimalPrice && product.getName().contains(productName))
-                    .toList();
-        } else if(maximalPrice != null) {
-            return productList
-                    .stream()
-                    .filter(product -> product.getPrice() < maximalPrice && product.getName().contains(productName))
-                    .toList();
-        } else {
-            return productList
-                    .stream()
-                    .filter(product -> product.getName().contains(productName))
-                    .toList();
-        }
-    }
-
-    private List<ProductResponseDTO> sortProducts(List<Product> productList, SortingType sortingType) {
-        List<ProductResponseDTO> productResponseDTOS = modelMapper.map(
-                productList,
-                new TypeToken<List<ProductResponseDTO>>(){
-                }.getType()
-        );
-
-        switch (sortingType) {
-            case PRICE_ASCENDING -> productResponseDTOS.sort(Comparator.comparing(ProductResponseDTO::getPrice));
-            case PRICE_DESCENDING -> productResponseDTOS.sort(Comparator.comparing(ProductResponseDTO::getPrice)
-                    .reversed());
-            case RATE_ASCENDING ->
-                calculateProductsRate(productResponseDTOS).sort(Comparator.comparing(ProductResponseDTO::getRate));
-            case RATE_DESCENDING ->
-                    calculateProductsRate(productResponseDTOS).sort(Comparator.comparing(ProductResponseDTO::getRate)
-                        .reversed());
-            default -> throw new ApiRequestException("Wrong sorting type parameter value");
-        }
-
-        return productResponseDTOS;
-    }
-
-    private List<ProductResponseDTO> calculateProductsRate(List<ProductResponseDTO> productResponseDTOS) {
-        for (ProductResponseDTO productResponseDTO : productResponseDTOS) {
-            double productRate = 0.0;
-            List<Feedback> feedbacks = feedbackRepository.getFeedbacksByProductId(productResponseDTO.getId());
-            for (Feedback feedback : feedbacks) {
-                productRate += feedback.getRate().getRateValue();
-            }
-            productResponseDTO.setRate(productRate/feedbacks.size());
-        }
-
-        return productResponseDTOS;
     }
 }

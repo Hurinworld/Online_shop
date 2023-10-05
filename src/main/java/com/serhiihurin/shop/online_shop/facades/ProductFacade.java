@@ -4,7 +4,6 @@ import com.serhiihurin.shop.online_shop.dto.ProductRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.ProductResponseDTO;
 import com.serhiihurin.shop.online_shop.entity.Product;
 import com.serhiihurin.shop.online_shop.entity.User;
-import com.serhiihurin.shop.online_shop.enums.SortingType;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -15,14 +14,18 @@ public interface ProductFacade {
     List<ProductResponseDTO> getAllProductsByShopId(Long id);
 
     List<ProductResponseDTO> searchProductsGlobally(
-            String productName, SortingType sortingType,
-            Double minimalPrice, Double maximalPrice
+            String productName,
+            String sortingParameterValue,
+            String sortingTypeValue,
+            Double minimalPrice,
+            Double maximalPrice
     );
 
     List<ProductResponseDTO> searchProductsInShop(
             User currentAuthenticatedUser,
             String productName,
-            SortingType sortingType,
+            String sortingParameterValue,
+            String sortingTypeValue,
             Double minimalPrice,
             Double maximalPrice
     );

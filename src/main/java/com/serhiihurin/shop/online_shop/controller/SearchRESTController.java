@@ -2,11 +2,11 @@ package com.serhiihurin.shop.online_shop.controller;
 
 import com.serhiihurin.shop.online_shop.dto.ProductResponseDTO;
 import com.serhiihurin.shop.online_shop.entity.User;
-import com.serhiihurin.shop.online_shop.enums.SortingType;
 import com.serhiihurin.shop.online_shop.facades.ProductFacade;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.Nullable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,36 +25,38 @@ public class SearchRESTController {
     @GetMapping("/products")
     public List<ProductResponseDTO> searchProductsGlobally(
             //TODO can be nullable //done
+            User currentAuthenticatedUser,
             @RequestParam(required = false) @Nullable String productName,
+            @RequestParam(required = false) @Nullable String sortingParameterValue,
             @RequestParam(required = false) @Nullable String sortingTypeValue,
             @RequestParam(required = false) @Nullable Double minimalPrice,
             @RequestParam(required = false) @Nullable Double maximalPrice
     ) {
-        SortingType sortingType = null;
-        if (sortingTypeValue != null) {
-            sortingType = SortingType.valueOf(sortingTypeValue.toUpperCase());
-        }
-        return productFacade.searchProductsGlobally(productName, sortingType, minimalPrice, maximalPrice);
+        return productFacade.searchProductsGlobally(
+                productName,
+                sortingParameterValue,
+                sortingTypeValue,
+                minimalPrice,
+                maximalPrice);
     }
 
-    //TODO add endpoint for shop-owners
+    //TODO add endpoint for shop-owners //done
 
     @GetMapping("/shop/products")
+    @PreAuthorize("hasAuthority('shop management')")
     public List<ProductResponseDTO> searchProductsInShop(
             User currentAuthenticatedUser,
             @RequestParam(required = false) @Nullable String productName,
+            @RequestParam(required = false) @Nullable String sortingParameterValue,
             @RequestParam(required = false) @Nullable String sortingTypeValue,
             @RequestParam(required = false) @Nullable Double minimalPrice,
             @RequestParam(required = false) @Nullable Double maximalPrice
     ) {
-        SortingType sortingType = null;
-        if (sortingTypeValue != null) {
-            sortingType = SortingType.valueOf(sortingTypeValue.toUpperCase());
-        }
         return productFacade.searchProductsInShop(
                 currentAuthenticatedUser,
                 productName,
-                sortingType,
+                sortingParameterValue,
+                sortingTypeValue,
                 minimalPrice,
                 maximalPrice
         );

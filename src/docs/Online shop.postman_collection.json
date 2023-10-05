@@ -1151,7 +1151,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtaXN0ZXJodXJpbkBnbWFpbC5jb20iLCJpYXQiOjE2OTIxODk1NDMsImV4cCI6MTY5MjI3NTk0M30.FV1VFR6BYHNvo5IAhLmJUtFoRUHe0sO1KwYPODgaD_0",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZXJnZXkuZ3VyaW4yMDE1QGdtYWlsLmNvbSIsImlhdCI6MTY5NTk4NjQzNiwiZXhwIjoxNjk2MDcyODM2fQ.lzRpBzm1By2gvjk9r8buhelF3fUdMh2UJ1Dr3t5iADU",
 									"type": "string"
 								}
 							]
@@ -1160,7 +1160,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"productDataId\": 1,\r\n    \"text\": \"Awesome!!!\",\r\n    \"rate\": \"GOOD\"\r\n}",
+							"raw": "{\r\n    \"productId\": 3,\r\n    \"text\": \"might be better\",\r\n    \"rate\": \"AVERAGE\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1646,7 +1646,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZG9zYXRhY2s4OEBnbWFpbC5jb20iLCJpYXQiOjE2OTU5MTM1NzksImV4cCI6MTY5NTk5OTk3OX0.XF56BbJrLGzyGBF5YL6dmhXi5SIFwmphYh_P89NNE0I",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZG9zYXRhY2s4OEBnbWFpbC5jb20iLCJpYXQiOjE2OTY1MDY4NTksImV4cCI6MTY5NjU5MzI1OX0.LUcItjIQRMXdXB1ZKNd73MdZfETWonvW7yp3hucB68I",
 									"type": "string"
 								}
 							]
@@ -1654,7 +1654,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/online-shop/search/products?productName=0&minimalPrice=12000&maximalPrice=22000&sortingTypeValue=price_descending",
+							"raw": "http://localhost:8080/online-shop/search/products?productName=RTX&sortingParameterValue=rate&sortingTypeValue=ascending",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1668,19 +1668,15 @@
 							"query": [
 								{
 									"key": "productName",
-									"value": "0"
+									"value": "RTX"
 								},
 								{
-									"key": "minimalPrice",
-									"value": "12000"
-								},
-								{
-									"key": "maximalPrice",
-									"value": "22000"
+									"key": "sortingParameterValue",
+									"value": "rate"
 								},
 								{
 									"key": "sortingTypeValue",
-									"value": "price_descending"
+									"value": "ascending"
 								}
 							]
 						}

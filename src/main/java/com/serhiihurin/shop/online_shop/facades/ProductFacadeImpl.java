@@ -5,14 +5,8 @@ import com.serhiihurin.shop.online_shop.dto.ProductResponseDTO;
 import com.serhiihurin.shop.online_shop.entity.Product;
 import com.serhiihurin.shop.online_shop.entity.ProductImage;
 import com.serhiihurin.shop.online_shop.entity.User;
-import com.serhiihurin.shop.online_shop.enums.Role;
-import com.serhiihurin.shop.online_shop.enums.SortingType;
 import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
-import com.serhiihurin.shop.online_shop.exception.UnauthorizedAccessException;
-import com.serhiihurin.shop.online_shop.services.FileService;
-import com.serhiihurin.shop.online_shop.services.ProductImageService;
-import com.serhiihurin.shop.online_shop.services.ProductService;
-import com.serhiihurin.shop.online_shop.services.ShopService;
+import com.serhiihurin.shop.online_shop.services.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -33,6 +27,7 @@ public class ProductFacadeImpl implements ProductFacade {
     private final ShopService shopService;
     private final ProductImageService productImageService;
     private final FileService fileService;
+    private final SearchService searchService;
     private final ModelMapper modelMapper;
 
     @Override
@@ -71,29 +66,58 @@ public class ProductFacadeImpl implements ProductFacade {
 
     @Override
     public List<ProductResponseDTO> searchProductsGlobally(
-            String productName, SortingType sortingType,
-            Double minimalPrice, Double maximalPrice
+            String productName,
+            String sortingParameterValue,
+            String sortingTypeValue,
+            Double minimalPrice,
+            Double maximalPrice
     ) {
-        List<Product> productList = productService.getAllProducts();
+        checkPriceParameters(minimalPrice, maximalPrice);
 
-        return performSearch(productList, productName,sortingType, minimalPrice, maximalPrice);
+        List<ProductResponseDTO> productResponseDTOS = searchService.searchProductsGlobally(
+                productName,
+                sortingParameterValue,
+                sortingTypeValue,
+                minimalPrice,
+                maximalPrice
+        );
+
+        productResponseDTOS
+                .forEach(
+                        productResponseDTO -> productResponseDTO
+                                .setImagesPaths(getProductImagesPaths(productResponseDTO.getId()))
+                );
+
+        return productResponseDTOS;
     }
 
     @Override
     public List<ProductResponseDTO> searchProductsInShop(
             User currentAuthenticatedUser,
             String productName,
-            SortingType sortingType,
+            String sortingParameterValue,
+            String sortingTypeValue,
             Double minimalPrice,
             Double maximalPrice
     ) {
-        if (!Role.SHOP_OWNER.equals(currentAuthenticatedUser.getRole())) {
-            throw new UnauthorizedAccessException("Access denied");
-        }
-        List<Product> productList = productService.getProductsByShopId(
-                shopService.getShopByOwnerId(currentAuthenticatedUser.getId()).getId()
+        checkPriceParameters(minimalPrice, maximalPrice);
+
+        List<ProductResponseDTO> productResponseDTOS = searchService.searchProductsInShop(
+                currentAuthenticatedUser,
+                productName,
+                sortingParameterValue,
+                sortingTypeValue,
+                minimalPrice,
+                maximalPrice
         );
-        return performSearch(productList, productName,sortingType, minimalPrice, maximalPrice);
+
+        productResponseDTOS
+                .forEach(
+                        productResponseDTO -> productResponseDTO
+                                .setImagesPaths(getProductImagesPaths(productResponseDTO.getId()))
+                );
+
+        return  productResponseDTOS;
     }
 
     @Override
@@ -180,35 +204,9 @@ public class ProductFacadeImpl implements ProductFacade {
                 }).toList();
     }
 
-    private List<ProductResponseDTO> performSearch(
-            List<Product> productList,
-            String productName,
-            SortingType sortingType,
-            Double minimalPrice,
-            Double maximalPrice
-    ) {
-        //TODO wrong check
-        if (productName == null) {
-            return modelMapper.map(
-                    productList,
-                    new TypeToken<List<ProductResponseDTO>>() {
-                    }.getType()
-            );
-        }
-
+    private void checkPriceParameters(Double minimalPrice, Double maximalPrice) {
         if (minimalPrice != null && maximalPrice != null && maximalPrice < minimalPrice) {
             throw new ApiRequestException("Wrong price parameters values");
         }
-
-        List<ProductResponseDTO> productResponseDTOS =
-                productService.searchProducts(productList, productName, sortingType, minimalPrice, maximalPrice);
-
-        productResponseDTOS
-                .forEach(
-                        productResponseDTO -> productResponseDTO
-                                .setImagesPaths(getProductImagesPaths(productResponseDTO.getId()))
-                );
-
-        return productResponseDTOS;
     }
 }
