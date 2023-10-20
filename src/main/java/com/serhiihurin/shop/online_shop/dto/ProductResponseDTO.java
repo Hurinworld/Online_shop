@@ -8,8 +8,7 @@ import java.util.List;
 public class ProductResponseDTO {
     private Long id;
     private String name;
-    private List<String> imagesPaths;
-    private List<byte[]> images;
+    private List<String> imagesEndpoints;
     private String description;
     private Double price;
     private Long ShopId;

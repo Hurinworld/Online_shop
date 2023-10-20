@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ProductImageRepository extends JpaRepository<ProductImage, Long> {
     List<ProductImage> getProductImagesByProductId(Long productId);
+
+    ProductImage getProductImageByToken(String imageToken);
 }

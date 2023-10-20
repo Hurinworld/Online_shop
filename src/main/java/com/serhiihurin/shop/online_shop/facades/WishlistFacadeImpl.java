@@ -46,7 +46,7 @@ public class WishlistFacadeImpl implements WishlistFacade{
                                 user.getEmail(),
                                 sortedByUserWishlists.get(user)
                         );
-                notificationService.addWishlistNotification(user.getFirstName(), sortedByUserWishlists.get(user));
+//                notificationService.addWishlistNotification(user.getFirstName(), sortedByUserWishlists.get(user));
             }
         }
     }

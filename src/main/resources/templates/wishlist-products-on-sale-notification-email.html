@@ -12,6 +12,7 @@
         <a th:href="@{wishlistProductsOnSaleNotificationLink + ${product.id}}">
             <span th:text="${product.name}">Product Name</span>
         </a>
+        <img th:src="@{'http://localhost:8080/online-shop/files/' + '74a6b5cd-c2ef-316d-a31d-3fa79dd8a4ec'}" alt="${product.name}">
     </li>
 </ul>
 </body>

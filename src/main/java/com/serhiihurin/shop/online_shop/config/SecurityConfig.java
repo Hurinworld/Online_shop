@@ -45,6 +45,7 @@ public class SecurityConfig {
     };
 
     private final String METRICS_ENDPOINT = "/actuator/prometheus";
+    private final String IMAGE_ENDPOINT = "/online-shop/files/**";
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -56,6 +57,7 @@ public class SecurityConfig {
                                 .requestMatchers(AUTH_WHITElIST).permitAll()
                                 .requestMatchers(METRICS_ENDPOINT).permitAll()
                                 .requestMatchers(OPENAPI_WHITELIST).permitAll()
+                                .requestMatchers(IMAGE_ENDPOINT).permitAll()
                                 .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())

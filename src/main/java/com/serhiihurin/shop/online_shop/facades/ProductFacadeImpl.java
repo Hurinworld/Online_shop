@@ -3,7 +3,6 @@ package com.serhiihurin.shop.online_shop.facades;
 import com.serhiihurin.shop.online_shop.dto.ProductRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.ProductResponseDTO;
 import com.serhiihurin.shop.online_shop.entity.Product;
-import com.serhiihurin.shop.online_shop.entity.ProductImage;
 import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
 import com.serhiihurin.shop.online_shop.services.*;
@@ -11,12 +10,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 
 @Component
@@ -26,9 +23,11 @@ public class ProductFacadeImpl implements ProductFacade {
     private final ProductService productService;
     private final ShopService shopService;
     private final ProductImageService productImageService;
-    private final FileService fileService;
     private final SearchService searchService;
     private final ModelMapper modelMapper;
+
+    @Value("${custom.image-retrieve-endpoint}")
+    private String imageRetrieveEndpoint;
 
     @Override
     public List<ProductResponseDTO> getAllProducts() {
@@ -41,7 +40,7 @@ public class ProductFacadeImpl implements ProductFacade {
         productResponseDTOS
                 .forEach(
                         productResponseDTO -> productResponseDTO
-                                .setImagesPaths(getProductImagesPaths(productResponseDTO.getId()))
+                                .setImagesEndpoints(getProductImages(productResponseDTO.getId()))
                 );
 
         return productResponseDTOS;
@@ -58,7 +57,7 @@ public class ProductFacadeImpl implements ProductFacade {
         productResponseDTOS
                 .forEach(
                         productResponseDTO -> productResponseDTO
-                                .setImagesPaths(getProductImagesPaths(productResponseDTO.getId()))
+                                .setImagesEndpoints(getProductImages(productResponseDTO.getId()))
                 );
 
         return productResponseDTOS;
@@ -85,7 +84,7 @@ public class ProductFacadeImpl implements ProductFacade {
         productResponseDTOS
                 .forEach(
                         productResponseDTO -> productResponseDTO
-                                .setImagesPaths(getProductImagesPaths(productResponseDTO.getId()))
+                                .setImagesEndpoints(getProductImages(productResponseDTO.getId()))
                 );
 
         return productResponseDTOS;
@@ -114,7 +113,7 @@ public class ProductFacadeImpl implements ProductFacade {
         productResponseDTOS
                 .forEach(
                         productResponseDTO -> productResponseDTO
-                                .setImagesPaths(getProductImagesPaths(productResponseDTO.getId()))
+                                .setImagesEndpoints(getProductImages(productResponseDTO.getId()))
                 );
 
         return  productResponseDTOS;
@@ -126,7 +125,7 @@ public class ProductFacadeImpl implements ProductFacade {
                 productService.getProduct(id),
                 ProductResponseDTO.class
         );
-        productResponseDTO.setImages(getProductImages(id));
+        productResponseDTO.setImagesEndpoints(getProductImages(id));
         return productResponseDTO;
     }
 
@@ -147,7 +146,7 @@ public class ProductFacadeImpl implements ProductFacade {
         );
 
         //TODO extract this logic to the file-service //done
-        productResponseDTO.setImages(fileService.saveProductImages(productResponseDTO.getId(), files));
+//        productResponseDTO.setImages(fileService.saveProductImages(productResponseDTO.getId(), files));
 
         log.info("Added new product with id: {}", productResponseDTO.getId());
         return productResponseDTO;
@@ -184,24 +183,11 @@ public class ProductFacadeImpl implements ProductFacade {
         productService.deleteProduct(currentAuthenticatedUser, id);
     }
 
-    private List<String> getProductImagesPaths(Long productId) {
-        return productImageService
-                .getProductImagesByProductId(productId)
-                .stream()
-                .map(ProductImage::getFilepath)
-                .toList();
-    }
-
-    private List<byte[]> getProductImages(Long productId) {
+    private List<String> getProductImages(Long productId) {
         return productImageService.getProductImagesByProductId(productId)
                 .stream()
-                .map(productImage -> {
-                    try {
-                        return Files.readAllBytes(Path.of(productImage.getFilepath()));
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }).toList();
+                .map(productImage -> imageRetrieveEndpoint + productImage.getToken())
+                .toList();
     }
 
     private void checkPriceParameters(Double minimalPrice, Double maximalPrice) {

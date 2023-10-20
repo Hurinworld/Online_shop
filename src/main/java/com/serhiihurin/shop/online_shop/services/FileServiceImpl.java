@@ -19,6 +19,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class FileServiceImpl implements FileService{
+    private final ImageTokenService imageTokenService;
     private final ProductImageRepository productImageRepository;
     private final ProductRepository productRepository;
 
@@ -26,8 +27,8 @@ public class FileServiceImpl implements FileService{
     private String fileSavingPath;
 
     @Override
-    public List<byte[]> saveProductImages(Long productId, MultipartFile[] files) {
-        List<byte[]> productImages = new ArrayList<>();
+    public List<ProductImage> saveProductImages(Long productId, MultipartFile[] files) {
+        List<ProductImage> productImages = new ArrayList<>();
 
         for (MultipartFile file : files) {
             if (!file.isEmpty()) {
@@ -35,17 +36,19 @@ public class FileServiceImpl implements FileService{
                     String filePath = fileSavingPath + file.getOriginalFilename();
                     File destFile = new File(filePath);
                     file.transferTo(destFile);
-                    productImages.add(Files.readAllBytes(Path.of(filePath)));
-                    productImageRepository.save(
-                            ProductImage.builder()
-                                    .filepath(filePath)
-                                    .product(
-                                            productRepository.findById(productId)
-                                                    .orElseThrow(() -> new ApiRequestException(
-                                                            "Could not find product with ID: " + productId)
-                                                    )
-                                    )
-                                    .build()
+                    productImages.add(
+                        productImageRepository.save(
+                                ProductImage.builder()
+                                        .filepath(filePath)
+                                        .token(imageTokenService.createImageToken(filePath))
+                                        .product(
+                                                productRepository.findById(productId)
+                                                        .orElseThrow(() -> new ApiRequestException(
+                                                                "Could not find product with ID: " + productId)
+                                                        )
+                                        )
+                                        .build()
+                        )
                     );
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -53,5 +56,14 @@ public class FileServiceImpl implements FileService{
             }
         }
         return productImages;
+    }
+
+    @Override
+    public byte[] getProductImage(String filepath) {
+        try {
+            return Files.readAllBytes(Path.of(filepath));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

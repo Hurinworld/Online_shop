@@ -3,6 +3,7 @@ package com.serhiihurin.shop.online_shop.controller;
 import com.serhiihurin.shop.online_shop.dto.ProductRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.ProductResponseDTO;
 import com.serhiihurin.shop.online_shop.entity.User;
+import com.serhiihurin.shop.online_shop.facades.FileFacade;
 import com.serhiihurin.shop.online_shop.facades.ProductFacade;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -25,6 +26,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductRESTController {
     private final ProductFacade productFacade;
+    private final FileFacade fileFacade;
     private final ModelMapper modelMapper;
 
     @Operation(
@@ -111,8 +113,8 @@ public class ProductRESTController {
     )
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('shop owner view info', 'admin view info', 'client view info')")
-    public ProductResponseDTO getProduct(@PathVariable Long id) {
-        return productFacade.getProduct(id);
+    public ResponseEntity<ProductResponseDTO> getProduct(@PathVariable Long id) {
+        return ResponseEntity.ok(productFacade.getProduct(id));
     }
 
     @Operation(
@@ -152,9 +154,13 @@ public class ProductRESTController {
             @RequestPart("product-request-dto") ProductRequestDTO productRequestDTO,
             @RequestPart("files")MultipartFile[] files
             ) {
+        ProductResponseDTO productResponseDTO = productFacade.addProduct(
+                currentAuthenticatedUser, productRequestDTO, files
+        );
+        productResponseDTO.setImagesEndpoints(fileFacade.saveProductImages(productResponseDTO.getId(), files));
 
         return ResponseEntity.ok(
-                productFacade.addProduct(currentAuthenticatedUser, productRequestDTO, files)
+                productResponseDTO
         );
     }
 

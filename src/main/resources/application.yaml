@@ -55,3 +55,4 @@ custom:
   sender-email: "online.shop.gmail.com"
 #  change to non-project dir //done
   files-saving-path: "F://Work/ITworks/Java projects/Local file folder/"
+  image-retrieve-endpoint: "http://localhost:8080/online-shop/files/"
