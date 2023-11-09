@@ -24,6 +24,7 @@ import java.util.List;
 @Slf4j
 public class EmailServiceImpl implements EmailService{
     private final JavaMailSender javaMailSender;
+    //TODO check it for an architectures issues
     private final UserService userService;
     private final VerificationCodeService verificationCodeService;
     private final TemplateEngine templateEngine;

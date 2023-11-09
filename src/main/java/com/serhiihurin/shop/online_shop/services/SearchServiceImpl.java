@@ -51,6 +51,7 @@ public class SearchServiceImpl implements SearchService{
                     sortingParameter,
                     sortingType
             );
+            //TODO add default sort by + default sortDirection(DESC for example)
         } else {
             return modelMapper.map(
                     filterProductsGlobally(productName, minimalPrice, maximalPrice),

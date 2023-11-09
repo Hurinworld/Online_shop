@@ -139,14 +139,10 @@ public class ProductFacadeImpl implements ProductFacade {
                 shopService.getShopByOwnerId(currentAuthenticatedUser.getId())
                         .getId()
         );
-        //TODO better use dto to transfer data between layers //done
         ProductResponseDTO productResponseDTO = modelMapper.map(
                 productService.addProduct(productRequestDTO),
                 ProductResponseDTO.class
         );
-
-        //TODO extract this logic to the file-service //done
-//        productResponseDTO.setImages(fileService.saveProductImages(productResponseDTO.getId(), files));
 
         log.info("Added new product with id: {}", productResponseDTO.getId());
         return productResponseDTO;

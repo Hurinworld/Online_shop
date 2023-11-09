@@ -21,10 +21,8 @@ import java.util.List;
 public class SearchRESTController {
     private final ProductFacade productFacade;
 
-    //TODO 'products' //done
     @GetMapping("/products")
     public List<ProductResponseDTO> searchProductsGlobally(
-            //TODO can be nullable //done
             User currentAuthenticatedUser,
             @RequestParam(required = false) @Nullable String productName,
             @RequestParam(required = false) @Nullable String sortingParameterValue,
@@ -32,6 +30,7 @@ public class SearchRESTController {
             @RequestParam(required = false) @Nullable Double minimalPrice,
             @RequestParam(required = false) @Nullable Double maximalPrice
     ) {
+        // TODO map params to dto
         return productFacade.searchProductsGlobally(
                 productName,
                 sortingParameterValue,
@@ -39,8 +38,6 @@ public class SearchRESTController {
                 minimalPrice,
                 maximalPrice);
     }
-
-    //TODO add endpoint for shop-owners //done
 
     @GetMapping("/shop/products")
     @PreAuthorize("hasAuthority('shop management')")
@@ -52,6 +49,8 @@ public class SearchRESTController {
             @RequestParam(required = false) @Nullable Double minimalPrice,
             @RequestParam(required = false) @Nullable Double maximalPrice
     ) {
+        // TODO map params to dto
+
         return productFacade.searchProductsInShop(
                 currentAuthenticatedUser,
                 productName,

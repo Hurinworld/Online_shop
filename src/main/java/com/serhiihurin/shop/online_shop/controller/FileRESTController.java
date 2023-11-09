@@ -25,4 +25,7 @@ public class FileRESTController {
                 .contentType(MediaType.IMAGE_JPEG)
                 .body(fileFacade.getProductImage(imageToken));
     }
+
+    //TODO create endpoint for saving files that`ll return url to get-endpoint for retrieving
+    //TODO change structure of work with files
 }

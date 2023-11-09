@@ -8,9 +8,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 //TODO check cascades in entire project
 //TODO add search for products by params with sort //done
 //TODO add notifications //done
-//TODO add saving state of email sending queue
 //TODO add work with files //done
 //TODO move search to db
+
+
+//TODO add trigger for mail-sending when product from wishlist is available for sale again!
+//TODO add saving state of email sending queue
 @SpringBootApplication
 public class OnlineShopApplication {
 
