@@ -4,11 +4,11 @@ import com.serhiihurin.shop.online_shop.dao.FeedbackRepository;
 import com.serhiihurin.shop.online_shop.dao.ProductRepository;
 import com.serhiihurin.shop.online_shop.dao.ShopRepository;
 import com.serhiihurin.shop.online_shop.dto.ProductResponseDTO;
+import com.serhiihurin.shop.online_shop.dto.SearchRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.Feedback;
 import com.serhiihurin.shop.online_shop.entity.Product;
-import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.enums.SortingParameter;
-import com.serhiihurin.shop.online_shop.enums.SortingType;
+import com.serhiihurin.shop.online_shop.enums.SortingDirection;
 import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -28,73 +28,69 @@ public class SearchServiceImpl implements SearchService{
 
 
     @Override
-    public List<ProductResponseDTO> searchProductsGlobally(
-            String productName,
-            String sortingParameterValue,
-            String sortingTypeValue,
-            Double minimalPrice,
-            Double maximalPrice
-    ) {
-        SortingParameter sortingParameter = null;
-        if (sortingParameterValue != null) {
-            sortingParameter = SortingParameter.valueOf(sortingParameterValue.toUpperCase());
-        }
+    public List<ProductResponseDTO> searchProductsGlobally(SearchRequestDTO searchRequestDTO) {
+        SortingParameter sortingParameter = checkSortingParameter(searchRequestDTO);
 
-        SortingType sortingType = null;
-        if (sortingTypeValue != null) {
-            sortingType = SortingType.valueOf(sortingTypeValue.toUpperCase());
-        }
+        SortingDirection sortingDirection = checkSortingDirection(searchRequestDTO);
 
-        if (sortingParameter != null && sortingType != null) {
+        if (sortingParameter != null && sortingDirection != null) {
             return sortProducts(
-                    filterProductsGlobally(productName, minimalPrice, maximalPrice),
+                    filterProductsGlobally(
+                            searchRequestDTO.getProductName(),
+                            searchRequestDTO.getMinimalPrice(),
+                            searchRequestDTO.getMaximalPrice()
+                    ),
                     sortingParameter,
-                    sortingType
+                    sortingDirection
             );
-            //TODO add default sort by + default sortDirection(DESC for example)
+            //TODO add default sort by + default sortDirection(DESC for example) //done
         } else {
-            return modelMapper.map(
-                    filterProductsGlobally(productName, minimalPrice, maximalPrice),
-                    new TypeToken<List<ProductResponseDTO>>(){
-                    }.getType()
+            return sortProducts(
+                    filterProductsGlobally(
+                            searchRequestDTO.getProductName(),
+                            searchRequestDTO.getMinimalPrice(),
+                            searchRequestDTO.getMaximalPrice()
+                    ),
+                    SortingParameter.RATE,
+                    SortingDirection.DESCENDING
             );
         }
     }
 
     @Override
-    public List<ProductResponseDTO> searchProductsInShop(
-            User currentAuthenticatedUser,
-            String productName,
-            String sortingParameterValue,
-            String sortingTypeValue,
-            Double minimalPrice,
-            Double maximalPrice
-    ) {
-        Long shopId = shopRepository.getShopByOwnerId(currentAuthenticatedUser.getId()).orElseThrow(
-                () -> new ApiRequestException("Could not find shop with owner ID: " + currentAuthenticatedUser.getId())
+    public List<ProductResponseDTO> searchProductsInShop(SearchRequestDTO searchRequestDTO) {
+        Long shopId = shopRepository.getShopByOwnerId(searchRequestDTO.getCurrentAuthenticatedUser().getId())
+                .orElseThrow(
+                        () -> new ApiRequestException(
+                                "Could not find shop with owner ID: " +
+                                        searchRequestDTO.getCurrentAuthenticatedUser().getId())
         ).getId();
 
-        SortingParameter sortingParameter = null;
-        if (sortingParameterValue != null) {
-            sortingParameter = SortingParameter.valueOf(sortingParameterValue.toUpperCase());
-        }
+        SortingParameter sortingParameter = checkSortingParameter(searchRequestDTO);
 
-        SortingType sortingType = null;
-        if (sortingTypeValue != null) {
-            sortingType = SortingType.valueOf(sortingTypeValue.toUpperCase());
-        }
+        SortingDirection sortingDirection = checkSortingDirection(searchRequestDTO);
 
-        if (sortingParameter != null && sortingType != null) {
+        if (sortingParameter != null && sortingDirection != null) {
             return sortProducts(
-                    filterProductsInShop(shopId, productName, minimalPrice, maximalPrice),
+                    filterProductsInShop(
+                            shopId,
+                            searchRequestDTO.getProductName(),
+                            searchRequestDTO.getMinimalPrice(),
+                            searchRequestDTO.getMaximalPrice()
+                    ),
                     sortingParameter,
-                    sortingType
+                    sortingDirection
             );
         } else {
-            return modelMapper.map(
-                    filterProductsInShop(shopId, productName, minimalPrice, maximalPrice),
-                    new TypeToken<List<ProductResponseDTO>>(){
-                    }.getType()
+            return sortProducts(
+                    filterProductsInShop(
+                            shopId,
+                            searchRequestDTO.getProductName(),
+                            searchRequestDTO.getMinimalPrice(),
+                            searchRequestDTO.getMaximalPrice()
+                    ),
+                    SortingParameter.RATE,
+                    SortingDirection.DESCENDING
             );
         }
     }
@@ -154,7 +150,7 @@ public class SearchServiceImpl implements SearchService{
     private List<ProductResponseDTO> sortProducts(
             List<Product> productList,
             SortingParameter sortingParameter,
-            SortingType sortingType
+            SortingDirection sortingDirection
     ) {
         List<ProductResponseDTO> productResponseDTOS = modelMapper.map(
                 productList,
@@ -164,14 +160,14 @@ public class SearchServiceImpl implements SearchService{
 
         switch (sortingParameter) {
             case PRICE -> {
-                switch (sortingType) {
+                switch (sortingDirection) {
                     case ASCENDING -> productResponseDTOS.sort(Comparator.comparing(ProductResponseDTO::getPrice));
                     case DESCENDING -> productResponseDTOS.sort(Comparator.comparing(ProductResponseDTO::getPrice)
                             .reversed());
                 }
             }
             case RATE -> {
-                switch (sortingType) {
+                switch (sortingDirection) {
                     case ASCENDING -> calculateProductsRate(productResponseDTOS)
                             .sort(Comparator.comparing(ProductResponseDTO::getRate));
                     case DESCENDING -> calculateProductsRate(productResponseDTOS)
@@ -196,5 +192,17 @@ public class SearchServiceImpl implements SearchService{
         }
 
         return productResponseDTOS;
+    }
+
+    private SortingParameter checkSortingParameter(SearchRequestDTO searchRequestDTO) {
+        if (searchRequestDTO.getSortingParameterValue() != null) {
+            return SortingParameter.valueOf(searchRequestDTO.getSortingParameterValue().toUpperCase());
+        } else return null;
+    }
+
+    private SortingDirection checkSortingDirection(SearchRequestDTO searchRequestDTO) {
+        if (searchRequestDTO.getSortingDirection() != null) {
+            return SortingDirection.valueOf(searchRequestDTO.getSortingDirection().toUpperCase());
+        } else return null;
     }
 }

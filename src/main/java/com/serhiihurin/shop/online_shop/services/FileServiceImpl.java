@@ -40,7 +40,7 @@ public class FileServiceImpl implements FileService{
                         productImageRepository.save(
                                 ProductImage.builder()
                                         .filepath(filePath)
-                                        .token(imageTokenService.createImageToken(filePath))
+                                        .imageToken(imageTokenService.createImageToken(filePath))
                                         .product(
                                                 productRepository.findById(productId)
                                                         .orElseThrow(() -> new ApiRequestException(

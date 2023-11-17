@@ -349,7 +349,6 @@ public class UserRESTController {
     @PreAuthorize("hasAuthority('account management')")
     public ResponseEntity<Void> deleteUser(User currentAuthenticatedUser) {
         userFacade.deleteUser(currentAuthenticatedUser.getId());
-        log.info("Deleted client with id: {}", currentAuthenticatedUser.getId());
         return ResponseEntity.ok().build();
     }
 }

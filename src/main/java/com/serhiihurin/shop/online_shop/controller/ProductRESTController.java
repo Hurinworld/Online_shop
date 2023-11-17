@@ -159,9 +159,7 @@ public class ProductRESTController {
         );
         productResponseDTO.setImagesEndpoints(fileFacade.saveProductImages(productResponseDTO.getId(), files));
 
-        return ResponseEntity.ok(
-                productResponseDTO
-        );
+        return ResponseEntity.ok(productResponseDTO);
     }
 
     @Operation(
@@ -285,10 +283,19 @@ public class ProductRESTController {
                     )
             }
     )
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{productId}")
     @PreAuthorize("hasAnyAuthority('product management', 'super admin info deletion')")
-    public ResponseEntity<Void> deleteProduct(User currentAuthenticatedUser, @PathVariable Long id) {
-        productFacade.deleteProduct(currentAuthenticatedUser, id);
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long productId, User currentAuthenticatedUser) {
+        productFacade.deleteProduct(currentAuthenticatedUser, productId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/availability/{productId}")
+    public ResponseEntity<Void> subscribeForNotificationAboutAvailability(
+            @PathVariable Long productId,
+            User currentAuthenticatedUser
+    ) {
+        productFacade.subscribeForNotificationAboutAvailability(productId, currentAuthenticatedUser);
         return ResponseEntity.ok().build();
     }
 }

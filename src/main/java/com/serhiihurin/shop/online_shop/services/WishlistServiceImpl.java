@@ -37,7 +37,8 @@ public class WishlistServiceImpl implements WishlistService{
                                         .productId(product.getId()).build()
                         )
                         .user(currentAuthenticatedUser)
-                        .product(product).build()
+                        .product(product)
+                        .build()
         );
     }
 

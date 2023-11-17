@@ -2,10 +2,12 @@ package com.serhiihurin.shop.online_shop.facades;
 
 import com.serhiihurin.shop.online_shop.dto.ProductRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.ProductResponseDTO;
+import com.serhiihurin.shop.online_shop.dto.SearchRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.Product;
 import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
 import com.serhiihurin.shop.online_shop.services.*;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -14,20 +16,24 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import java.util.*;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
+@Getter
 public class ProductFacadeImpl implements ProductFacade {
     private final ProductService productService;
     private final ShopService shopService;
     private final ProductImageService productImageService;
     private final SearchService searchService;
+    private final EmailService emailService;
     private final ModelMapper modelMapper;
 
     @Value("${custom.image-retrieve-endpoint}")
     private String imageRetrieveEndpoint;
+
+    public static Map<String, Long> userProductsAvailabilityTrackingList = new HashMap<>();
 
     @Override
     public List<ProductResponseDTO> getAllProducts() {
@@ -64,22 +70,10 @@ public class ProductFacadeImpl implements ProductFacade {
     }
 
     @Override
-    public List<ProductResponseDTO> searchProductsGlobally(
-            String productName,
-            String sortingParameterValue,
-            String sortingTypeValue,
-            Double minimalPrice,
-            Double maximalPrice
-    ) {
-        checkPriceParameters(minimalPrice, maximalPrice);
+    public List<ProductResponseDTO> searchProductsGlobally(SearchRequestDTO searchRequestDTO) {
+        checkPriceParameters(searchRequestDTO.getMinimalPrice(), searchRequestDTO.getMaximalPrice());
 
-        List<ProductResponseDTO> productResponseDTOS = searchService.searchProductsGlobally(
-                productName,
-                sortingParameterValue,
-                sortingTypeValue,
-                minimalPrice,
-                maximalPrice
-        );
+        List<ProductResponseDTO> productResponseDTOS = searchService.searchProductsGlobally(searchRequestDTO);
 
         productResponseDTOS
                 .forEach(
@@ -92,23 +86,10 @@ public class ProductFacadeImpl implements ProductFacade {
 
     @Override
     public List<ProductResponseDTO> searchProductsInShop(
-            User currentAuthenticatedUser,
-            String productName,
-            String sortingParameterValue,
-            String sortingTypeValue,
-            Double minimalPrice,
-            Double maximalPrice
-    ) {
-        checkPriceParameters(minimalPrice, maximalPrice);
+            SearchRequestDTO searchRequestDTO) {
+        checkPriceParameters(searchRequestDTO.getMinimalPrice(), searchRequestDTO.getMaximalPrice());
 
-        List<ProductResponseDTO> productResponseDTOS = searchService.searchProductsInShop(
-                currentAuthenticatedUser,
-                productName,
-                sortingParameterValue,
-                sortingTypeValue,
-                minimalPrice,
-                maximalPrice
-        );
+        List<ProductResponseDTO> productResponseDTOS = searchService.searchProductsInShop(searchRequestDTO);
 
         productResponseDTOS
                 .forEach(
@@ -158,6 +139,10 @@ public class ProductFacadeImpl implements ProductFacade {
     public Product updateProduct(User currentAuthenticatedUser, Long id, ProductRequestDTO productRequestDTO) {
         Product oldProduct = productService.getProduct(id);
 
+        if (oldProduct.getAmount() == 0 && productRequestDTO.getAmount() != null) {
+
+        }
+
         log.info("Updated product with id: {}", id);
         return productService.updateProduct(
                 currentAuthenticatedUser,
@@ -174,15 +159,20 @@ public class ProductFacadeImpl implements ProductFacade {
 
 
     @Override
-    public void deleteProduct(User currentAuthenticatedUser, Long id) {
-        log.info("Deleting product with id: {}", id);
-        productService.deleteProduct(currentAuthenticatedUser, id);
+    public void deleteProduct(User currentAuthenticatedUser, Long productId) {
+        log.info("Deleting product with id: {}", productId);
+        productService.deleteProduct(currentAuthenticatedUser, productId);
+    }
+
+    @Override
+    public void subscribeForNotificationAboutAvailability(Long productId, User currentAuthenticatedUser) {
+        userProductsAvailabilityTrackingList.put(currentAuthenticatedUser.getEmail(), productId);
     }
 
     private List<String> getProductImages(Long productId) {
         return productImageService.getProductImagesByProductId(productId)
                 .stream()
-                .map(productImage -> imageRetrieveEndpoint + productImage.getToken())
+                .map(productImage -> imageRetrieveEndpoint + productImage.getImageToken())
                 .toList();
     }
 

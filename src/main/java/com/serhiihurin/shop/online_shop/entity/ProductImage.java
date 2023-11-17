@@ -15,8 +15,8 @@ public class ProductImage {
     private Long id;
 
     private String filepath;
-    //TODO change naming to more specifying
-    private String token;
+    //TODO change naming to more specifying //done
+    private String imageToken;
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;

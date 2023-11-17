@@ -58,7 +58,8 @@ public class NotificationServiceImpl implements NotificationService{
                         .text(text)
                         .sendDateTime(
                                 LocalDateTime.parse(
-                                        LocalDateTime.now().atZone(ZoneId.of("Z")).format(formatter)
+                                        LocalDateTime.now().atZone(ZoneId.of("Z")).format(formatter),
+                                        formatter
                                 )
                         )
                         .build()

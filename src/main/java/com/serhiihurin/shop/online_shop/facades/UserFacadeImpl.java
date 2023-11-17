@@ -98,6 +98,7 @@ public class UserFacadeImpl implements UserFacade {
         if (id == null) {
             throw new ApiRequestException("Invalid URL. Parameter id must not be null");
         }
+        log.info("Deleted client with id: {}", id);
         userService.deleteUser(id);
     }
 }

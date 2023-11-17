@@ -18,6 +18,6 @@ public class ImageTokenServiceImpl implements ImageTokenService{
 
     @Override
     public String getPathByImageToken(String imageToken) {
-        return productImageRepository.getProductImageByToken(imageToken).getFilepath();
+        return productImageRepository.getProductImageByImageToken(imageToken).getFilepath();
     }
 }

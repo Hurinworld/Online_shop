@@ -28,12 +28,14 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @ToString.Exclude
     @ManyToMany
     @JoinTable(name = "users_products",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> shoppingCart;
 
+    @ToString.Exclude
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Purchase> purchasedProducts;
 

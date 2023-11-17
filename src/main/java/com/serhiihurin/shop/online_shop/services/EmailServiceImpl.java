@@ -24,7 +24,7 @@ import java.util.List;
 @Slf4j
 public class EmailServiceImpl implements EmailService{
     private final JavaMailSender javaMailSender;
-    //TODO check it for an architectures issues
+    //TODO check it for an architectures issues //done
     private final UserService userService;
     private final VerificationCodeService verificationCodeService;
     private final TemplateEngine templateEngine;
@@ -40,7 +40,7 @@ public class EmailServiceImpl implements EmailService{
     @Async
     @Override
     public void sendGreetingsEmail(String toEmail, String name) {
-        context.setVariable("name", userService.getUserByEmail(toEmail).getFirstName());
+        context.setVariable("name", name);
 
         buildAndSendMessage("greetings-email", fromEmail, toEmail, "Welcome!");
 

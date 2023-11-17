@@ -1,6 +1,7 @@
 package com.serhiihurin.shop.online_shop.controller;
 
 import com.serhiihurin.shop.online_shop.dto.ProductResponseDTO;
+import com.serhiihurin.shop.online_shop.dto.SearchRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.facades.ProductFacade;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,20 +24,23 @@ public class SearchRESTController {
 
     @GetMapping("/products")
     public List<ProductResponseDTO> searchProductsGlobally(
-            User currentAuthenticatedUser,
             @RequestParam(required = false) @Nullable String productName,
             @RequestParam(required = false) @Nullable String sortingParameterValue,
-            @RequestParam(required = false) @Nullable String sortingTypeValue,
+            @RequestParam(required = false) @Nullable String sortingDirection,
             @RequestParam(required = false) @Nullable Double minimalPrice,
             @RequestParam(required = false) @Nullable Double maximalPrice
     ) {
-        // TODO map params to dto
-        return productFacade.searchProductsGlobally(
-                productName,
-                sortingParameterValue,
-                sortingTypeValue,
-                minimalPrice,
-                maximalPrice);
+        // TODO map params to dto //done
+
+        SearchRequestDTO searchRequestDTO = SearchRequestDTO.builder()
+                .productName(productName)
+                .sortingParameterValue(sortingParameterValue)
+                .sortingDirection(sortingDirection)
+                .minimalPrice(minimalPrice)
+                .maximalPrice(maximalPrice)
+                .build();
+
+        return productFacade.searchProductsGlobally(searchRequestDTO);
     }
 
     @GetMapping("/shop/products")
@@ -45,19 +49,21 @@ public class SearchRESTController {
             User currentAuthenticatedUser,
             @RequestParam(required = false) @Nullable String productName,
             @RequestParam(required = false) @Nullable String sortingParameterValue,
-            @RequestParam(required = false) @Nullable String sortingTypeValue,
+            @RequestParam(required = false) @Nullable String sortingDirection,
             @RequestParam(required = false) @Nullable Double minimalPrice,
             @RequestParam(required = false) @Nullable Double maximalPrice
     ) {
-        // TODO map params to dto
+        // TODO map params to dto //done
 
-        return productFacade.searchProductsInShop(
-                currentAuthenticatedUser,
-                productName,
-                sortingParameterValue,
-                sortingTypeValue,
-                minimalPrice,
-                maximalPrice
-        );
+        SearchRequestDTO searchRequestDTO = SearchRequestDTO.builder()
+                .currentAuthenticatedUser(currentAuthenticatedUser)
+                .productName(productName)
+                .sortingParameterValue(sortingParameterValue)
+                .sortingDirection(sortingDirection)
+                .minimalPrice(minimalPrice)
+                .maximalPrice(maximalPrice)
+                .build();
+
+        return productFacade.searchProductsInShop(searchRequestDTO);
     }
 }

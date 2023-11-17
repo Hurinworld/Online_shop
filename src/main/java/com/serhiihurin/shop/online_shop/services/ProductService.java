@@ -28,5 +28,5 @@ public interface ProductService {
 
     void removeEventProductsFromSale(Long eventId);
 
-    void deleteProduct(User currentAuthenticatedUser, Long id);
+    void deleteProduct(User currentAuthenticatedUser, Long productId);
 }

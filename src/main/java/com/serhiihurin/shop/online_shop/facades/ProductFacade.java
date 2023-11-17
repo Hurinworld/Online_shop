@@ -2,6 +2,7 @@ package com.serhiihurin.shop.online_shop.facades;
 
 import com.serhiihurin.shop.online_shop.dto.ProductRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.ProductResponseDTO;
+import com.serhiihurin.shop.online_shop.dto.SearchRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.Product;
 import com.serhiihurin.shop.online_shop.entity.User;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,22 +14,9 @@ public interface ProductFacade {
 
     List<ProductResponseDTO> getAllProductsByShopId(Long id);
 
-    List<ProductResponseDTO> searchProductsGlobally(
-            String productName,
-            String sortingParameterValue,
-            String sortingTypeValue,
-            Double minimalPrice,
-            Double maximalPrice
-    );
+    List<ProductResponseDTO> searchProductsGlobally(SearchRequestDTO searchRequestDTO);
 
-    List<ProductResponseDTO> searchProductsInShop(
-            User currentAuthenticatedUser,
-            String productName,
-            String sortingParameterValue,
-            String sortingTypeValue,
-            Double minimalPrice,
-            Double maximalPrice
-    );
+    List<ProductResponseDTO> searchProductsInShop(SearchRequestDTO searchRequestDTO);
 
     ProductResponseDTO getProduct(Long id);
 
@@ -44,5 +32,7 @@ public interface ProductFacade {
 
     void removeProductFromSale(User currentAuthenticatedUser, Long productId);
 
-    void deleteProduct(User currentAuthenticatedUser, Long id);
+    void deleteProduct(User currentAuthenticatedUser, Long productId);
+
+    void subscribeForNotificationAboutAvailability(Long productId, User currentAuthenticatedUser);
 }

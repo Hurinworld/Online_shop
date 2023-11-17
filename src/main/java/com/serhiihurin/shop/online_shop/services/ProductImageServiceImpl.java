@@ -12,7 +12,6 @@ import java.util.List;
 public class ProductImageServiceImpl implements ProductImageService{
     private final ProductImageRepository productImageRepository;
 
-
     @Override
     public List<ProductImage> getProductImagesByProductId(Long productId) {
         return productImageRepository.getProductImagesByProductId(productId);

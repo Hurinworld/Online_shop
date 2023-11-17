@@ -28,7 +28,7 @@ public class FileFacadeImpl implements FileFacade{
         for (ProductImage productImage : productImages) {
             imageEndpoints.add(
                     imageRetrieveEndpoint +
-                    productImage.getToken()
+                    productImage.getImageToken()
             );
         }
         return imageEndpoints;

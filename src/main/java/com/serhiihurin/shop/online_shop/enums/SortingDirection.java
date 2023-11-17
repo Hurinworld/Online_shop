@@ -4,12 +4,12 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public enum SortingType {
-    //TODO divide for sorting directions and sort-by
+public enum SortingDirection {
+    //TODO divide for sorting directions and sort-by //done
 
     ASCENDING("ascending"),
     DESCENDING("descending");
 
     @Getter
-    private final String sortingType;
+    private final String sortingDirection;
 }

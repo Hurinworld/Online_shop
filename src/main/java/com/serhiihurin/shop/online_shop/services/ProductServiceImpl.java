@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,9 +30,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getProductsByShopId(Long id) {
         //TODO double request to repo //done
-        return shopRepository.findById(id)
-                .orElseThrow(() -> new ApiRequestException("Could not find shop with ID: " + id))
-                .getProducts();
+        Optional<List<Product>> optionalProductList = Optional.ofNullable(productRepository.getProductsByShopId(id));
+        if (optionalProductList.isEmpty()) {
+            throw new ApiRequestException("Could not find shop with ID: " + id);
+        }
+        return optionalProductList.get();
     }
 
     @Override
@@ -77,6 +80,9 @@ public class ProductServiceImpl implements ProductService {
             product.setPrice(productRequestDTO.getPrice());
         }
         if (productRequestDTO.getAmount() != null) {
+            if (product.getAmount() == 0) {
+
+            }
             product.setAmount(productRequestDTO.getAmount());
         }
 
@@ -170,14 +176,14 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     @Override
-    public void deleteProduct(User currentAuthenticatedUser, Long id) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new ApiRequestException("Could not find product with ID: " + id));
+    public void deleteProduct(User currentAuthenticatedUser, Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ApiRequestException("Could not find product with ID: " + productId));
         if (!product.getShop().getOwner().getId().equals(currentAuthenticatedUser.getId())) {
             throw new UnauthorizedAccessException("Access denied.");
         }
-        List<ProductImage> productImages = productImageRepository.getProductImagesByProductId(id);
+        List<ProductImage> productImages = productImageRepository.getProductImagesByProductId(productId);
         productImages.forEach(productImage -> productImageRepository.deleteById(productImage.getId()));
-        productRepository.deleteById(id);
+        productRepository.deleteById(productId);
     }
 }
