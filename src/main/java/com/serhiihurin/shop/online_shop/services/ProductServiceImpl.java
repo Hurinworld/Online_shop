@@ -80,9 +80,6 @@ public class ProductServiceImpl implements ProductService {
             product.setPrice(productRequestDTO.getPrice());
         }
         if (productRequestDTO.getAmount() != null) {
-            if (product.getAmount() == 0) {
-
-            }
             product.setAmount(productRequestDTO.getAmount());
         }
 

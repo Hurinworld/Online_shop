@@ -33,7 +33,7 @@ public class EmailServiceImpl implements EmailService{
     @Value("${custom.password-changing-link}")
     private String passwordChangingLink;
     @Value("${custom.wishlist-products-on-sale-notification-link}")
-    private String wishlistProductsOnSaleNotificationLink;
+    private String productRetrievingLink;
     @Value("${custom.sender-email}")
     private String fromEmail;
 
@@ -69,7 +69,7 @@ public class EmailServiceImpl implements EmailService{
     public void sendNotificationEmailAboutProductsOnSale(String toEmail, List<Product> products) {
         context.setVariable("name", userService.getUserByEmail(toEmail).getFirstName());
         context.setVariable("products", products);
-        context.setVariable("wishlistProductsOnSaleNotificationLink", wishlistProductsOnSaleNotificationLink);
+        context.setVariable("productRetrievingLink", productRetrievingLink);
 
         buildAndSendMessage(
                 "wishlist-products-on-sale-notification-email", fromEmail,
@@ -89,6 +89,19 @@ public class EmailServiceImpl implements EmailService{
 
         log.info("Sent notification about starting event with id {} at {}",
                 event.getId(), LocalDateTime.now().atZone(ZoneId.of("Z")));
+    }
+
+    @Async
+    @Override
+    public void sendNotificationAboutProductAvailability(String toEmail, Product product) {
+        context.setVariable("name", userService.getUserByEmail(toEmail).getFirstName());
+        context.setVariable("productRetrievingLink", productRetrievingLink);
+        context.setVariable("product", product);
+
+        log.info("sent email");
+
+        buildAndSendMessage("product-availability-notification", fromEmail,
+                toEmail, "Notification about product availability");
     }
 
     private void buildAndSendMessage(

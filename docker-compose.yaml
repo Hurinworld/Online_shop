@@ -1,0 +1,11 @@
+services:
+  mysqldb:
+    container_name: Online-shop_MySQL
+    image: mysql
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_DATABASE: online_shop
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: bestuser
+      MYSQL_PASSWORD: bestuser

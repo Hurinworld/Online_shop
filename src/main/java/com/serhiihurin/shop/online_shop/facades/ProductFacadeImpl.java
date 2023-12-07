@@ -140,10 +140,15 @@ public class ProductFacadeImpl implements ProductFacade {
         Product oldProduct = productService.getProduct(id);
 
         if (oldProduct.getAmount() == 0 && productRequestDTO.getAmount() != null) {
-
+            for (String email : userProductsAvailabilityTrackingList.keySet()) {
+                if (userProductsAvailabilityTrackingList.get(email).equals(oldProduct.getId())) {
+                    emailService.sendNotificationAboutProductAvailability(email, oldProduct);
+                }
+            }
         }
 
         log.info("Updated product with id: {}", id);
+
         return productService.updateProduct(
                 currentAuthenticatedUser,
                 productRequestDTO,

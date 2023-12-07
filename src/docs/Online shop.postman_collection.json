@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "5320e6a9-a32e-4f88-8fbe-3d04228b0a9f",
+		"_postman_id": "d34d7ace-8676-4983-b9eb-1c1925c1b4e2",
 		"name": "Online shop",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "28276762"
@@ -878,22 +878,22 @@
 					"response": []
 				},
 				{
-					"name": "Update product",
+					"name": "Subscribe for notification about availability",
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtaXN0ZXJodXJpbkBnbWFpbC5jb20iLCJpYXQiOjE2OTIxODk1NDMsImV4cCI6MTY5MjI3NTk0M30.FV1VFR6BYHNvo5IAhLmJUtFoRUHe0sO1KwYPODgaD_0",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZXJnZXkuZ3VyaW4yMDE1QGdtYWlsLmNvbSIsImlhdCI6MTcwMTk2MDExNCwiZXhwIjoxNzAyMDQ2NTE0fQ.V7Lw5rySP7YhmIL3Lct94sByn45xQ4I5dPN-X9uXcCo",
 									"type": "string"
 								}
 							]
 						},
-						"method": "PATCH",
+						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/online-shop/products/1",
+							"raw": "http://localhost:8080/online-shop/products/availability/9",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -902,7 +902,48 @@
 							"path": [
 								"online-shop",
 								"products",
-								"1"
+								"availability",
+								"9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZG9zYXRhY2s4OEBnbWFpbC5jb20iLCJpYXQiOjE3MDE5NjAxNzMsImV4cCI6MTcwMjA0NjU3M30.lhdBynhF21ma7NYXThM7Llv-yugrT8Eh2qGIR37KD4A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"amount\": 30\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/online-shop/products/9",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"online-shop",
+								"products",
+								"9"
 							]
 						}
 					},
@@ -1775,6 +1816,32 @@
 								"online-shop",
 								"notifications",
 								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "File",
+			"item": [
+				{
+					"name": "Get single image",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/online-shop/files/74a6b5cd-c2ef-316d-a31d-3fa79dd8a4ec",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"online-shop",
+								"files",
+								"74a6b5cd-c2ef-316d-a31d-3fa79dd8a4ec"
 							]
 						}
 					},

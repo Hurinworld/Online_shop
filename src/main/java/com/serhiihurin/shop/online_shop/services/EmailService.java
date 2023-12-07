@@ -13,4 +13,6 @@ public interface EmailService {
     void sendNotificationEmailAboutProductsOnSale(String toEmail, List<Product> products);
 
     void sendNotificationAboutEventStart(String toEmail, Event event);
+
+    void sendNotificationAboutProductAvailability(String toEmail, Product product);
 }

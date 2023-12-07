@@ -12,7 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 //TODO move search to db
 
 
-//TODO add trigger for mail-sending when product from wishlist is available for sale again!
+//TODO add trigger for mail-sending when product from wishlist is available for sale again! //done
 //TODO add saving state of email sending queue
 @SpringBootApplication
 public class OnlineShopApplication {

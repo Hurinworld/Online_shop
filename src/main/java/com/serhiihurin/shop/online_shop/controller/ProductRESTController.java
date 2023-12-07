@@ -235,16 +235,16 @@ public class ProductRESTController {
                     required = true
             )
     )
-    @PatchMapping("/{id}")
+    @PatchMapping("/{productId}")
     @PreAuthorize("hasAuthority('product management')")
     public ResponseEntity<ProductResponseDTO> updateProduct(
             User currentAuthenticatedUser,
-            @PathVariable Long id,
+            @PathVariable Long productId,
             @RequestBody ProductRequestDTO productRequestDTO
     ) {
         return ResponseEntity.ok(
                 modelMapper.map(
-                        productFacade.updateProduct(currentAuthenticatedUser, id, productRequestDTO),
+                        productFacade.updateProduct(currentAuthenticatedUser, productId, productRequestDTO),
                         ProductResponseDTO.class
                 )
         );

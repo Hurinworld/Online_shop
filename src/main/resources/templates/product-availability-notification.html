@@ -6,9 +6,9 @@
 </head>
 <body>
 <p>Hi <span th:text="${name}">User</span>!</p>
-<p>Some products from your wishlist are now on sale:</p>
+<p>Some product that you were looking for is available now:</p>
 <ul>
-    <li th:each="product, iterStat : ${products}">
+    <li>
         <a th:href="@{${productRetrievingLink} + ${product.id}}">
             <span th:text="${product.name}">Product Name</span>
         </a>
