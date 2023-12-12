@@ -1,4 +1,4 @@
-package com.serhiihurin.shop.online_shop.services;
+package com.serhiihurin.shop.online_shop.services.interfaces;
 
 import com.serhiihurin.shop.online_shop.dto.FeedbackUpdateRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.Feedback;

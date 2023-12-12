@@ -1,6 +1,6 @@
 package com.serhiihurin.shop.online_shop.filter;
 
-import com.serhiihurin.shop.online_shop.services.JWTService;
+import com.serhiihurin.shop.online_shop.services.interfaces.JWTService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

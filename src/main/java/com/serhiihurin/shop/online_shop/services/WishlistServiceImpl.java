@@ -5,6 +5,7 @@ import com.serhiihurin.shop.online_shop.entity.Product;
 import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.entity.Wishlist;
 import com.serhiihurin.shop.online_shop.entity.composite_id.UserProductId;
+import com.serhiihurin.shop.online_shop.services.interfaces.WishlistService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class WishlistServiceImpl implements WishlistService{
+public class WishlistServiceImpl implements WishlistService {
     private final WishlistRepository wishlistRepository;
 
     @Override

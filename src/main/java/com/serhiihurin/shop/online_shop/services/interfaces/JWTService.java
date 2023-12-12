@@ -1,4 +1,4 @@
-package com.serhiihurin.shop.online_shop.services;
+package com.serhiihurin.shop.online_shop.services.interfaces;
 
 import org.springframework.security.core.userdetails.UserDetails;
 

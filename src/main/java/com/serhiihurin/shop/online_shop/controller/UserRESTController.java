@@ -2,8 +2,8 @@ package com.serhiihurin.shop.online_shop.controller;
 
 import com.serhiihurin.shop.online_shop.dto.*;
 import com.serhiihurin.shop.online_shop.entity.User;
-import com.serhiihurin.shop.online_shop.facades.UserFacade;
-import com.serhiihurin.shop.online_shop.services.EmailService;
+import com.serhiihurin.shop.online_shop.facades.interfaces.UserFacade;
+import com.serhiihurin.shop.online_shop.services.interfaces.EmailService;
 import io.micrometer.core.annotation.Timed;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

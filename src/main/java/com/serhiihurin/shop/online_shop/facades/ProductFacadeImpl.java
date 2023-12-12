@@ -1,12 +1,14 @@
 package com.serhiihurin.shop.online_shop.facades;
 
+import com.serhiihurin.shop.online_shop.dao.UserRepository;
 import com.serhiihurin.shop.online_shop.dto.ProductRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.ProductResponseDTO;
 import com.serhiihurin.shop.online_shop.dto.SearchRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.Product;
 import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
-import com.serhiihurin.shop.online_shop.services.*;
+import com.serhiihurin.shop.online_shop.facades.interfaces.ProductFacade;
+import com.serhiihurin.shop.online_shop.services.interfaces.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +16,6 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
@@ -29,6 +30,8 @@ public class ProductFacadeImpl implements ProductFacade {
     private final SearchService searchService;
     private final EmailService emailService;
     private final ModelMapper modelMapper;
+    private final UserService userService;
+    private final UserRepository userRepository;
 
     @Value("${custom.image-retrieve-endpoint}")
     private String imageRetrieveEndpoint;
@@ -113,8 +116,7 @@ public class ProductFacadeImpl implements ProductFacade {
     @Override
     public ProductResponseDTO addProduct(
             User currentAuthenticatedUser,
-            ProductRequestDTO productRequestDTO,
-            MultipartFile[] files
+            ProductRequestDTO productRequestDTO
     ) {
         productRequestDTO.setShopId(
                 shopService.getShopByOwnerId(currentAuthenticatedUser.getId())
@@ -138,12 +140,12 @@ public class ProductFacadeImpl implements ProductFacade {
     @Override
     public Product updateProduct(User currentAuthenticatedUser, Long id, ProductRequestDTO productRequestDTO) {
         Product oldProduct = productService.getProduct(id);
+        List<User> productSubscriptionList = oldProduct.getProductAvailabilitySubscriptionList();
 
         if (oldProduct.getAmount() == 0 && productRequestDTO.getAmount() != null) {
-            for (String email : userProductsAvailabilityTrackingList.keySet()) {
-                if (userProductsAvailabilityTrackingList.get(email).equals(oldProduct.getId())) {
-                    emailService.sendNotificationAboutProductAvailability(email, oldProduct);
-                }
+            for (User user : productSubscriptionList) {
+                emailService.sendNotificationAboutProductAvailability(user.getEmail(), oldProduct);
+                userService.unsubscribeFromNotificationAboutProductAvailability(oldProduct, user);
             }
         }
 
@@ -171,7 +173,9 @@ public class ProductFacadeImpl implements ProductFacade {
 
     @Override
     public void subscribeForNotificationAboutAvailability(Long productId, User currentAuthenticatedUser) {
-        userProductsAvailabilityTrackingList.put(currentAuthenticatedUser.getEmail(), productId);
+        Product product = productService.getProduct(productId);
+        userService.subscribeForNotificationAboutProductAvailability(product, currentAuthenticatedUser);
+
     }
 
     private List<String> getProductImages(Long productId) {

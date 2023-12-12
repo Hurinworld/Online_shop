@@ -1,4 +1,4 @@
-package com.serhiihurin.shop.online_shop.services;
+package com.serhiihurin.shop.online_shop.services.interfaces;
 
 public interface ImageTokenService {
     String createImageToken(String filepath);

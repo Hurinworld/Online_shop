@@ -10,6 +10,7 @@ import com.serhiihurin.shop.online_shop.entity.Product;
 import com.serhiihurin.shop.online_shop.enums.SortingParameter;
 import com.serhiihurin.shop.online_shop.enums.SortingDirection;
 import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
+import com.serhiihurin.shop.online_shop.services.interfaces.SearchService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -20,7 +21,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class SearchServiceImpl implements SearchService{
+public class SearchServiceImpl implements SearchService {
     private final ProductRepository productRepository;
     private final FeedbackRepository feedbackRepository;
     private final ShopRepository shopRepository;

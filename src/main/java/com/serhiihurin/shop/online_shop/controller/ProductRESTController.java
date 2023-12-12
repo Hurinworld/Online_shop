@@ -3,8 +3,8 @@ package com.serhiihurin.shop.online_shop.controller;
 import com.serhiihurin.shop.online_shop.dto.ProductRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.ProductResponseDTO;
 import com.serhiihurin.shop.online_shop.entity.User;
-import com.serhiihurin.shop.online_shop.facades.FileFacade;
-import com.serhiihurin.shop.online_shop.facades.ProductFacade;
+import com.serhiihurin.shop.online_shop.facades.interfaces.FileFacade;
+import com.serhiihurin.shop.online_shop.facades.interfaces.ProductFacade;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -155,7 +155,7 @@ public class ProductRESTController {
             @RequestPart("files")MultipartFile[] files
             ) {
         ProductResponseDTO productResponseDTO = productFacade.addProduct(
-                currentAuthenticatedUser, productRequestDTO, files
+                currentAuthenticatedUser, productRequestDTO
         );
         productResponseDTO.setImagesEndpoints(fileFacade.saveProductImages(productResponseDTO.getId(), files));
 

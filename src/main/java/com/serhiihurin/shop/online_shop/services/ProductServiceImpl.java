@@ -6,6 +6,7 @@ import com.serhiihurin.shop.online_shop.entity.*;
 import com.serhiihurin.shop.online_shop.enums.Role;
 import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
 import com.serhiihurin.shop.online_shop.exception.UnauthorizedAccessException;
+import com.serhiihurin.shop.online_shop.services.interfaces.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

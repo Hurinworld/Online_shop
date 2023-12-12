@@ -3,10 +3,11 @@ package com.serhiihurin.shop.online_shop.facades;
 import com.serhiihurin.shop.online_shop.entity.Product;
 import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.entity.Wishlist;
-import com.serhiihurin.shop.online_shop.services.EmailService;
-import com.serhiihurin.shop.online_shop.services.NotificationService;
-import com.serhiihurin.shop.online_shop.services.ProductService;
-import com.serhiihurin.shop.online_shop.services.WishlistService;
+import com.serhiihurin.shop.online_shop.facades.interfaces.WishlistFacade;
+import com.serhiihurin.shop.online_shop.services.interfaces.EmailService;
+import com.serhiihurin.shop.online_shop.services.interfaces.NotificationService;
+import com.serhiihurin.shop.online_shop.services.interfaces.ProductService;
+import com.serhiihurin.shop.online_shop.services.interfaces.WishlistService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -20,7 +21,7 @@ import java.util.Map;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class WishlistFacadeImpl implements WishlistFacade{
+public class WishlistFacadeImpl implements WishlistFacade {
     private final WishlistService wishlistService;
     private final ProductService productService;
     private final EmailService emailService;

@@ -6,6 +6,7 @@ import com.serhiihurin.shop.online_shop.entity.Purchase;
 import com.serhiihurin.shop.online_shop.entity.PurchaseDetails;
 import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.enums.Role;
+import com.serhiihurin.shop.online_shop.services.interfaces.PurchaseDetailsService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +18,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class PurchaseDetailsServiceImplTest {

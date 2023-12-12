@@ -1,6 +1,6 @@
 package com.serhiihurin.shop.online_shop.controller;
 
-import com.serhiihurin.shop.online_shop.facades.FileFacade;
+import com.serhiihurin.shop.online_shop.facades.interfaces.FileFacade;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

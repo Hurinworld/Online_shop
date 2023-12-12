@@ -3,7 +3,7 @@ package com.serhiihurin.shop.online_shop.controller;
 import com.serhiihurin.shop.online_shop.dto.AuthenticationRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.RegisterRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.AuthenticationResponseDTO;
-import com.serhiihurin.shop.online_shop.facades.AuthenticationFacade;
+import com.serhiihurin.shop.online_shop.facades.interfaces.AuthenticationFacade;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;

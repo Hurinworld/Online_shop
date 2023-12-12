@@ -1,4 +1,4 @@
-package com.serhiihurin.shop.online_shop.facades;
+package com.serhiihurin.shop.online_shop.facades.interfaces;
 
 import org.springframework.web.multipart.MultipartFile;
 

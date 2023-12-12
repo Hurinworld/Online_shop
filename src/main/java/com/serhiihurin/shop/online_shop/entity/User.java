@@ -30,10 +30,17 @@ public class User implements UserDetails {
 
     @ToString.Exclude
     @ManyToMany
-    @JoinTable(name = "users_products",
+    @JoinTable(name = "shopping_cart",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> shoppingCart;
+
+    @ToString.Exclude
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "product_availability_list",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id"))
+    private List<Product> productAvailabilityList;
 
     @ToString.Exclude
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")

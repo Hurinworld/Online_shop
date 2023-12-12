@@ -3,8 +3,12 @@ package com.serhiihurin.shop.online_shop.services;
 import com.serhiihurin.shop.online_shop.entity.Event;
 import com.serhiihurin.shop.online_shop.entity.Product;
 import com.serhiihurin.shop.online_shop.entity.VerificationCode;
+import com.serhiihurin.shop.online_shop.services.interfaces.EmailService;
+import com.serhiihurin.shop.online_shop.services.interfaces.UserService;
+import com.serhiihurin.shop.online_shop.services.interfaces.VerificationCodeService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,11 +22,13 @@ import org.thymeleaf.context.Context;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class EmailServiceImpl implements EmailService{
+@Getter
+public class EmailServiceImpl implements EmailService {
     private final JavaMailSender javaMailSender;
     //TODO check it for an architectures issues //done
     private final UserService userService;
@@ -36,6 +42,8 @@ public class EmailServiceImpl implements EmailService{
     private String productRetrievingLink;
     @Value("${custom.sender-email}")
     private String fromEmail;
+
+    private Map<String, List<Product>> productAvailabilitySendingQueue;
 
     @Async
     @Override

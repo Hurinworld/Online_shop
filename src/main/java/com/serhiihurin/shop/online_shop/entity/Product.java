@@ -32,4 +32,6 @@ public class Product {
     @ManyToMany(mappedBy = "shoppingCart")
     private List<User> users;
 
+    @ManyToMany(mappedBy = "productAvailabilityList")
+    private List<User> ProductAvailabilitySubscriptionList;
 }

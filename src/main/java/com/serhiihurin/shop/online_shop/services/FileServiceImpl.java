@@ -4,6 +4,8 @@ import com.serhiihurin.shop.online_shop.dao.ProductImageRepository;
 import com.serhiihurin.shop.online_shop.dao.ProductRepository;
 import com.serhiihurin.shop.online_shop.entity.ProductImage;
 import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
+import com.serhiihurin.shop.online_shop.services.interfaces.FileService;
+import com.serhiihurin.shop.online_shop.services.interfaces.ImageTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -15,10 +17,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class FileServiceImpl implements FileService{
+public class FileServiceImpl implements FileService {
     private final ImageTokenService imageTokenService;
     private final ProductImageRepository productImageRepository;
     private final ProductRepository productRepository;

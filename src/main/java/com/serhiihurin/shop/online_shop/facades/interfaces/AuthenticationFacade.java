@@ -1,15 +1,15 @@
-package com.serhiihurin.shop.online_shop.services;
+package com.serhiihurin.shop.online_shop.facades.interfaces;
 
 import com.serhiihurin.shop.online_shop.dto.AuthenticationRequestDTO;
-import com.serhiihurin.shop.online_shop.dto.RegisterRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.AuthenticationResponseDTO;
+import com.serhiihurin.shop.online_shop.dto.RegisterRequestDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-public interface AuthenticationService {
-    AuthenticationResponseDTO register(RegisterRequestDTO request);
+public interface AuthenticationFacade {
+    AuthenticationResponseDTO register(RegisterRequestDTO registerRequestDTO);
 
     AuthenticationResponseDTO authenticate(AuthenticationRequestDTO request);
 

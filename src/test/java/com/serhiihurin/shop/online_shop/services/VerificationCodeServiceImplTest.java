@@ -4,6 +4,7 @@ import com.serhiihurin.shop.online_shop.dao.VerificationCodeRepository;
 import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.entity.VerificationCode;
 import com.serhiihurin.shop.online_shop.enums.Role;
+import com.serhiihurin.shop.online_shop.services.interfaces.VerificationCodeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

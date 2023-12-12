@@ -1,5 +1,6 @@
 package com.serhiihurin.shop.online_shop.services;
 
+import com.serhiihurin.shop.online_shop.services.interfaces.JWTService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

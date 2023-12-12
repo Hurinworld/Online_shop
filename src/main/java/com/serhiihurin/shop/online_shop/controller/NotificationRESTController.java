@@ -3,7 +3,7 @@ package com.serhiihurin.shop.online_shop.controller;
 import com.serhiihurin.shop.online_shop.dto.NotificationFullViewResponseDTO;
 import com.serhiihurin.shop.online_shop.dto.NotificationPreviewResponseDTO;
 import com.serhiihurin.shop.online_shop.entity.User;
-import com.serhiihurin.shop.online_shop.services.NotificationService;
+import com.serhiihurin.shop.online_shop.services.interfaces.NotificationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;

@@ -1,4 +1,4 @@
-package com.serhiihurin.shop.online_shop.facades;
+package com.serhiihurin.shop.online_shop.facades.interfaces;
 
 import com.serhiihurin.shop.online_shop.dto.ProductRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.ProductResponseDTO;
@@ -22,8 +22,7 @@ public interface ProductFacade {
 
     ProductResponseDTO addProduct(
             User currentAuthenticatedUser,
-            ProductRequestDTO productRequestDTO,
-            MultipartFile[] files
+            ProductRequestDTO productRequestDTO
     );
 
     void putProductOnSale(User currentAuthenticatedUser, Long productId, int discountPercent);

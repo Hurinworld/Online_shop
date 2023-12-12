@@ -1,8 +1,9 @@
 package com.serhiihurin.shop.online_shop.facades;
 
 import com.serhiihurin.shop.online_shop.entity.ProductImage;
-import com.serhiihurin.shop.online_shop.services.FileService;
-import com.serhiihurin.shop.online_shop.services.ImageTokenService;
+import com.serhiihurin.shop.online_shop.facades.interfaces.FileFacade;
+import com.serhiihurin.shop.online_shop.services.interfaces.FileService;
+import com.serhiihurin.shop.online_shop.services.interfaces.ImageTokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +16,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class FileFacadeImpl implements FileFacade{
+public class FileFacadeImpl implements FileFacade {
     private final FileService fileService;
     private final ImageTokenService imageTokenService;
 

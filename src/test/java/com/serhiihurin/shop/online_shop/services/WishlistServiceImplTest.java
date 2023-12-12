@@ -6,6 +6,7 @@ import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.entity.Wishlist;
 import com.serhiihurin.shop.online_shop.entity.composite_id.UserProductId;
 import com.serhiihurin.shop.online_shop.enums.Role;
+import com.serhiihurin.shop.online_shop.services.interfaces.WishlistService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -3,7 +3,7 @@ package com.serhiihurin.shop.online_shop.controller;
 import com.serhiihurin.shop.online_shop.dto.FeedbackResponseDTO;
 import com.serhiihurin.shop.online_shop.dto.FeedbackUpdateRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.User;
-import com.serhiihurin.shop.online_shop.facades.FeedbackFacade;
+import com.serhiihurin.shop.online_shop.facades.interfaces.FeedbackFacade;
 import com.serhiihurin.shop.online_shop.dto.FeedbackRequestDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

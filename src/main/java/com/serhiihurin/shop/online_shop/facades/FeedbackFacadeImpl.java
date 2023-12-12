@@ -6,9 +6,10 @@ import com.serhiihurin.shop.online_shop.entity.Product;
 import com.serhiihurin.shop.online_shop.dto.FeedbackRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
-import com.serhiihurin.shop.online_shop.services.UserService;
-import com.serhiihurin.shop.online_shop.services.FeedbackService;
-import com.serhiihurin.shop.online_shop.services.ProductService;
+import com.serhiihurin.shop.online_shop.facades.interfaces.FeedbackFacade;
+import com.serhiihurin.shop.online_shop.services.interfaces.UserService;
+import com.serhiihurin.shop.online_shop.services.interfaces.FeedbackService;
+import com.serhiihurin.shop.online_shop.services.interfaces.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

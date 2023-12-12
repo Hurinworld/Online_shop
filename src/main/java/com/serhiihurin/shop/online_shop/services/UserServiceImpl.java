@@ -3,9 +3,11 @@ package com.serhiihurin.shop.online_shop.services;
 import com.serhiihurin.shop.online_shop.dao.UserRepository;
 import com.serhiihurin.shop.online_shop.dto.PasswordUpdateRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.UserRequestDTO;
+import com.serhiihurin.shop.online_shop.entity.Product;
 import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
 import com.serhiihurin.shop.online_shop.dto.RegisterRequestDTO;
+import com.serhiihurin.shop.online_shop.services.interfaces.UserService;
 import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -74,6 +76,26 @@ public class UserServiceImpl implements UserService {
 
         return userRepository.save(currentAuthenticatedUser);
     }
+
+    @Override
+    public void subscribeForNotificationAboutProductAvailability(Product product, User currentAuthenticatedUser) {
+        List<Product> productAvailabilityList = currentAuthenticatedUser.getProductAvailabilityList();
+
+        if (productAvailabilityList.stream().anyMatch(p -> p.getId().equals(product.getId()))) {
+            return;
+        }
+
+        productAvailabilityList.add(product);
+        currentAuthenticatedUser.setProductAvailabilityList(productAvailabilityList);
+        userRepository.save(currentAuthenticatedUser);
+    }
+
+    @Override
+    public void unsubscribeFromNotificationAboutProductAvailability(Product product, User user) {
+        user.getProductAvailabilityList().remove(product);
+        userRepository.save(user);
+    }
+
 
     @Override
     public User updateUsername(User currenAuthenticatedUser, String email) {

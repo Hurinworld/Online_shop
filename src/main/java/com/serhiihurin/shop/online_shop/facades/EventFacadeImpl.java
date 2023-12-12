@@ -4,7 +4,8 @@ import com.serhiihurin.shop.online_shop.dto.EventRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.ProductForSaleRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.Event;
 import com.serhiihurin.shop.online_shop.entity.User;
-import com.serhiihurin.shop.online_shop.services.*;
+import com.serhiihurin.shop.online_shop.facades.interfaces.EventFacade;
+import com.serhiihurin.shop.online_shop.services.interfaces.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -15,7 +16,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class EventFacadeImpl implements EventFacade{
+public class EventFacadeImpl implements EventFacade {
     private final EventService eventService;
     private final EmailService emailService;
     private final UserService userService;

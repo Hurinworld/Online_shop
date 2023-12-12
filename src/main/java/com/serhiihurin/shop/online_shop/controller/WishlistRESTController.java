@@ -4,7 +4,7 @@ import com.serhiihurin.shop.online_shop.dto.ProductResponseDTO;
 import com.serhiihurin.shop.online_shop.dto.WishlistResponseDTO;
 import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.entity.Wishlist;
-import com.serhiihurin.shop.online_shop.facades.WishlistFacade;
+import com.serhiihurin.shop.online_shop.facades.interfaces.WishlistFacade;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

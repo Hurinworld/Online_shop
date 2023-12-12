@@ -6,7 +6,8 @@ import com.serhiihurin.shop.online_shop.dto.ShopRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.*;
 import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
 import com.serhiihurin.shop.online_shop.exception.PurchaseException;
-import com.serhiihurin.shop.online_shop.services.*;
+import com.serhiihurin.shop.online_shop.facades.interfaces.PurchaseFacade;
+import com.serhiihurin.shop.online_shop.services.interfaces.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -20,7 +21,7 @@ import java.util.Map;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class PurchaseFacadeImpl implements PurchaseFacade{
+public class PurchaseFacadeImpl implements PurchaseFacade {
     private final UserService userService;
 
     private final ProductService productService;
