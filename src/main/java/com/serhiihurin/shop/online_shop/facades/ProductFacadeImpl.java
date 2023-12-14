@@ -181,7 +181,7 @@ public class ProductFacadeImpl implements ProductFacade {
     private List<String> getProductImages(Long productId) {
         return productImageService.getProductImagesByProductId(productId)
                 .stream()
-                .map(productImage -> imageRetrieveEndpoint + productImage.getImageToken())
+                .map(productImage -> imageRetrieveEndpoint + productImage.getImageInfo().getImageToken())
                 .toList();
     }
 

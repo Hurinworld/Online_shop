@@ -157,7 +157,11 @@ public class ProductRESTController {
         ProductResponseDTO productResponseDTO = productFacade.addProduct(
                 currentAuthenticatedUser, productRequestDTO
         );
-        productResponseDTO.setImagesEndpoints(fileFacade.saveProductImages(productResponseDTO.getId(), files));
+        productResponseDTO.setImagesEndpoints(fileFacade.saveProductImages(
+                currentAuthenticatedUser.getId(),
+                productResponseDTO.getId(),
+                files
+        ));
 
         return ResponseEntity.ok(productResponseDTO);
     }

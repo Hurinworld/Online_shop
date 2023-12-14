@@ -1,8 +1,9 @@
 package com.serhiihurin.shop.online_shop.services;
 
-import com.serhiihurin.shop.online_shop.dao.ProductImageRepository;
-import com.serhiihurin.shop.online_shop.dao.ProductRepository;
+import com.serhiihurin.shop.online_shop.dao.*;
+import com.serhiihurin.shop.online_shop.entity.Image;
 import com.serhiihurin.shop.online_shop.entity.ProductImage;
+import com.serhiihurin.shop.online_shop.entity.UserImage;
 import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
 import com.serhiihurin.shop.online_shop.services.interfaces.FileService;
 import com.serhiihurin.shop.online_shop.services.interfaces.ImageTokenService;
@@ -17,14 +18,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class FileServiceImpl implements FileService {
     private final ImageTokenService imageTokenService;
-    private final ProductImageRepository productImageRepository;
+    private final ImageRepository imageRepository;
     private final ProductRepository productRepository;
+    private final ProductImageRepository productImageRepository;
+    private final UserRepository userRepository;
+    private final UserImageRepository userImageRepository;
 
     @Value("${custom.files-saving-path}")
     private String fileSavingPath;
@@ -32,6 +35,63 @@ public class FileServiceImpl implements FileService {
     @Override
     public List<ProductImage> saveProductImages(Long productId, MultipartFile[] files) {
         List<ProductImage> productImages = new ArrayList<>();
+        List<Image> images = saveImages(files);
+
+        for (Image image : images) {
+            productImages.add(
+                    productImageRepository.save(
+                            ProductImage.builder()
+                                    .product(
+                                            productRepository.findById(productId)
+                                                    .orElseThrow(
+                                                            () -> new ApiRequestException(
+                                                                    "Could not find product with id: " + productId)
+                                                    )
+                                    )
+                                    .imageInfo(image)
+                                    .build()
+                    )
+            );
+        }
+        return productImages;
+    }
+
+    @Override
+    public List<UserImage> saveUserImages(Long userId, MultipartFile[] files) {
+        List<UserImage> userImages = new ArrayList<>();
+        List<Image> images = saveImages(files);
+
+        for (Image image : images) {
+            userImages.add(
+                    userImageRepository.save(
+                            UserImage.builder()
+                                    .user(
+                                            userRepository.findById(userId)
+                                                    .orElseThrow(
+                                                            () -> new ApiRequestException(
+                                                                    "Could not find user with id: " + userId)
+                                                    )
+                                    )
+                                    .imageInfo(image)
+                                    .build()
+                    )
+            );
+        }
+        return userImages;
+    }
+
+
+    @Override
+    public byte[] getImage(String filepath) {
+        try {
+            return Files.readAllBytes(Path.of(filepath));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private List<Image> saveImages(MultipartFile[] files) {
+        List<Image> images = new ArrayList<>();
 
         for (MultipartFile file : files) {
             if (!file.isEmpty()) {
@@ -39,34 +99,19 @@ public class FileServiceImpl implements FileService {
                     String filePath = fileSavingPath + file.getOriginalFilename();
                     File destFile = new File(filePath);
                     file.transferTo(destFile);
-                    productImages.add(
-                        productImageRepository.save(
-                                ProductImage.builder()
-                                        .filepath(filePath)
-                                        .imageToken(imageTokenService.createImageToken(filePath))
-                                        .product(
-                                                productRepository.findById(productId)
-                                                        .orElseThrow(() -> new ApiRequestException(
-                                                                "Could not find product with ID: " + productId)
-                                                        )
-                                        )
-                                        .build()
-                        )
+                    images.add(
+                            imageRepository.save(
+                                    Image.builder()
+                                            .filepath(filePath)
+                                            .imageToken(imageTokenService.createImageToken(filePath))
+                                            .build()
+                            )
                     );
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }
-        return productImages;
-    }
-
-    @Override
-    public byte[] getProductImage(String filepath) {
-        try {
-            return Files.readAllBytes(Path.of(filepath));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return images;
     }
 }

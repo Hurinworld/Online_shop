@@ -1,13 +1,17 @@
 package com.serhiihurin.shop.online_shop.controller;
 
+import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.facades.interfaces.FileFacade;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/online-shop/files")
@@ -21,15 +25,28 @@ public class FileRESTController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .contentType(MediaType.IMAGE_JPEG)
-                .body(fileFacade.getProductImage(imageToken));
+                .body(fileFacade.getImage(imageToken));
 
     }
 
-    //TODO create endpoint for saving files that`ll return url to get-endpoint for retrieving
-    //TODO change structure of work with files
-    @PostMapping("/new")
-    public ResponseEntity<String> saveImages(@RequestPart("files") MultipartFile[] files) {
+    //TODO create endpoint for saving files that`ll return url to get-endpoint for retrieving //done
+    //TODO change structure of work with files //done
+    @PreAuthorize("hasAnyAuthority('account management', 'account creation')")
+    @PostMapping("/new/user-account")
+    public ResponseEntity<List<String>> addUserImages(
+            User currentAuthenticatedUser,
+            @RequestPart("files") MultipartFile[] files
+    ) {
+        return ResponseEntity.ok(fileFacade.saveUserImages(currentAuthenticatedUser.getId(), files));
+    }
 
-        return ResponseEntity.ok("sfasf");
+    @PreAuthorize("hasAuthority('product management')")
+    @PostMapping("/new/product/{productId}")
+    public ResponseEntity<List<String>> addProductImages(
+            User currentAuthenticatedUser,
+            @PathVariable Long productId,
+            @RequestPart("files") MultipartFile[] files
+    ) {
+        return ResponseEntity.ok(fileFacade.saveProductImages(currentAuthenticatedUser.getId(), productId, files));
     }
 }

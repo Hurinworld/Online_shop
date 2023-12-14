@@ -29,6 +29,10 @@ public class Product {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
     private List<Feedback> feedbacks;
 
+    @ToString.Exclude
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "product")
+    private List<ProductImage> productImages;
+
     @ManyToMany(mappedBy = "shoppingCart")
     private List<User> users;
 

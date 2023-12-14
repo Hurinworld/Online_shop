@@ -46,6 +46,10 @@ public class User implements UserDetails {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Purchase> purchasedProducts;
 
+    @ToString.Exclude
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "user")
+    private List<UserImage> userImages;
+
     public User(String firstName, String lastName, Double cash, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;

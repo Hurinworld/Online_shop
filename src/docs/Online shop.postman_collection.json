@@ -1832,7 +1832,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/online-shop/files/74a6b5cd-c2ef-316d-a31d-3fa79dd8a4ec",
+							"raw": "http://localhost:8080/online-shop/files/0a20b2c7-055d-3e19-9058-eaf057dea791",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1841,7 +1841,92 @@
 							"path": [
 								"online-shop",
 								"files",
-								"74a6b5cd-c2ef-316d-a31d-3fa79dd8a4ec"
+								"0a20b2c7-055d-3e19-9058-eaf057dea791"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add product image",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZG9zYXRhY2s4OEBnbWFpbC5jb20iLCJpYXQiOjE3MDI1NzEyMTIsImV4cCI6MTcwMjY1NzYxMn0.UoyG4Fpj34NMOAzscv55b-6Q5uZ-bKitUzgSoIL0DJ0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "files",
+									"type": "file",
+									"src": "/C:/Users/PC4/Downloads/kingston-ddr4-16gb-2x8gb-3200mhz-fury-beast-black-kf432c16bbk216.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/online-shop/files/new/product/11",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"online-shop",
+								"files",
+								"new",
+								"product",
+								"11"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add user image",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZXJnZXkuZ3VyaW4yMDE1QGdtYWlsLmNvbSIsImlhdCI6MTcwMjU3MTE1NSwiZXhwIjoxNzAyNjU3NTU1fQ.u65hXTtxp-E_WD-KOO6F7CPdxj_ITgXo2IOutBgcZt8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "files",
+									"type": "file",
+									"src": "/C:/Users/PC4/Downloads/amogus.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/online-shop/files/new/user-account",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"online-shop",
+								"files",
+								"new",
+								"user-account"
 							]
 						}
 					},

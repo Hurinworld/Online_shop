@@ -1,7 +1,7 @@
 package com.serhiihurin.shop.online_shop.services;
 
-import com.serhiihurin.shop.online_shop.dao.ProductImageRepository;
-import com.serhiihurin.shop.online_shop.entity.ProductImage;
+import com.serhiihurin.shop.online_shop.dao.ImageRepository;
+import com.serhiihurin.shop.online_shop.entity.Image;
 import com.serhiihurin.shop.online_shop.services.interfaces.ImageTokenService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,12 +15,12 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 class ImageTokenServiceImplTest {
     @Mock
-    private ProductImageRepository productImageRepository;
+    private ImageRepository imageRepository;
     private ImageTokenService imageTokenService;
 
     @BeforeEach
     void setUp() {
-        imageTokenService = new ImageTokenServiceImpl(productImageRepository);
+        imageTokenService = new ImageTokenServiceImpl(imageRepository);
     }
 
     @Test
@@ -39,16 +39,16 @@ class ImageTokenServiceImplTest {
         //given
         String imageToken = "valid-image-token";
         String expectedPath = "path/to/your/image.jpg";
-        ProductImage productImage = new ProductImage();
-        productImage.setFilepath(expectedPath);
+        Image image = new Image();
+        image.setFilepath(expectedPath);
 
-        Mockito.when(productImageRepository.getProductImageByImageToken(imageToken)).thenReturn(productImage);
+        Mockito.when(imageRepository.getImageByImageToken(imageToken)).thenReturn(image);
 
         //when
         String imagePath = imageTokenService.getPathByImageToken(imageToken);
 
         //then
         assertEquals(expectedPath, imagePath);
-        Mockito.verify(productImageRepository).getProductImageByImageToken(imageToken);
+        Mockito.verify(imageRepository).getImageByImageToken(imageToken);
     }
 }
