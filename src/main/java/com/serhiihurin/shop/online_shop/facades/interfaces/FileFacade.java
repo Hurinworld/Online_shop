@@ -9,5 +9,9 @@ public interface FileFacade {
 
     List<String> saveUserImages(Long userId, MultipartFile[] files);
 
+    void deleteUserImage(String imageToken, Long userId);
+
+    void deleteProductImage(String imageToken, Long userId);
+
     byte[] getImage(String imageToken);
 }

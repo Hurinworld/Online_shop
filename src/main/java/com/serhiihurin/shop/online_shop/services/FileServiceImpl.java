@@ -80,6 +80,15 @@ public class FileServiceImpl implements FileService {
         return userImages;
     }
 
+    @Override
+    public void deleteImage(String filepath) {
+        try {
+            Files.deleteIfExists(Path.of(filepath));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     @Override
     public byte[] getImage(String filepath) {
@@ -89,6 +98,8 @@ public class FileServiceImpl implements FileService {
             throw new RuntimeException(e);
         }
     }
+
+
 
     private List<Image> saveImages(MultipartFile[] files) {
         List<Image> images = new ArrayList<>();

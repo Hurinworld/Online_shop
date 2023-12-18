@@ -10,6 +10,7 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -21,13 +22,13 @@ import org.thymeleaf.context.Context;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@Getter
 public class EmailServiceImpl implements EmailService {
     private final JavaMailSender javaMailSender;
     //TODO check it for an architectures issues //done
@@ -43,7 +44,9 @@ public class EmailServiceImpl implements EmailService {
     @Value("${custom.sender-email}")
     private String fromEmail;
 
-    private Map<String, List<Product>> productAvailabilitySendingQueue;
+    @Getter
+    @Setter
+    private Map<String, List<Product>> productAvailabilitySendingQueue = new HashMap<>();
 
     @Async
     @Override
@@ -101,15 +104,26 @@ public class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void sendNotificationAboutProductAvailability(String toEmail, Product product) {
+    public void sendNotificationAboutProductAvailability(String toEmail, List<Product> products) {
         context.setVariable("name", userService.getUserByEmail(toEmail).getFirstName());
         context.setVariable("productRetrievingLink", productRetrievingLink);
-        context.setVariable("product", product);
+        context.setVariable("products", products);
 
         log.info("sent email");
 
         buildAndSendMessage("product-availability-notification", fromEmail,
                 toEmail, "Notification about product availability");
+    }
+
+    @Override
+    public void addToProductAvailabilitySendingQueue(String email, Product product) {
+        if (productAvailabilitySendingQueue.get(email) != null) {
+            List<Product> productList = productAvailabilitySendingQueue.get(email);
+            productList.add(product);
+            productAvailabilitySendingQueue.put(email, productList);
+        } else {
+            productAvailabilitySendingQueue.put(email, List.of(product));
+        }
     }
 
     private void buildAndSendMessage(

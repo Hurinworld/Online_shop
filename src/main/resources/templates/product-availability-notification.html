@@ -6,13 +6,14 @@
 </head>
 <body>
 <p>Hi <span th:text="${name}">User</span>!</p>
-<p>Some product that you were looking for is available now:</p>
+<p>Some products that you were looking for are available now:</p>
 <ul>
-    <li>
+    <li th:each="product : ${products}">
         <a th:href="@{${productRetrievingLink} + ${product.id}}">
             <span th:text="${product.name}">Product Name</span>
         </a>
-<!--        <img th:src="@{'http://localhost:8080/online-shop/files/' + '74a6b5cd-c2ef-316d-a31d-3fa79dd8a4ec'}" alt="${product.name}">-->
+        <!-- Додайте обробку картинки, якщо це необхідно -->
+        <!-- <img th:src="@{'http://localhost:8080/online-shop/files/' + ${product.imagePath}}" alt="${product.name}"> -->
     </li>
 </ul>
 </body>

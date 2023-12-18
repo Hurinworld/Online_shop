@@ -27,7 +27,7 @@ public interface ProductFacade {
 
     void putProductOnSale(User currentAuthenticatedUser, Long productId, int discountPercent);
 
-    Product updateProduct(User currentAuthenticatedUser, Long id, ProductRequestDTO productRequestDTO);
+    ProductResponseDTO updateProduct(User currentAuthenticatedUser, Long id, ProductRequestDTO productRequestDTO);
 
     void removeProductFromSale(User currentAuthenticatedUser, Long productId);
 

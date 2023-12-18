@@ -7,11 +7,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserImageRepository extends JpaRepository<UserImage, Long> {
     List<UserImage> getUserImagesByUserId(Long userId);
 
     @Query("SELECT userImage FROM UserImage userImage JOIN userImage.imageInfo " +
             "WHERE userImage.imageInfo.imageToken = :imageToken")
-    UserImage getUserImageByImageToken(@Param("imageToken") String imageToken);
+    Optional<UserImage> getUserImageByImageToken(@Param("imageToken") String imageToken);
 }

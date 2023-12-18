@@ -6,11 +6,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductImageRepository extends JpaRepository<ProductImage, Long> {
     List<ProductImage> getProductImagesByProductId(Long productId);
 
     @Query("SELECT productImage FROM ProductImage productImage JOIN productImage.imageInfo " +
             "WHERE productImage.imageInfo.imageToken = :imageToken")
-    ProductImage getProductImageByImageToken(@Param("imageToken") String imageToken);
+    Optional<ProductImage> getProductImageByImageToken(@Param("imageToken") String imageToken);
 }

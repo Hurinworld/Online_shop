@@ -11,5 +11,7 @@ public interface FileService {
 
     List<UserImage> saveUserImages(Long userId, MultipartFile[] files);
 
+    void deleteImage(String filepath);
+
     byte[] getImage(String filepath);
 }

@@ -247,10 +247,7 @@ public class ProductRESTController {
             @RequestBody ProductRequestDTO productRequestDTO
     ) {
         return ResponseEntity.ok(
-                modelMapper.map(
-                        productFacade.updateProduct(currentAuthenticatedUser, productId, productRequestDTO),
-                        ProductResponseDTO.class
-                )
+                productFacade.updateProduct(currentAuthenticatedUser, productId, productRequestDTO)
         );
     }
 

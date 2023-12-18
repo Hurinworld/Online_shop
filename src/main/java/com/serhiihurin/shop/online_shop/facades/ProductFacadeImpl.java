@@ -138,24 +138,32 @@ public class ProductFacadeImpl implements ProductFacade {
     }
 
     @Override
-    public Product updateProduct(User currentAuthenticatedUser, Long id, ProductRequestDTO productRequestDTO) {
+    public ProductResponseDTO updateProduct(User currentAuthenticatedUser, Long id, ProductRequestDTO productRequestDTO) {
         Product oldProduct = productService.getProduct(id);
+
         List<User> productSubscriptionList = oldProduct.getProductAvailabilitySubscriptionList();
 
         if (oldProduct.getAmount() == 0 && productRequestDTO.getAmount() != null) {
             for (User user : productSubscriptionList) {
-                emailService.sendNotificationAboutProductAvailability(user.getEmail(), oldProduct);
+                emailService.addToProductAvailabilitySendingQueue(user.getEmail(), oldProduct);
                 userService.unsubscribeFromNotificationAboutProductAvailability(oldProduct, user);
             }
         }
 
+        ProductResponseDTO productResponseDTO = modelMapper.map(
+                productService.updateProduct(
+                        currentAuthenticatedUser,
+                        productRequestDTO,
+                        oldProduct
+                ),
+                ProductResponseDTO.class
+        );
+
+        productResponseDTO.setImagesEndpoints(getProductImages(productResponseDTO.getId()));
+
         log.info("Updated product with id: {}", id);
 
-        return productService.updateProduct(
-                currentAuthenticatedUser,
-                productRequestDTO,
-                oldProduct
-        );
+        return productResponseDTO;
     }
 
     @Override

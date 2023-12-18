@@ -38,8 +38,6 @@ class ProductImageServiceImplTest {
         testProductImage = ProductImage.builder()
                 .id(1L)
                 .product(testProduct)
-                .filepath("Test/filepath")
-                .imageToken("test-token")
                 .build();
     }
 

@@ -759,7 +759,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtaXN0ZXJodXJpbkBnbWFpbC5jb20iLCJpYXQiOjE2OTIxODk1NDMsImV4cCI6MTY5MjI3NTk0M30.FV1VFR6BYHNvo5IAhLmJUtFoRUHe0sO1KwYPODgaD_0",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZXJnZXkuZ3VyaW4yMDE1QGdtYWlsLmNvbSIsImlhdCI6MTcwMjkwNzUyMiwiZXhwIjoxNzAyOTkzOTIyfQ.Krekw7TcnQxVTix1dhkiXh8XO8MVV_Tp23TTcEqFZrg",
 									"type": "string"
 								}
 							]
@@ -767,7 +767,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/online-shop/products/1",
+							"raw": "http://localhost:8080/online-shop/products/10",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -776,7 +776,7 @@
 							"path": [
 								"online-shop",
 								"products",
-								"1"
+								"10"
 							]
 						}
 					},
@@ -917,7 +917,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZG9zYXRhY2s4OEBnbWFpbC5jb20iLCJpYXQiOjE3MDE5NjAxNzMsImV4cCI6MTcwMjA0NjU3M30.lhdBynhF21ma7NYXThM7Llv-yugrT8Eh2qGIR37KD4A",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZG9zYXRhY2s4OEBnbWFpbC5jb20iLCJpYXQiOjE3MDI5MDc0ODIsImV4cCI6MTcwMjk5Mzg4Mn0.ue-zL1sLE1RyInQlUcZNdCnhI_7je7y84bQUraA2kmU",
 									"type": "string"
 								}
 							]
@@ -934,7 +934,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/online-shop/products/9",
+							"raw": "http://localhost:8080/online-shop/products/10",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -943,7 +943,7 @@
 							"path": [
 								"online-shop",
 								"products",
-								"9"
+								"10"
 							]
 						}
 					},
@@ -1855,7 +1855,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZG9zYXRhY2s4OEBnbWFpbC5jb20iLCJpYXQiOjE3MDI1NzEyMTIsImV4cCI6MTcwMjY1NzYxMn0.UoyG4Fpj34NMOAzscv55b-6Q5uZ-bKitUzgSoIL0DJ0",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZG9zYXRhY2s4OEBnbWFpbC5jb20iLCJpYXQiOjE3MDI5MDc0ODIsImV4cCI6MTcwMjk5Mzg4Mn0.ue-zL1sLE1RyInQlUcZNdCnhI_7je7y84bQUraA2kmU",
 									"type": "string"
 								}
 							]
@@ -1898,7 +1898,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZXJnZXkuZ3VyaW4yMDE1QGdtYWlsLmNvbSIsImlhdCI6MTcwMjU3MTE1NSwiZXhwIjoxNzAyNjU3NTU1fQ.u65hXTtxp-E_WD-KOO6F7CPdxj_ITgXo2IOutBgcZt8",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZXJnZXkuZ3VyaW4yMDE1QGdtYWlsLmNvbSIsImlhdCI6MTcwMjkwNzUyMiwiZXhwIjoxNzAyOTkzOTIyfQ.Krekw7TcnQxVTix1dhkiXh8XO8MVV_Tp23TTcEqFZrg",
 									"type": "string"
 								}
 							]
@@ -1927,6 +1927,72 @@
 								"files",
 								"new",
 								"user-account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user image",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZXJnZXkuZ3VyaW4yMDE1QGdtYWlsLmNvbSIsImlhdCI6MTcwMjkwNzUyMiwiZXhwIjoxNzAyOTkzOTIyfQ.Krekw7TcnQxVTix1dhkiXh8XO8MVV_Tp23TTcEqFZrg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/online-shop/files/user-account/image/e4a693d2-deab-372e-9b02-794a6be60eb8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"online-shop",
+								"files",
+								"user-account",
+								"image",
+								"e4a693d2-deab-372e-9b02-794a6be60eb8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete product image",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZG9zYXRhY2s4OEBnbWFpbC5jb20iLCJpYXQiOjE3MDI5MDc0ODIsImV4cCI6MTcwMjk5Mzg4Mn0.ue-zL1sLE1RyInQlUcZNdCnhI_7je7y84bQUraA2kmU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/online-shop/files/product/image/3d3da186-92af-3b9b-9262-44ca9d072e34",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"online-shop",
+								"files",
+								"product",
+								"image",
+								"3d3da186-92af-3b9b-9262-44ca9d072e34"
 							]
 						}
 					},

@@ -4,9 +4,7 @@ import com.serhiihurin.shop.online_shop.entity.ProductImage;
 import com.serhiihurin.shop.online_shop.entity.UserImage;
 import com.serhiihurin.shop.online_shop.exception.UnauthorizedAccessException;
 import com.serhiihurin.shop.online_shop.facades.interfaces.FileFacade;
-import com.serhiihurin.shop.online_shop.services.interfaces.FileService;
-import com.serhiihurin.shop.online_shop.services.interfaces.ImageTokenService;
-import com.serhiihurin.shop.online_shop.services.interfaces.ProductService;
+import com.serhiihurin.shop.online_shop.services.interfaces.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +20,8 @@ import java.util.List;
 public class FileFacadeImpl implements FileFacade {
     private final FileService fileService;
     private final ProductService productService;
+    private final UserImageService userImageService;
+    private final ProductImageService productImageService;
     private final ImageTokenService imageTokenService;
 
     @Value("${custom.image-retrieve-endpoint}")
@@ -53,6 +53,26 @@ public class FileFacadeImpl implements FileFacade {
             );
         }
         return imageEndpoints;
+    }
+
+    @Override
+    public void deleteUserImage(String imageToken, Long userId) {
+        UserImage userImage = userImageService.getUserImageByImageToken(imageToken);
+        if (!userImage.getUser().getId().equals(userId)) {
+            throw new UnauthorizedAccessException("Access denied. Wrong image token");
+        }
+        fileService.deleteImage(imageTokenService.getPathByImageToken(imageToken));
+        userImageService.deleteUserImage(userImage);
+    }
+
+    @Override
+    public void deleteProductImage(String imageToken, Long userId) {
+        ProductImage productImage = productImageService.getProductImageByImageToken(imageToken);
+        if (!productImage.getProduct().getShop().getOwner().getId().equals(userId)) {
+            throw new UnauthorizedAccessException("Access denied. Wrong image token");
+        }
+        fileService.deleteImage(imageTokenService.getPathByImageToken(imageToken));
+        productImageService.deleteProductImage(productImage);
     }
 
     @Override

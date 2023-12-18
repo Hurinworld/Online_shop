@@ -49,4 +49,18 @@ public class FileRESTController {
     ) {
         return ResponseEntity.ok(fileFacade.saveProductImages(currentAuthenticatedUser.getId(), productId, files));
     }
+
+    @PreAuthorize("hasAnyAuthority('account management', 'account creation')")
+    @DeleteMapping("/user-account/image/{imageToken}")
+    public ResponseEntity<Void> deleteUserImage(@PathVariable String imageToken, User currentAuthenticatedUser) {
+        fileFacade.deleteUserImage(imageToken, currentAuthenticatedUser.getId());
+        return ResponseEntity.ok().build();
+    }
+
+    @PreAuthorize("hasAuthority('product management')")
+    @DeleteMapping("/product/image/{imageToken}")
+    public ResponseEntity<Void> deleteProductImage(@PathVariable String imageToken, User currentAuthenticatedUser) {
+        fileFacade.deleteProductImage(imageToken, currentAuthenticatedUser.getId());
+        return ResponseEntity.ok().build();
+    }
 }

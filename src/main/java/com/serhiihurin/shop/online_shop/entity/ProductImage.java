@@ -18,6 +18,7 @@ public class ProductImage {
     @JoinColumn(name = "product_id")
     private Product product;
 
+    @ToString.Exclude
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
     @JoinColumn(name = "image_token")
     private Image imageInfo;
