@@ -138,7 +138,11 @@ public class ProductFacadeImpl implements ProductFacade {
     }
 
     @Override
-    public ProductResponseDTO updateProduct(User currentAuthenticatedUser, Long id, ProductRequestDTO productRequestDTO) {
+    public ProductResponseDTO updateProduct(
+            User currentAuthenticatedUser,
+            Long id,
+            ProductRequestDTO productRequestDTO
+    ) {
         Product oldProduct = productService.getProduct(id);
 
         List<User> productSubscriptionList = oldProduct.getProductAvailabilitySubscriptionList();

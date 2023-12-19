@@ -22,6 +22,7 @@ import org.thymeleaf.context.Context;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -117,13 +118,9 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void addToProductAvailabilitySendingQueue(String email, Product product) {
-        if (productAvailabilitySendingQueue.get(email) != null) {
-            List<Product> productList = productAvailabilitySendingQueue.get(email);
-            productList.add(product);
-            productAvailabilitySendingQueue.put(email, productList);
-        } else {
-            productAvailabilitySendingQueue.put(email, List.of(product));
-        }
+        List<Product> products = productAvailabilitySendingQueue.getOrDefault(email, new ArrayList<>());
+        products.add(product);
+        productAvailabilitySendingQueue.put(email, products);
     }
 
     private void buildAndSendMessage(

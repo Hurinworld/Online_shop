@@ -23,7 +23,8 @@ public class Scheduler {
         wishlistFacade.notifyUsersAboutSales();
     }
 
-    @Scheduled(cron = "0/15 * * * * *")
+
+    @Scheduled(cron = "0/30 * * * * *")
     public void sendNotificationAboutProductAvailability() {
         Map<String, List<Product>> productAvailabilitySendingQueue = emailService.getProductAvailabilitySendingQueue();
         if (productAvailabilitySendingQueue.isEmpty()) {
