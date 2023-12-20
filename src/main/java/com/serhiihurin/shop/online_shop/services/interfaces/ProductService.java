@@ -28,5 +28,7 @@ public interface ProductService {
 
     void removeEventProductsFromSale(Long eventId);
 
+    Double calculateAverageRatingForProduct(Long productId);
+
     void deleteProduct(User currentAuthenticatedUser, Long productId);
 }

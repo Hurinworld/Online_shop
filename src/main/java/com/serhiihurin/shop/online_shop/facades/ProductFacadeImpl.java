@@ -48,8 +48,12 @@ public class ProductFacadeImpl implements ProductFacade {
 
         productResponseDTOS
                 .forEach(
-                        productResponseDTO -> productResponseDTO
-                                .setImagesEndpoints(getProductImages(productResponseDTO.getId()))
+                        productResponseDTO -> {
+                            productResponseDTO.setImagesEndpoints(getProductImages(productResponseDTO.getId()));
+                            productResponseDTO.setRate(
+                                    productService.calculateAverageRatingForProduct(productResponseDTO.getId())
+                            );
+                        }
                 );
 
         return productResponseDTOS;
@@ -65,8 +69,12 @@ public class ProductFacadeImpl implements ProductFacade {
 
         productResponseDTOS
                 .forEach(
-                        productResponseDTO -> productResponseDTO
-                                .setImagesEndpoints(getProductImages(productResponseDTO.getId()))
+                        productResponseDTO -> {
+                            productResponseDTO.setImagesEndpoints(getProductImages(productResponseDTO.getId()));
+                            productResponseDTO.setRate(
+                                    productService.calculateAverageRatingForProduct(productResponseDTO.getId())
+                            );
+                        }
                 );
 
         return productResponseDTOS;
@@ -76,12 +84,20 @@ public class ProductFacadeImpl implements ProductFacade {
     public List<ProductResponseDTO> searchProductsGlobally(SearchRequestDTO searchRequestDTO) {
         checkPriceParameters(searchRequestDTO.getMinimalPrice(), searchRequestDTO.getMaximalPrice());
 
-        List<ProductResponseDTO> productResponseDTOS = searchService.searchProductsGlobally(searchRequestDTO);
+        List<ProductResponseDTO> productResponseDTOS = modelMapper.map(
+                searchService.searchProductsGlobally(searchRequestDTO),
+                new TypeToken<List<ProductResponseDTO>>() {
+                }.getType()
+        );
 
         productResponseDTOS
                 .forEach(
-                        productResponseDTO -> productResponseDTO
-                                .setImagesEndpoints(getProductImages(productResponseDTO.getId()))
+                        productResponseDTO -> {
+                            productResponseDTO.setImagesEndpoints(getProductImages(productResponseDTO.getId()));
+                            productResponseDTO.setRate(
+                                    productService.calculateAverageRatingForProduct(productResponseDTO.getId())
+                            );
+                        }
                 );
 
         return productResponseDTOS;
@@ -92,12 +108,20 @@ public class ProductFacadeImpl implements ProductFacade {
             SearchRequestDTO searchRequestDTO) {
         checkPriceParameters(searchRequestDTO.getMinimalPrice(), searchRequestDTO.getMaximalPrice());
 
-        List<ProductResponseDTO> productResponseDTOS = searchService.searchProductsInShop(searchRequestDTO);
+        List<ProductResponseDTO> productResponseDTOS = modelMapper.map(
+                searchService.searchProductsInShop(searchRequestDTO),
+                new TypeToken<List<ProductResponseDTO>>() {
+                }.getType()
+        );
 
         productResponseDTOS
                 .forEach(
-                        productResponseDTO -> productResponseDTO
-                                .setImagesEndpoints(getProductImages(productResponseDTO.getId()))
+                        productResponseDTO -> {
+                            productResponseDTO.setImagesEndpoints(getProductImages(productResponseDTO.getId()));
+                            productResponseDTO.setRate(
+                                    productService.calculateAverageRatingForProduct(productResponseDTO.getId())
+                            );
+                        }
                 );
 
         return  productResponseDTOS;
@@ -110,6 +134,7 @@ public class ProductFacadeImpl implements ProductFacade {
                 ProductResponseDTO.class
         );
         productResponseDTO.setImagesEndpoints(getProductImages(id));
+        productResponseDTO.setRate(productService.calculateAverageRatingForProduct(id));
         return productResponseDTO;
     }
 

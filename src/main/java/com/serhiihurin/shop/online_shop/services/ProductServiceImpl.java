@@ -172,6 +172,11 @@ public class ProductServiceImpl implements ProductService {
         discountRepository.deleteAll(eventProductsDiscounts);
     }
 
+    @Override
+    public Double calculateAverageRatingForProduct(Long productId) {
+        return productRepository.calculateAverageRatingForProduct(productId);
+    }
+
     @Transactional
     @Override
     public void deleteProduct(User currentAuthenticatedUser, Long productId) {

@@ -1723,6 +1723,52 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Search sort and filter products in shop",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZG9zYXRhY2s4OEBnbWFpbC5jb20iLCJpYXQiOjE3MDMwODQ1MTQsImV4cCI6MTcwMzE3MDkxNH0.-kQH7RFhbEVNIvVpxVZaqd7-aRNw2t3IDpfO1gUIqjE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/online-shop/search/shop/products?productName=AMD&sortingParameterValue=rate&sortingDirection=descending",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"online-shop",
+								"search",
+								"shop",
+								"products"
+							],
+							"query": [
+								{
+									"key": "productName",
+									"value": "AMD"
+								},
+								{
+									"key": "sortingParameterValue",
+									"value": "rate"
+								},
+								{
+									"key": "sortingDirection",
+									"value": "descending"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
