@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,11 +30,11 @@ public class Scheduler {
         Map<String, List<Product>> productAvailabilitySendingQueue = emailService.getProductAvailabilitySendingQueue();
         if (productAvailabilitySendingQueue.isEmpty()) {
             log.info("Nothing to send from email queue...");
+            return;
         }
-        for (String email : productAvailabilitySendingQueue.keySet()) {
-            emailService.sendNotificationAboutProductAvailability(email, productAvailabilitySendingQueue.get(email));
+        for (Map.Entry<String, List<Product>> entry: productAvailabilitySendingQueue.entrySet()) {
+            emailService.sendNotificationAboutProductAvailability(entry.getKey(), entry.getValue());
         }
         productAvailabilitySendingQueue.clear();
-        emailService.setProductAvailabilitySendingQueue(productAvailabilitySendingQueue);
     }
 }

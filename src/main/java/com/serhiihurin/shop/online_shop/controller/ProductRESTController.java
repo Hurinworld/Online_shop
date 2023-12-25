@@ -27,6 +27,7 @@ import java.util.List;
 public class ProductRESTController {
     private final ProductFacade productFacade;
     private final FileFacade fileFacade;
+    //TODO delete
     private final ModelMapper modelMapper;
 
     @Operation(

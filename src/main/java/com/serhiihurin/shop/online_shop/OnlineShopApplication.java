@@ -4,16 +4,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 //TODO update postman collection //done
-//TODO spring mail + thymeleaf //done
 //TODO check cascades in entire project
-//TODO add search for products by params with sort //done
-//TODO add notifications //done
-//TODO add work with files //done
-//TODO move search to db
-
-
-//TODO add trigger for mail-sending when product from wishlist is available for sale again! //done
-//TODO add saving state of email sending queue
+//TODO add work with files
+//TODO implement tests
+//TODO fix issue with db
+//TODO check criteria
+//TODO check core for architecture boilerplate
 @SpringBootApplication
 public class OnlineShopApplication {
 

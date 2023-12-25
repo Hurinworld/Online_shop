@@ -46,8 +46,7 @@ public class EmailServiceImpl implements EmailService {
     private String fromEmail;
 
     @Getter
-    @Setter
-    private Map<String, List<Product>> productAvailabilitySendingQueue = new HashMap<>();
+    private final Map<String, List<Product>> productAvailabilitySendingQueue = new HashMap<>();
 
     @Async
     @Override
@@ -118,6 +117,8 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void addToProductAvailabilitySendingQueue(String email, Product product) {
+        //TODO check this solution
+//        List<Product> products = productAvailabilitySendingQueue.getOrDefault(email, new ArrayList<>(List.of(product)));
         List<Product> products = productAvailabilitySendingQueue.getOrDefault(email, new ArrayList<>());
         products.add(product);
         productAvailabilitySendingQueue.put(email, products);

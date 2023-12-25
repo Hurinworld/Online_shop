@@ -23,6 +23,7 @@ import java.util.*;
 @RequiredArgsConstructor
 @Slf4j
 @Getter
+//TODO extract duplicated code into private methods
 public class ProductFacadeImpl implements ProductFacade {
     private final ProductService productService;
     private final ShopService shopService;

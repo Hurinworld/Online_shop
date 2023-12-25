@@ -17,6 +17,7 @@ import java.util.List;
 @RequestMapping("/online-shop/files")
 @Tag(name = "File")
 @RequiredArgsConstructor
+//TODO refactor logic as we discussed
 public class FileRESTController {
     private final FileFacade fileFacade;
 

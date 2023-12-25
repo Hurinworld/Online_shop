@@ -55,6 +55,14 @@ public class FileFacadeImpl implements FileFacade {
         return imageEndpoints;
     }
 
+    //TODO check this solution
+//    @Override
+//    public List<String> saveUserImages(Long userId, MultipartFile[] files) {
+//       return fileService.saveUserImages(userId, files).stream()
+//                .map(userImage -> imageRetrieveEndpoint + userImage.getImageInfo().getImageToken())
+//               .toList();
+//    }
+
     @Override
     public void deleteUserImage(String imageToken, Long userId) {
         UserImage userImage = userImageService.getUserImageByImageToken(imageToken);

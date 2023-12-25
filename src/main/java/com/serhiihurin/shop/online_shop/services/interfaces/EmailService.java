@@ -19,7 +19,6 @@ public interface EmailService {
     void sendNotificationAboutProductAvailability(String toEmail, List<Product> products);
 
     Map<String, List<Product>> getProductAvailabilitySendingQueue();
-    void setProductAvailabilitySendingQueue(Map<String, List<Product>> productAvailabilitySendingQueue);
 
     void addToProductAvailabilitySendingQueue(String email, Product product);
 }
