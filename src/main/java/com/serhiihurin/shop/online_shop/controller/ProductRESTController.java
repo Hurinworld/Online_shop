@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +26,6 @@ import java.util.List;
 public class ProductRESTController {
     private final ProductFacade productFacade;
     private final FileFacade fileFacade;
-    //TODO delete
-    private final ModelMapper modelMapper;
 
     @Operation(
             description = "GET all products endpoint for admin",

@@ -36,7 +36,7 @@ public class Product {
     @ManyToMany(mappedBy = "shoppingCart")
     private List<User> users;
 
-    //TODO rename to lowercase
+    //TODO rename to lowercase //done
     @ManyToMany(mappedBy = "productAvailabilityList")
-    private List<User> ProductAvailabilitySubscriptionList;
+    private List<User> productAvailabilitySubscriptionList;
 }

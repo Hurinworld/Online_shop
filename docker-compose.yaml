@@ -9,3 +9,5 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: bestuser
       MYSQL_PASSWORD: bestuser
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_ROOT_PUBLIC_KEY: insecure_public_key

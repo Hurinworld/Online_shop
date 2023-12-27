@@ -23,7 +23,7 @@ import java.util.*;
 @RequiredArgsConstructor
 @Slf4j
 @Getter
-//TODO extract duplicated code into private methods
+//TODO extract duplicated code into private methods //done
 public class ProductFacadeImpl implements ProductFacade {
     private final ProductService productService;
     private final ShopService shopService;
@@ -41,91 +41,24 @@ public class ProductFacadeImpl implements ProductFacade {
 
     @Override
     public List<ProductResponseDTO> getAllProducts() {
-        List<ProductResponseDTO> productResponseDTOS = modelMapper.map(
-                productService.getAllProducts(),
-                new TypeToken<List<ProductResponseDTO>>() {
-                }.getType()
-        );
-
-        productResponseDTOS
-                .forEach(
-                        productResponseDTO -> {
-                            productResponseDTO.setImagesEndpoints(getProductImages(productResponseDTO.getId()));
-                            productResponseDTO.setRate(
-                                    productService.calculateAverageRatingForProduct(productResponseDTO.getId())
-                            );
-                        }
-                );
-
-        return productResponseDTOS;
+        return mapToResponseDTO(productService.getAllProducts());
     }
 
     @Override
     public List<ProductResponseDTO> getAllProductsByShopId(Long id) {
-        List<ProductResponseDTO> productResponseDTOS = modelMapper.map(
-                productService.getProductsByShopId(id),
-                new TypeToken<List<ProductResponseDTO>>() {
-                }.getType()
-        );
-
-        productResponseDTOS
-                .forEach(
-                        productResponseDTO -> {
-                            productResponseDTO.setImagesEndpoints(getProductImages(productResponseDTO.getId()));
-                            productResponseDTO.setRate(
-                                    productService.calculateAverageRatingForProduct(productResponseDTO.getId())
-                            );
-                        }
-                );
-
-        return productResponseDTOS;
+        return mapToResponseDTO(productService.getProductsByShopId(id));
     }
 
     @Override
     public List<ProductResponseDTO> searchProductsGlobally(SearchRequestDTO searchRequestDTO) {
         checkPriceParameters(searchRequestDTO.getMinimalPrice(), searchRequestDTO.getMaximalPrice());
-
-        List<ProductResponseDTO> productResponseDTOS = modelMapper.map(
-                searchService.searchProductsGlobally(searchRequestDTO),
-                new TypeToken<List<ProductResponseDTO>>() {
-                }.getType()
-        );
-
-        productResponseDTOS
-                .forEach(
-                        productResponseDTO -> {
-                            productResponseDTO.setImagesEndpoints(getProductImages(productResponseDTO.getId()));
-                            productResponseDTO.setRate(
-                                    productService.calculateAverageRatingForProduct(productResponseDTO.getId())
-                            );
-                        }
-                );
-
-        return productResponseDTOS;
+        return mapToResponseDTO(searchService.searchProductsGlobally(searchRequestDTO));
     }
 
     @Override
-    public List<ProductResponseDTO> searchProductsInShop(
-            SearchRequestDTO searchRequestDTO) {
+    public List<ProductResponseDTO> searchProductsInShop(SearchRequestDTO searchRequestDTO) {
         checkPriceParameters(searchRequestDTO.getMinimalPrice(), searchRequestDTO.getMaximalPrice());
-
-        List<ProductResponseDTO> productResponseDTOS = modelMapper.map(
-                searchService.searchProductsInShop(searchRequestDTO),
-                new TypeToken<List<ProductResponseDTO>>() {
-                }.getType()
-        );
-
-        productResponseDTOS
-                .forEach(
-                        productResponseDTO -> {
-                            productResponseDTO.setImagesEndpoints(getProductImages(productResponseDTO.getId()));
-                            productResponseDTO.setRate(
-                                    productService.calculateAverageRatingForProduct(productResponseDTO.getId())
-                            );
-                        }
-                );
-
-        return  productResponseDTOS;
+        return  mapToResponseDTO(searchService.searchProductsInShop(searchRequestDTO));
     }
 
     @Override
@@ -214,6 +147,26 @@ public class ProductFacadeImpl implements ProductFacade {
         Product product = productService.getProduct(productId);
         userService.subscribeForNotificationAboutProductAvailability(product, currentAuthenticatedUser);
 
+    }
+
+    private List<ProductResponseDTO> mapToResponseDTO(List<Product> products) {
+        List<ProductResponseDTO> productResponseDTOS = modelMapper.map(
+                products,
+                new TypeToken<List<ProductResponseDTO>>() {
+                }.getType()
+        );
+
+        productResponseDTOS
+                .forEach(
+                        productResponseDTO -> {
+                            productResponseDTO.setImagesEndpoints(getProductImages(productResponseDTO.getId()));
+                            productResponseDTO.setRate(
+                                    productService.calculateAverageRatingForProduct(productResponseDTO.getId())
+                            );
+                        }
+                );
+
+        return productResponseDTOS;
     }
 
     private List<String> getProductImages(Long productId) {

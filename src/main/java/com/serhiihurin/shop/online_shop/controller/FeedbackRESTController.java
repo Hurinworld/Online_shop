@@ -270,7 +270,7 @@ public class FeedbackRESTController {
             )
     )
     @PatchMapping
-    //TODO fix issue with rate enum value in db
+    //TODO fix issue with rate enum value in db //done
     @PreAuthorize("hasAuthority('feedback management')")
     public ResponseEntity<FeedbackResponseDTO> updateFeedback(
             @RequestParam Long id,

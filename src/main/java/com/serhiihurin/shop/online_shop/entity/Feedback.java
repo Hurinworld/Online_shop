@@ -1,5 +1,6 @@
 package com.serhiihurin.shop.online_shop.entity;
 
+import com.serhiihurin.shop.online_shop.converters.ProductRateConverter;
 import com.serhiihurin.shop.online_shop.enums.ProductRate;
 import jakarta.persistence.*;
 import lombok.*;
@@ -18,7 +19,8 @@ public class Feedback {
     private Long id;
     private String text;
     private LocalDateTime time;
-    @Enumerated(EnumType.ORDINAL)
+//    @Enumerated(EnumType.ORDINAL)
+    @Convert(converter = ProductRateConverter.class)
     private ProductRate rate;
 
     @ToString.Exclude

@@ -34,6 +34,7 @@ public class SearchServiceImpl implements SearchService {
         return filterAndSortProductsGlobally(
                 searchRequestDTO.getProductName(),
                 searchRequestDTO.getMinimalPrice(),
+
                 searchRequestDTO.getMaximalPrice(),
                 sortingParameter,
                 sortingDirection
@@ -99,18 +100,12 @@ public class SearchServiceImpl implements SearchService {
             Double maximalPrice,
             SortingDirection sortingDirection
     ) {
-        //TODO refactor it
-        if (productName != null) {
-            return switch (sortingDirection) {
-                case DESCENDING -> getProductsSortedByPriceDesc(productName, minimalPrice, maximalPrice);
-                case ASCENDING -> getProductsSortedByPriceAsc(productName, minimalPrice, maximalPrice);
-            };
-        } else {
-            return switch (sortingDirection) {
-                case DESCENDING -> getProductsSortedByPriceDesc(null, minimalPrice, maximalPrice);
-                case ASCENDING -> getProductsSortedByPriceAsc(null, minimalPrice, maximalPrice);
-            };
-        }
+        //TODO refactor it //done
+        return switch (sortingDirection) {
+            case DESCENDING -> getProductsSortedByPriceDesc(productName, minimalPrice, maximalPrice);
+            case ASCENDING -> getProductsSortedByPriceAsc(productName, minimalPrice, maximalPrice);
+        };
+
     }
 
     private List<Product> sortByRating(
@@ -119,18 +114,12 @@ public class SearchServiceImpl implements SearchService {
             Double maximalPrice,
             SortingDirection sortingDirection
     ) {
-        //TODO refactor it
-        if (productName != null) {
-            return switch (sortingDirection) {
-                case DESCENDING -> getProductsSortedByRatingDesc(productName, minimalPrice, maximalPrice);
-                case ASCENDING -> getProductsSortedByRatingAsc(productName, minimalPrice, maximalPrice);
-            };
-        } else {
-            return switch (sortingDirection) {
-                case DESCENDING -> getProductsSortedByRatingDesc(null, minimalPrice, maximalPrice);
-                case ASCENDING -> getProductsSortedByRatingAsc(null, minimalPrice, maximalPrice);
-            };
-        }
+        //TODO refactor it //done
+        return switch (sortingDirection) {
+            case DESCENDING -> getProductsSortedByRatingDesc(productName, minimalPrice, maximalPrice);
+            case ASCENDING -> getProductsSortedByRatingAsc(productName, minimalPrice, maximalPrice);
+        };
+
     }
 
     private List<Product> filterProducts(String productName, Double minimalPrice, Double maximalPrice) {
