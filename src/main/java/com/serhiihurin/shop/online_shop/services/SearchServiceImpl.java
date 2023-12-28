@@ -11,8 +11,6 @@ import com.serhiihurin.shop.online_shop.services.interfaces.SearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import static java.util.Objects.isNull;
-
 import java.util.List;
 
 @Service
@@ -24,12 +22,9 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public List<Product> searchProductsGlobally(SearchRequestDTO searchRequestDTO) {
-        SortingParameter sortingParameter = checkSortingParameter(searchRequestDTO);
+        SortingParameter sortingParameter = validateSortingParameter(searchRequestDTO);
 
-        SortingDirection sortingDirection = checkSortingDirection(searchRequestDTO);
-
-        sortingParameter = isNull(sortingParameter) ? SortingParameter.RATE : sortingParameter;
-        sortingDirection = isNull(sortingDirection) ? SortingDirection.DESCENDING : sortingDirection;
+        SortingDirection sortingDirection = validateSortingDirection(searchRequestDTO);
 
         return filterAndSortProductsGlobally(
                 searchRequestDTO.getProductName(),
@@ -51,29 +46,18 @@ public class SearchServiceImpl implements SearchService {
                                         searchRequestDTO.getCurrentAuthenticatedUser().getId())
                 ).getId();
 
-        SortingParameter sortingParameter = checkSortingParameter(searchRequestDTO);
+        SortingParameter sortingParameter = validateSortingParameter(searchRequestDTO);
 
-        SortingDirection sortingDirection = checkSortingDirection(searchRequestDTO);
+        SortingDirection sortingDirection = validateSortingDirection(searchRequestDTO);
 
-        if (sortingParameter != null && sortingDirection != null) {
-            return filterAndSortProductsInShop(
-                    shopId,
-                    searchRequestDTO.getProductName(),
-                    searchRequestDTO.getMinimalPrice(),
-                    searchRequestDTO.getMaximalPrice(),
-                    sortingParameter,
-                    sortingDirection);
-        } else {
-            return filterAndSortProductsInShop(
-                    shopId,
-                    searchRequestDTO.getProductName(),
-                    searchRequestDTO.getMinimalPrice(),
-                    searchRequestDTO.getMaximalPrice(),
-                    SortingParameter.RATE,
-                    SortingDirection.DESCENDING
-            );
-
-        }
+        return filterAndSortProductsInShop(
+                shopId,
+                searchRequestDTO.getProductName(),
+                searchRequestDTO.getMinimalPrice(),
+                searchRequestDTO.getMaximalPrice(),
+                sortingParameter,
+                sortingDirection
+        );
     }
 
     private List<Product> filterAndSortProductsGlobally(
@@ -533,19 +517,18 @@ public class SearchServiceImpl implements SearchService {
     }
 
 
-    private SortingParameter checkSortingParameter(SearchRequestDTO searchRequestDTO) {
+    private SortingParameter validateSortingParameter(SearchRequestDTO searchRequestDTO) {
         if (searchRequestDTO.getSortingParameterValue() != null) {
             return SortingParameter.valueOf(searchRequestDTO.getSortingParameterValue().toUpperCase());
         }
-        return null;
+        return SortingParameter.RATE;
     }
 
-    //TODO rename method
-    private SortingDirection checkSortingDirection(SearchRequestDTO searchRequestDTO) {
+    //TODO rename method //done
+    private SortingDirection validateSortingDirection(SearchRequestDTO searchRequestDTO) {
         if (searchRequestDTO.getSortingDirection() != null) {
             return SortingDirection.valueOf(searchRequestDTO.getSortingDirection().toUpperCase());
         }
-//        return null;
         return SortingDirection.DESCENDING;
     }
 }

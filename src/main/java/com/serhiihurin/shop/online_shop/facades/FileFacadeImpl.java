@@ -1,6 +1,8 @@
 package com.serhiihurin.shop.online_shop.facades;
 
+import com.serhiihurin.shop.online_shop.entity.Product;
 import com.serhiihurin.shop.online_shop.entity.ProductImage;
+import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.entity.UserImage;
 import com.serhiihurin.shop.online_shop.exception.UnauthorizedAccessException;
 import com.serhiihurin.shop.online_shop.facades.interfaces.FileFacade;
@@ -11,7 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -26,42 +27,25 @@ public class FileFacadeImpl implements FileFacade {
 
     @Value("${custom.image-retrieve-endpoint}")
     private String imageRetrieveEndpoint;
+
     @Override
     public List<String> saveProductImages(Long userId, Long productId, MultipartFile[] files) {
-        if (!productService.getProduct(productId).getShop().getOwner().getId().equals(userId)) {
+        Product product = productService.getProduct(productId);
+        if (!product.getShop().getOwner().getId().equals(userId)) {
             throw new UnauthorizedAccessException("Access denied. You don't have authorities to modify this product.");
         }
-        List<String> imageEndpoints = new ArrayList<>();
-        List<ProductImage> productImages = fileService.saveProductImages(productId, files);
-        for (ProductImage productImage : productImages) {
-            imageEndpoints.add(
-                    imageRetrieveEndpoint +
-                    productImage.getImageInfo().getImageToken()
-            );
-        }
-        return imageEndpoints;
+        return productImageService.addProductImage(product, fileService.saveImages(files)).stream()
+                .map(productImage -> imageRetrieveEndpoint + productImage.getImageInfo().getImageToken())
+                .toList();
     }
 
+    //TODO check this solution //done
     @Override
-    public List<String> saveUserImages(Long userId, MultipartFile[] files) {
-        List<String> imageEndpoints = new ArrayList<>();
-        List<UserImage> userImages = fileService.saveUserImages(userId, files);
-        for (UserImage userImage : userImages) {
-            imageEndpoints.add(
-                    imageRetrieveEndpoint +
-                    userImage.getImageInfo().getImageToken()
-            );
-        }
-        return imageEndpoints;
+    public List<String> saveUserImages(User user, MultipartFile[] files) {
+       return userImageService.saveUserImages(user, fileService.saveImages(files)).stream()
+                .map(userImage -> imageRetrieveEndpoint + userImage.getImageInfo().getImageToken())
+               .toList();
     }
-
-    //TODO check this solution
-//    @Override
-//    public List<String> saveUserImages(Long userId, MultipartFile[] files) {
-//       return fileService.saveUserImages(userId, files).stream()
-//                .map(userImage -> imageRetrieveEndpoint + userImage.getImageInfo().getImageToken())
-//               .toList();
-//    }
 
     @Override
     public void deleteUserImage(String imageToken, Long userId) {

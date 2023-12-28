@@ -117,10 +117,8 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void addToProductAvailabilitySendingQueue(String email, Product product) {
-        //TODO check this solution
-//        List<Product> products = productAvailabilitySendingQueue.getOrDefault(email, new ArrayList<>(List.of(product)));
-        List<Product> products = productAvailabilitySendingQueue.getOrDefault(email, new ArrayList<>());
-        products.add(product);
+        //TODO check this solution //done
+        List<Product> products = productAvailabilitySendingQueue.getOrDefault(email, new ArrayList<>(List.of(product)));
         productAvailabilitySendingQueue.put(email, products);
     }
 

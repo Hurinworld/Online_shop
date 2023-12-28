@@ -8,12 +8,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserResponseForAdminDTO {
     private Long id;
+    List<String> imagesEndpoints;
     private String firstName;
     private String lastName;
     private Double cash;

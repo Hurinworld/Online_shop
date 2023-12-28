@@ -1,6 +1,7 @@
 package com.serhiihurin.shop.online_shop.services;
 
 import com.serhiihurin.shop.online_shop.dao.ProductImageRepository;
+import com.serhiihurin.shop.online_shop.entity.Image;
 import com.serhiihurin.shop.online_shop.entity.Product;
 import com.serhiihurin.shop.online_shop.entity.ProductImage;
 import com.serhiihurin.shop.online_shop.services.interfaces.ProductImageService;
@@ -12,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -21,6 +23,7 @@ class ProductImageServiceImplTest {
     @Mock
     private ProductImageRepository productImageRepository;
     private ProductImageService productImageService;
+    private Image testImage;
     private ProductImage testProductImage;
     private Product testProduct;
 
@@ -35,9 +38,14 @@ class ProductImageServiceImplTest {
                 .amount(100)
                 .price(8500.0)
                 .build();
+        testImage = Image.builder()
+                .filepath("test file path")
+                .imageToken("test image token")
+                .build();
         testProductImage = ProductImage.builder()
                 .id(1L)
                 .product(testProduct)
+                .imageInfo(testImage)
                 .build();
     }
 
@@ -58,7 +66,7 @@ class ProductImageServiceImplTest {
     @Test
     void addProductImage() {
         //when
-        productImageService.addProductImage(testProductImage);
+        productImageService.addProductImage(testProduct, new ArrayList<>(List.of(testImage)));
         //then
         ArgumentCaptor<ProductImage> productImageArgumentCaptor = ArgumentCaptor.forClass(ProductImage.class);
         Mockito.verify(productImageRepository).save(productImageArgumentCaptor.capture());

@@ -51,12 +51,6 @@ public class UserFacadeImpl implements UserFacade {
     }
 
     @Override
-    public User createUser(RegisterRequestDTO registerRequestDTO) {
-        return userService.createUser(registerRequestDTO);
-    }
-
-
-    @Override
     public User updateUser(User currentAuthenticatedUser, UserRequestDTO userRequestDTO) {
         log.info("Updating client account information with id: {}", currentAuthenticatedUser.getId());
         return userService.updateUser(currentAuthenticatedUser, userRequestDTO);

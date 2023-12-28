@@ -17,7 +17,7 @@ import java.util.List;
 @RequestMapping("/online-shop/files")
 @Tag(name = "File")
 @RequiredArgsConstructor
-//TODO refactor logic as we discussed
+//TODO refactor logic as we discussed //done
 public class FileRESTController {
     private final FileFacade fileFacade;
 
@@ -38,7 +38,7 @@ public class FileRESTController {
             User currentAuthenticatedUser,
             @RequestPart("files") MultipartFile[] files
     ) {
-        return ResponseEntity.ok(fileFacade.saveUserImages(currentAuthenticatedUser.getId(), files));
+        return ResponseEntity.ok(fileFacade.saveUserImages(currentAuthenticatedUser, files));
     }
 
     @PreAuthorize("hasAuthority('product management')")
