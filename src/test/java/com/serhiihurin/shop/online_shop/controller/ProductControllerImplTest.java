@@ -74,7 +74,7 @@ class ProductControllerImplTest {
 //        modelMapper.getConfiguration()
 //                .setMatchingStrategy(MatchingStrategies.LOOSE);
         testUser = User.builder()
-                .id(1L)
+//                .id(1L)
                 .firstName("User")
                 .lastName("For test")
                 .email("testUser@gmail.com")
@@ -83,13 +83,13 @@ class ProductControllerImplTest {
                 .role(Role.SHOP_OWNER)
                 .build();
         testShop = Shop.builder()
-                .id(1L)
+//                .id(1L)
                 .name("Test shop")
                 .income(325665.0)
                 .owner(testUser)
                 .build();
         testProduct = Product.builder()
-                .id(1L)
+//                .id(1L)
                 .name("AMD Ryzen 7 5700X")
                 .description("CPU")
                 .amount(100)
@@ -101,12 +101,12 @@ class ProductControllerImplTest {
         productRepository.save(testProduct);
     }
 
-//    @AfterEach
-//    public void afterEach() {
-//        productRepository.deleteAll();
-//        shopRepository.deleteAll();
-//        userRepository.deleteAll();
-//    }
+    @AfterEach
+    public void afterEach() {
+        productRepository.deleteAll();
+        shopRepository.deleteAll();
+        userRepository.deleteAll();
+    }
 
     @Test
 //    @WithUserDetails(userDetailsServiceBeanName = "userDetailsService", value = "testUser@gmail.com")
