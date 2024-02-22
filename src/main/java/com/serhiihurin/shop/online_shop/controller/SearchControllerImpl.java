@@ -1,5 +1,6 @@
 package com.serhiihurin.shop.online_shop.controller;
 
+import com.serhiihurin.shop.online_shop.controller.interfaces.SearchController;
 import com.serhiihurin.shop.online_shop.dto.ProductResponseDTO;
 import com.serhiihurin.shop.online_shop.dto.SearchRequestDTO;
 import com.serhiihurin.shop.online_shop.entity.User;
@@ -19,7 +20,7 @@ import java.util.List;
 @RequestMapping("/online-shop/search")
 @Tag(name = "Search")
 @RequiredArgsConstructor
-public class SearchRESTController {
+public class SearchControllerImpl implements SearchController {
     private final ProductFacade productFacade;
 
     @GetMapping("/products")

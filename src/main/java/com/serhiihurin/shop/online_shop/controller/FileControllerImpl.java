@@ -1,5 +1,6 @@
 package com.serhiihurin.shop.online_shop.controller;
 
+import com.serhiihurin.shop.online_shop.controller.interfaces.FileController;
 import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.facades.interfaces.FileFacade;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,7 +19,7 @@ import java.util.List;
 @Tag(name = "File")
 @RequiredArgsConstructor
 //TODO refactor logic as we discussed //done
-public class FileRESTController {
+public class FileControllerImpl implements FileController {
     private final FileFacade fileFacade;
 
     @GetMapping("/{imageToken}")
@@ -27,7 +28,6 @@ public class FileRESTController {
                 .status(HttpStatus.OK)
                 .contentType(MediaType.IMAGE_JPEG)
                 .body(fileFacade.getImage(imageToken));
-
     }
 
     //TODO create endpoint for saving files that`ll return url to get-endpoint for retrieving //done

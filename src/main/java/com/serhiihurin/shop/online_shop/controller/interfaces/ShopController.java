@@ -1,32 +1,19 @@
-package com.serhiihurin.shop.online_shop.controller;
+package com.serhiihurin.shop.online_shop.controller.interfaces;
 
 import com.serhiihurin.shop.online_shop.dto.ShopRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.ShopResponseDTO;
 import com.serhiihurin.shop.online_shop.entity.User;
-import com.serhiihurin.shop.online_shop.facades.interfaces.ShopFacade;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/online-shop/shops")
-@PreAuthorize("hasAnyRole('SHOP_OWNER', 'ADMIN', 'SUPER_ADMIN')")
-@Tag(name = "Shop")
-@RequiredArgsConstructor
-public class ShopRESTController {
-    private final ShopFacade shopFacade;
-    private final ModelMapper modelMapper;
-
+public interface ShopController {
     @Operation(
             description = "GET all shops endpoint for admin",
             summary = "endpoint to retrieve all shops",
@@ -45,15 +32,8 @@ public class ShopRESTController {
                     )
             }
     )
-    @GetMapping
-    @PreAuthorize("hasAuthority('admin view info')")
-    public List<ShopResponseDTO> getAllShops() {
-        return modelMapper.map(
-                shopFacade.getAllShops(),
-                new TypeToken<List<ShopResponseDTO>>() {
-                }.getType()
-        );
-    }
+    @SuppressWarnings("unused")
+    List<ShopResponseDTO> getAllShops();
 
     @Operation(
             description = "GET shop endpoint for admin",
@@ -81,14 +61,8 @@ public class ShopRESTController {
                     )
             }
     )
-    @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('admin view info')")
-    public ShopResponseDTO getShop(@PathVariable Long id) {
-        return modelMapper.map(
-                shopFacade.getShop(id),
-                ShopResponseDTO.class
-        );
-    }
+    @SuppressWarnings("unused")
+    ShopResponseDTO getShop(@PathVariable Long id);
 
     @Operation(
             description = "POST endpoint for shop owner",
@@ -112,16 +86,11 @@ public class ShopRESTController {
                     required = true
             )
     )
-    @PostMapping
-    @PreAuthorize("hasAuthority('shop management')")
-    public ResponseEntity<ShopResponseDTO> addNewShop(User currentAuthenticatedUser, @RequestBody ShopRequestDTO shopRequestDTO) {
-        return ResponseEntity.ok(
-                modelMapper.map(
-                        shopFacade.createShop(currentAuthenticatedUser, shopRequestDTO),
-                        ShopResponseDTO.class
-                )
-        );
-    }
+    @SuppressWarnings("unused")
+    ResponseEntity<ShopResponseDTO> addNewShop(
+            User currentAuthenticatedUser,
+            @RequestBody ShopRequestDTO shopRequestDTO
+    );
 
     @Operation(
             description = "PUT endpoint for shop owner",
@@ -145,16 +114,8 @@ public class ShopRESTController {
                     required = true
             )
     )
-    @PutMapping
-    @PreAuthorize("hasAuthority('shop management')")
-    public ResponseEntity<ShopResponseDTO> updateShop(@RequestBody ShopRequestDTO shopRequestDTO) {
-        return ResponseEntity.ok(
-                modelMapper.map(
-                        shopFacade.updateShop(shopRequestDTO),
-                        ShopResponseDTO.class
-                )
-        );
-    }
+    @SuppressWarnings("unused")
+    ResponseEntity<ShopResponseDTO> updateShop(@RequestBody ShopRequestDTO shopRequestDTO);
 
     @Operation(
             description = "DELETE shop endpoint for shop owner and super admin",
@@ -182,10 +143,6 @@ public class ShopRESTController {
                     )
             }
     )
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('shop management', 'super admin info deletion')")
-    public ResponseEntity<Void> deleteShop(@PathVariable Long id) {
-        shopFacade.deleteShop(id);
-        return ResponseEntity.ok().build();
-    }
+    @SuppressWarnings("unused")
+    ResponseEntity<Void> deleteShop(@PathVariable Long id);
 }

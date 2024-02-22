@@ -1,5 +1,6 @@
 package com.serhiihurin.shop.online_shop.controller;
 
+import com.serhiihurin.shop.online_shop.controller.interfaces.WishlistController;
 import com.serhiihurin.shop.online_shop.dto.ProductResponseDTO;
 import com.serhiihurin.shop.online_shop.dto.WishlistResponseDTO;
 import com.serhiihurin.shop.online_shop.entity.User;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 @Tag(name = "Wishlist")
 @RequiredArgsConstructor
 @Slf4j
-public class WishlistRESTController {
+public class WishlistControllerImpl implements WishlistController {
     private final WishlistFacade wishlistFacade;
     private final ModelMapper modelMapper;
 
@@ -48,6 +49,7 @@ public class WishlistRESTController {
         return ResponseEntity.ok().build();
     }
 
+    @PreAuthorize("hasAnyAuthority('client view info', 'shop owner view info')")
     @DeleteMapping("/product/{productId}")
     public ResponseEntity<Void> deleteProductFromWishlist(User currentAuthenticatedUser, @PathVariable Long productId) {
         wishlistFacade.deleteProductFromWishlist(currentAuthenticatedUser.getId(), productId);

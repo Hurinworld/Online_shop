@@ -1,32 +1,22 @@
-package com.serhiihurin.shop.online_shop.controller;
+package com.serhiihurin.shop.online_shop.controller.interfaces;
 
 import com.serhiihurin.shop.online_shop.dto.ProductRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.ProductResponseDTO;
 import com.serhiihurin.shop.online_shop.entity.User;
-import com.serhiihurin.shop.online_shop.facades.interfaces.FileFacade;
-import com.serhiihurin.shop.online_shop.facades.interfaces.ProductFacade;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/online-shop/products")
-@PreAuthorize("hasAnyRole('ADMIN', 'SHOP_OWNER', 'CLIENT', 'SUPER_ADMIN')")
-@Tag(name = "Product")
-@RequiredArgsConstructor
-public class ProductRESTController {
-    private final ProductFacade productFacade;
-    private final FileFacade fileFacade;
-
+public interface ProductController {
     @Operation(
             description = "GET all products endpoint for admin",
             summary = "endpoint to retrieve all products",
@@ -45,11 +35,8 @@ public class ProductRESTController {
                     )
             }
     )
-    @GetMapping
-    @PreAuthorize("hasAuthority('admin view info')")
-    public List<ProductResponseDTO> getAllProducts() {
-        return productFacade.getAllProducts();
-    }
+    @SuppressWarnings("unused")
+    List<ProductResponseDTO> getAllProducts();
 
     @Operation(
             description = "GET endpoint for admin and shop owner",
@@ -77,11 +64,8 @@ public class ProductRESTController {
                     )
             }
     )
-    @GetMapping("/shop/{id}")
-    @PreAuthorize("hasAnyAuthority('shop owner view info', 'admin view info')")
-    List<ProductResponseDTO> getAllProductsByShopId(@PathVariable Long id) {
-        return productFacade.getAllProductsByShopId(id);
-    }
+    @SuppressWarnings("unused")
+    List<ProductResponseDTO> getAllProductsByShopId(@PathVariable Long id);
 
     @Operation(
             description = "GET product endpoint for admin and shop owner",
@@ -109,11 +93,8 @@ public class ProductRESTController {
                     )
             }
     )
-    @GetMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('shop owner view info', 'admin view info', 'client view info')")
-    public ResponseEntity<ProductResponseDTO> getProduct(@PathVariable Long id) {
-        return ResponseEntity.ok(productFacade.getProduct(id));
-    }
+    @SuppressWarnings("unused")
+    ResponseEntity<ProductResponseDTO> getProduct(@PathVariable Long id);
 
     @Operation(
             description = "POST endpoint for shop owner",
@@ -145,66 +126,17 @@ public class ProductRESTController {
                     required = true
             )
     )
-    @PostMapping
-    @PreAuthorize("hasAuthority('product management')")
-    public ResponseEntity<ProductResponseDTO> addNewProduct(
+    @SuppressWarnings("unused")
+    ResponseEntity<ProductResponseDTO> addNewProduct(
             User currentAuthenticatedUser,
             @RequestPart("product-request-dto") ProductRequestDTO productRequestDTO,
-            @RequestPart("files")MultipartFile[] files
-            ) {
-        ProductResponseDTO productResponseDTO = productFacade.addProduct(
-                currentAuthenticatedUser, productRequestDTO
-        );
-        productResponseDTO.setImagesEndpoints(fileFacade.saveProductImages(
-                currentAuthenticatedUser.getId(),
-                productResponseDTO.getId(),
-                files
-        ));
+            @RequestPart("files") MultipartFile[] files
+    );
 
-        return ResponseEntity.ok(productResponseDTO);
-    }
-
-    @Operation(
-            description = "PUT endpoint for shop owner",
-            summary = "endpoint to increase amount of some product",
-            responses = {
-                    @ApiResponse(
-                            description = "Success",
-                            responseCode = "200"
-                    ),
-                    @ApiResponse(
-                            description = "Bad syntax",
-                            responseCode = "400"
-                    ),
-                    @ApiResponse(
-                            description = "Unauthorized",
-                            responseCode = "401"
-                    )
-            },
-            parameters = {
-                    @Parameter(
-                            name = "productId",
-                            description = "The ID of product which amount should be increased",
-                            in = ParameterIn.PATH,
-                            required = true
-                    ),
-                    @Parameter(
-                            name = "amount",
-                            description = "The amount of units by which product amount should be increased",
-                            in = ParameterIn.QUERY,
-                            required = true
-                    )
-            }
-    )
-
-    @PostMapping("/{productId}/sale")
-    @PreAuthorize("hasAuthority('product management')")
-    public ResponseEntity<Void> putProductOnSale(
+    @SuppressWarnings("unused")
+    ResponseEntity<Void> putProductOnSale(
             User currentAuthenticatedUser, @PathVariable Long productId, @RequestParam int discountPercent
-    ) {
-        productFacade.putProductOnSale(currentAuthenticatedUser, productId, discountPercent);
-        return ResponseEntity.ok().build();
-    }
+    );
 
     @Operation(
             description = "PATCH endpoint for shop owner",
@@ -237,24 +169,15 @@ public class ProductRESTController {
                     required = true
             )
     )
-    @PatchMapping("/{productId}")
-    @PreAuthorize("hasAuthority('product management')")
-    public ResponseEntity<ProductResponseDTO> updateProduct(
+    @SuppressWarnings("unused")
+    ResponseEntity<ProductResponseDTO> updateProduct(
             User currentAuthenticatedUser,
             @PathVariable Long productId,
             @RequestBody ProductRequestDTO productRequestDTO
-    ) {
-        return ResponseEntity.ok(
-                productFacade.updateProduct(currentAuthenticatedUser, productId, productRequestDTO)
-        );
-    }
+    );
 
-    @DeleteMapping("/{productId}/sale")
-    @PreAuthorize("hasAuthority('product management')")
-    public ResponseEntity<Void> removeProductFromSale(User currentAuthenticatedUser, @PathVariable Long productId) {
-        productFacade.removeProductFromSale(currentAuthenticatedUser, productId);
-        return ResponseEntity.ok().build();
-    }
+    @SuppressWarnings("unused")
+    ResponseEntity<Void> removeProductFromSale(User currentAuthenticatedUser, @PathVariable Long productId);
 
     @Operation(
             description = "DELETE product endpoint for shop owner and super admin",
@@ -282,19 +205,12 @@ public class ProductRESTController {
                     )
             }
     )
-    @DeleteMapping("/{productId}")
-    @PreAuthorize("hasAnyAuthority('product management', 'super admin info deletion')")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long productId, User currentAuthenticatedUser) {
-        productFacade.deleteProduct(currentAuthenticatedUser, productId);
-        return ResponseEntity.ok().build();
-    }
+    @SuppressWarnings("unused")
+    ResponseEntity<Void> deleteProduct(@PathVariable Long productId, User currentAuthenticatedUser);
 
-    @PostMapping("/availability/{productId}")
-    public ResponseEntity<Void> subscribeForNotificationAboutAvailability(
+    @SuppressWarnings("unused")
+    ResponseEntity<Void> subscribeForNotificationAboutAvailability(
             @PathVariable Long productId,
             User currentAuthenticatedUser
-    ) {
-        productFacade.subscribeForNotificationAboutAvailability(productId, currentAuthenticatedUser);
-        return ResponseEntity.ok().build();
-    }
+    );
 }

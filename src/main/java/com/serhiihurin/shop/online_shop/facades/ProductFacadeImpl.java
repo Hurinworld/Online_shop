@@ -69,6 +69,7 @@ public class ProductFacadeImpl implements ProductFacade {
         );
         productResponseDTO.setImagesEndpoints(getProductImages(id));
         productResponseDTO.setRate(productService.calculateAverageRatingForProduct(id));
+        log.info("got product in facade");
         return productResponseDTO;
     }
 

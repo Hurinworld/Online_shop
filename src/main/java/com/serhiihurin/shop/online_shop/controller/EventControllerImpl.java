@@ -1,9 +1,14 @@
 package com.serhiihurin.shop.online_shop.controller;
 
+import com.serhiihurin.shop.online_shop.controller.interfaces.EventController;
 import com.serhiihurin.shop.online_shop.dto.EventRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.EventResponseDTO;
 import com.serhiihurin.shop.online_shop.entity.User;
 import com.serhiihurin.shop.online_shop.facades.interfaces.EventFacade;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -19,7 +24,7 @@ import java.util.List;
 @PreAuthorize("hasAnyRole('ADMIN', 'SHOP_OWNER', 'SUPER_ADMIN')")
 @Tag(name = "Event")
 @RequiredArgsConstructor
-public class EventRESTController {
+public class EventControllerImpl implements EventController {
     private final EventFacade eventFacade;
     private final ModelMapper modelMapper;
 

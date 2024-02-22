@@ -1,33 +1,20 @@
-package com.serhiihurin.shop.online_shop.controller;
+package com.serhiihurin.shop.online_shop.controller.interfaces;
 
 import com.serhiihurin.shop.online_shop.dto.PurchaseAdminResponseDTO;
 import com.serhiihurin.shop.online_shop.dto.PurchaseRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.PurchaseResponseDTO;
 import com.serhiihurin.shop.online_shop.entity.User;
-import com.serhiihurin.shop.online_shop.facades.PurchaseFacadeImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/online-shop/purchases")
-@PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'CLIENT')")
-@Tag(name = "Purchase")
-@RequiredArgsConstructor
-public class PurchaseRESTController {
-    private final PurchaseFacadeImpl purchaseFacade;
-    private final ModelMapper modelMapper;
-
+public interface PurchaseController {
     @Operation(
             description = "GET all purchases endpoint for admin",
             summary = "endpoint to retrieve all purchases",
@@ -46,15 +33,8 @@ public class PurchaseRESTController {
                     )
             }
     )
-    @GetMapping
-    @PreAuthorize("hasAuthority('admin view info')")
-    public List<PurchaseAdminResponseDTO> getAllPurchases() {
-        return modelMapper.map(
-                purchaseFacade.getAllPurchases(),
-                new TypeToken<List<PurchaseAdminResponseDTO>>() {
-                }.getType()
-        );
-    }
+    @SuppressWarnings("unused")
+    List<PurchaseAdminResponseDTO> getAllPurchases();
 
     @Operation(
             description = "GET endpoint for admin",
@@ -82,15 +62,8 @@ public class PurchaseRESTController {
                     )
             }
     )
-    @GetMapping("/client/{clientId}")
-    @PreAuthorize("hasAnyAuthority('client view info', 'admin view info')")
-    public List<PurchaseAdminResponseDTO> getPurchasesByClientId(@PathVariable Long clientId) {
-        return modelMapper.map(
-                purchaseFacade.getPurchasesByClientId(clientId),
-                new TypeToken<List<PurchaseAdminResponseDTO>>() {
-                }.getType()
-        );
-    }
+    @SuppressWarnings("unused")
+    List<PurchaseAdminResponseDTO> getPurchasesByClientId(@PathVariable Long clientId);
 
     @Operation(
             description = "GET endpoint for client",
@@ -118,15 +91,8 @@ public class PurchaseRESTController {
                     )
             }
     )
-    @GetMapping("/client/me")
-    @PreAuthorize("hasAnyAuthority('client view info', 'admin view info')")
-    public List<PurchaseResponseDTO> getPurchasesByClientId(User currentAuthenticatedUser) {
-        return modelMapper.map(
-                purchaseFacade.getPurchasesByClientId(currentAuthenticatedUser.getId()),
-                new TypeToken<List<PurchaseResponseDTO>>() {
-                }.getType()
-        );
-    }
+    @SuppressWarnings("unused")
+    List<PurchaseResponseDTO> getPurchasesByClientId(User currentAuthenticatedUser);
 
     @Operation(
             description = "GET purchase endpoint for admin",
@@ -154,14 +120,8 @@ public class PurchaseRESTController {
                     )
             }
     )
-    @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('admin view info')")
-    public PurchaseAdminResponseDTO getPurchase(@PathVariable Long id) {
-        return modelMapper.map(
-                purchaseFacade.getPurchase(id),
-                PurchaseAdminResponseDTO.class
-        );
-    }
+    @SuppressWarnings("unused")
+    PurchaseAdminResponseDTO getPurchase(@PathVariable Long id);
 
     @Operation(
             description = "POST endpoint for client",
@@ -193,15 +153,11 @@ public class PurchaseRESTController {
                     required = true
             )
     )
-    @PostMapping
-    @PreAuthorize("hasAuthority('purchase creation')")
-    public PurchaseResponseDTO makePurchase(User currentAuthenticatedUser,
-                                            @RequestBody PurchaseRequestDTO purchaseRequestDTO) {
-        return modelMapper.map(
-                purchaseFacade.makePurchase(currentAuthenticatedUser, purchaseRequestDTO),
-                PurchaseResponseDTO.class
-        );
-    }
+    @SuppressWarnings("unused")
+    PurchaseResponseDTO makePurchase(
+            User currentAuthenticatedUser,
+            @RequestBody PurchaseRequestDTO purchaseRequestDTO
+    );
 
     @Operation(
             description = "DELETE purchase endpoint for admin",
@@ -229,10 +185,6 @@ public class PurchaseRESTController {
                     )
             }
     )
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('purchase management')")
-    public ResponseEntity<Void> deletePurchase(@PathVariable Long id) {
-        purchaseFacade.deletePurchase(id);
-        return ResponseEntity.ok().build();
-    }
+    @SuppressWarnings("unused")
+    ResponseEntity<Void> deletePurchase(@PathVariable Long id);
 }

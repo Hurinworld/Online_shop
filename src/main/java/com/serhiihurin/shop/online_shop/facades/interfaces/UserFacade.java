@@ -4,7 +4,6 @@ import com.serhiihurin.shop.online_shop.dto.PasswordUpdateRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.UserRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.UsernameUpdateResponseDTO;
 import com.serhiihurin.shop.online_shop.entity.User;
-import com.serhiihurin.shop.online_shop.dto.RegisterRequestDTO;
 
 import java.util.List;
 

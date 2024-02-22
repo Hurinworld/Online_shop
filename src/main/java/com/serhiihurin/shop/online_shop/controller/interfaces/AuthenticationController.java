@@ -1,31 +1,18 @@
-package com.serhiihurin.shop.online_shop.controller;
+package com.serhiihurin.shop.online_shop.controller.interfaces;
 
 import com.serhiihurin.shop.online_shop.dto.AuthenticationRequestDTO;
-import com.serhiihurin.shop.online_shop.dto.RegisterRequestDTO;
 import com.serhiihurin.shop.online_shop.dto.AuthenticationResponseDTO;
-import com.serhiihurin.shop.online_shop.facades.interfaces.AuthenticationFacade;
+import com.serhiihurin.shop.online_shop.dto.RegisterRequestDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
-
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
-@RestController
-@RequestMapping("/online-shop/auth")
-@Tag(name = "Authentication")
-@RequiredArgsConstructor
-public class AuthenticationController {
-    private final AuthenticationFacade authenticationFacade;
-
+public interface AuthenticationController {
     @Operation(
             description = "POST endpoint for new users",
             summary = "endpoint for new users to registering an account",
@@ -44,12 +31,10 @@ public class AuthenticationController {
                     required = true
             )
     )
-    @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponseDTO> register(
+    @SuppressWarnings("unused")
+    ResponseEntity<AuthenticationResponseDTO> register(
             @RequestBody RegisterRequestDTO request
-    ) {
-        return ResponseEntity.ok(authenticationFacade.register(request));
-    }
+    );
 
     @Operation(
             description = "POST endpoint for all users",
@@ -69,13 +54,10 @@ public class AuthenticationController {
                     required = true
             )
     )
-    @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponseDTO> authenticate(
+    @SuppressWarnings("unused")
+    ResponseEntity<AuthenticationResponseDTO> authenticate(
             @RequestBody AuthenticationRequestDTO request
-    ) {
-        AuthenticationResponseDTO response = authenticationFacade.authenticate(request);
-        return ResponseEntity.ok(response);
-    }
+    );
 
     @Operation(
             description = "POST endpoint for all users",
@@ -91,11 +73,9 @@ public class AuthenticationController {
                     ),
             }
     )
-    @PostMapping("/access-token")
-    public void updateAccessToken(
+    @SuppressWarnings("unused")
+    void updateAccessToken(
             HttpServletRequest request,
             HttpServletResponse response
-    ) throws IOException {
-        authenticationFacade.updateAccessToken(request, response);
-    }
+    ) throws IOException;
 }

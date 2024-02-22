@@ -1,5 +1,6 @@
 package com.serhiihurin.shop.online_shop.controller;
 
+import com.serhiihurin.shop.online_shop.controller.interfaces.NotificationController;
 import com.serhiihurin.shop.online_shop.dto.NotificationFullViewResponseDTO;
 import com.serhiihurin.shop.online_shop.dto.NotificationPreviewResponseDTO;
 import com.serhiihurin.shop.online_shop.entity.User;
@@ -17,7 +18,7 @@ import java.util.List;
 @RequestMapping("/online-shop/notifications")
 @Tag(name = "Notifications")
 @RequiredArgsConstructor
-public class NotificationRESTController {
+public class NotificationControllerImpl implements NotificationController {
     private final NotificationService notificationService;
     private final ModelMapper modelMapper;
 

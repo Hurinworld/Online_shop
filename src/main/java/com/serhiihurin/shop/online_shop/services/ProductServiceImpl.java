@@ -8,6 +8,7 @@ import com.serhiihurin.shop.online_shop.exception.ApiRequestException;
 import com.serhiihurin.shop.online_shop.exception.UnauthorizedAccessException;
 import com.serhiihurin.shop.online_shop.services.interfaces.ProductService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +17,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final ProductImageRepository productImageRepository;
@@ -40,12 +42,14 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getProduct(Long id) {
+        log.info("getting new product in service");
         return productRepository.findById(id)
                 .orElseThrow(() -> new ApiRequestException("Could not find product with ID: " + id));
     }
 
     @Override
     public Product addProduct(ProductRequestDTO productRequestDTO) {
+        log.info("adding new product in service");
         return productRepository.save(
                 Product.builder()
                         .name(productRequestDTO.getName())
