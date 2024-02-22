@@ -20,6 +20,7 @@ public class ProductRateConverter implements AttributeConverter<ProductRate, Int
             }
         }
 
+        //TODO should be 500 status
         throw new ApiRequestException("Unknown database value: " + rate);
     }
 }

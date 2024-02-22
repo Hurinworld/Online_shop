@@ -13,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class UserResponseDTO {
     private Long id;
+    //TODO rename to imageUrls
     List<String> imagesEndpoints;
     private String firstName;
     private String lastName;
